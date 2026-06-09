@@ -167,8 +167,8 @@ function buildSeed() {
   ];
 }
 
-function Inp({val,set,type,ph,ro}) { return <input readOnly={ro} type={type||"text"} value={val??""} placeholder={ph||""} onChange={e=>set&&set(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,outline:"none",background:ro?"#f8f8f8":"#fff",boxSizing:"border-box",fontFamily:"inherit"}}/>; }
-function Sel({val,set,opts}) { return <select value={val} onChange={e=>set(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,background:"#fff",outline:"none",fontFamily:"inherit"}}>{opts.map(([v,l])=><option key={v} value={v}>{l}</option>)}</select>; }
+function Inp({val,set,type,ph,ro}) { return <input readOnly={ro} type={type||"text"} value={val??""} placeholder={ph||""} onChange={e=>set&&set(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,outline:"none",background:ro?"#f8f8f8":"#fff",color:"#111827",WebkitTextFillColor:"#111827",caretColor:"#111827",boxSizing:"border-box",fontFamily:"inherit"}}/>; }
+function Sel({val,set,opts}) { return <select value={val} onChange={e=>set(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,background:"#fff",color:"#111827",WebkitTextFillColor:"#111827",caretColor:"#111827",outline:"none",fontFamily:"inherit"}}>{opts.map(([v,l])=><option key={v} value={v}>{l}</option>)}</select>; }
 function Btn({click,children,color,sm,full,disabled}) {
   const C={dark:{bg:"#1a1a2e",fg:"#fff"},green:{bg:"#16a34a",fg:"#fff"},amber:{bg:"#f59e0b",fg:"#000"},gray:{bg:"#f3f4f6",fg:"#374151"},white:{bg:"#fff",fg:"#374151",bd:"1px solid #d1d5db"},blue:{bg:"#2563eb",fg:"#fff"},purple:{bg:"#7c3aed",fg:"#fff"}};
   const s=C[color||"dark"]||C.dark;
@@ -240,7 +240,7 @@ function EditModal({item,onClose,onSave}) {
       <div style={{display:"flex",gap:10}}><div style={{flex:1}}><FG label="List Price"><Inp val={f.listP} set={u("listP")} type="number"/></FG></div><div style={{flex:1}}><FG label="Channel"><Sel val={f.channel} set={u("channel")} opts={Object.entries(PLATFORMS).map(([k,v])=>[k,v.label])}/></FG></div></div>
       <FG label="Listing URL"><Inp val={f.listUrl} set={u("listUrl")} ph="https://www.ebay.com/itm/..."/></FG>
       <div style={{background:c.eN>=0?"#f0fdf4":"#fef2f2",border:"1px solid "+(c.eN>=0?"#86efac":"#fca5a5"),borderRadius:8,padding:"10px 14px",marginBottom:12,fontSize:13}}>Est. Net/Unit: <strong style={{color:c.eN>=0?"#16a34a":"#dc2626"}}>{money(c.eN)}</strong><span style={{color:"#888",marginLeft:12}}>Margin: {pct(c.eM)}</span></div>
-      <FG label="Notes"><textarea value={f.notes||""} onChange={e=>u("notes")(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,minHeight:60,fontFamily:"inherit",resize:"vertical",boxSizing:"border-box",outline:"none"}}/></FG>
+      <FG label="Notes"><textarea value={f.notes||""} onChange={e=>u("notes")(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,minHeight:60,fontFamily:"inherit",resize:"vertical",boxSizing:"border-box",outline:"none",background:"#fff",color:"#111827",WebkitTextFillColor:"#111827",caretColor:"#111827"}}/></FG>
       <div style={{display:"flex",gap:10,marginTop:8}}><Btn click={()=>{if(!f.name.trim()){alert("Product name required");return;}onSave(f);}} color="dark">Save</Btn><Btn click={onClose} color="gray">Cancel</Btn></div>
     </div>
   </div>;
