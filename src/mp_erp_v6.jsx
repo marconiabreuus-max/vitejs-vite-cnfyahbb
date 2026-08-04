@@ -84,6 +84,7 @@ function calcPL(item) {
   (item.sales||[]).forEach(s=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-cu;const t=g>0?g*TAX:0;rev+=r;pfee+=pf;gross+=g;taxAmt+=t;net+=(g-t);});
   return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
 }
+function needsCostReview(item) { return !item._deleted&&(item.name||"").toLowerCase()!=="teste"&&(!item.invoice||!item.lots||!(parseFloat(item.costTotal)||0)||!(parseFloat(item.costUnit)||0)); }
 
 function buildSeed() {
   return [
@@ -317,6 +318,76 @@ function WMap({items,onSelect}) {
   </div>;
 }
 
+function CostReview({items,reviewData,onApply,onOpen}) {
+  const [filter,setFilter]=useState("all");
+  const [selected,setSelected]=useState({});
+  const [costs,setCosts]=useState({});
+  const dataById=Object.fromEntries((reviewData||[]).map(r=>[r.id,r]));
+  const pending=items.filter(needsCostReview).map(item=>({item,review:dataById[item.id]||{id:item.id,confidence:"sem candidato",reason:"sem candidato",question:"Confirme o lote deste produto.",candidates:[]}}));
+  const visible=pending.filter(x=>filter==="all"||x.review.confidence===filter);
+  const applyChoice=(item,review)=>{
+    const c=selected[item.id];
+    if(!c){alert("Escolha um lote candidato primeiro.");return;}
+    const assigned=parseFloat(costs[item.id]??c.total);
+    if(!assigned||assigned<=0){alert("Informe o custo deste produto dentro do lote.");return;}
+    onApply(item,c,assigned,review);
+  };
+  return <div>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:12,flexWrap:"wrap",marginBottom:14}}>
+      <div>
+        <div style={{fontSize:18,fontWeight:900}}>Cost + Lot Review</div>
+        <div style={{fontSize:12,color:"#6b7280",marginTop:3}}>Produtos já lançados no ERP, mas sem vínculo seguro com nota, lote ou custo.</div>
+      </div>
+      <Sel val={filter} set={setFilter} opts={[["all","All"],["alta","High confidence"],["media","Medium"],["baixa","Low"],["sem candidato","No candidate"]]}/>
+    </div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:10,marginBottom:16}}>
+      {[{l:"Pending",v:pending.length,c:"#d97706",bg:"#fffbeb"},{l:"High",v:pending.filter(x=>x.review.confidence==="alta").length,c:"#16a34a",bg:"#f0fdf4"},{l:"Medium",v:pending.filter(x=>x.review.confidence==="media").length,c:"#2563eb",bg:"#eff6ff"},{l:"Low / None",v:pending.filter(x=>x.review.confidence==="baixa"||x.review.confidence==="sem candidato").length,c:"#dc2626",bg:"#fef2f2"}].map(k=>
+        <div key={k.l} style={{background:k.bg,border:"1px solid "+k.c+"22",borderRadius:10,padding:"12px 14px"}}>
+          <div style={{fontSize:10,color:"#6b7280",textTransform:"uppercase",letterSpacing:"0.06em"}}>{k.l}</div>
+          <div style={{fontSize:22,fontWeight:900,color:k.c}}>{k.v}</div>
+        </div>
+      )}
+    </div>
+    <div style={{display:"grid",gap:12}}>
+      {visible.map(({item,review})=>{
+        const chosen=selected[item.id];
+        const assigned=costs[item.id]??(chosen?chosen.total:"");
+        return <div key={item.id} style={{background:"#fff",border:"1px solid #e5e7eb",borderRadius:12,padding:14}}>
+          <div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"flex-start",flexWrap:"wrap"}}>
+            <div style={{minWidth:220,flex:1}}>
+              <div style={{fontFamily:"monospace",fontWeight:900,color:"#1a1a2e",fontSize:13}}>{item.id}</div>
+              <div style={{fontWeight:800,fontSize:14,lineHeight:1.25,marginTop:2}}>{item.name}</div>
+              <div style={{fontSize:11,color:"#6b7280",marginTop:5}}>Reason: {review.reason} · Confidence: {review.confidence}</div>
+              <div style={{fontSize:11,color:"#6b7280",marginTop:2}}>Current: invoice {item.invoice||"—"} · lots {item.lots||"—"} · cost {money(parseFloat(item.costTotal)||0)}</div>
+            </div>
+            <Btn click={()=>onOpen(item.id)} color="gray" sm>Open Item</Btn>
+          </div>
+          <div style={{marginTop:12,fontSize:12,fontWeight:800}}>Possible lots</div>
+          {review.candidates.length===0&&<div style={{marginTop:8,background:"#fef2f2",color:"#991b1b",borderRadius:8,padding:10,fontSize:12}}>Nenhum candidato confiável. Abra o item e preencha invoice/lote/custo manualmente quando souber.</div>}
+          <div style={{display:"grid",gap:8,marginTop:8}}>
+            {review.candidates.map(c=>{
+              const active=chosen&&chosen.invoice===c.invoice&&chosen.lot===c.lot;
+              return <button key={c.invoice+"-"+c.lot} onClick={()=>{setSelected({...selected,[item.id]:c});setCosts({...costs,[item.id]:c.total});}} style={{textAlign:"left",background:active?"#eff6ff":"#f8fafc",border:"1px solid "+(active?"#93c5fd":"#e5e7eb"),borderRadius:9,padding:10,cursor:"pointer",fontFamily:"inherit"}}>
+                <div style={{display:"flex",justifyContent:"space-between",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+                  <span style={{fontFamily:"monospace",fontWeight:900,color:"#1d4ed8"}}>{c.invoice} · Lot {c.lot}</span>
+                  <span style={{fontWeight:900,color:"#d97706"}}>{money(c.total)}</span>
+                </div>
+                <div style={{fontSize:11,color:"#374151",marginTop:5,lineHeight:1.35}}>{c.description}</div>
+              </button>;
+            })}
+          </div>
+          {chosen&&<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:10,marginTop:12,alignItems:"end"}}>
+            <FG label="Cost to assign to this product"><Inp val={assigned} set={v=>setCosts({...costs,[item.id]:v})} type="number"/></FG>
+            <div style={{fontSize:12,color:"#6b7280"}}>Unit cost preview: <b>{money((parseFloat(assigned)||0)/(parseFloat(item.qty)||1))}</b><br/>Use full lot cost only when this product is the whole lot.</div>
+            <Btn click={()=>applyChoice(item,review)} color="green">Save Link + Cost</Btn>
+          </div>}
+        </div>;
+      })}
+    </div>
+    {visible.length===0&&<div style={{background:"#fff",border:"1px solid #e5e7eb",borderRadius:12,padding:24,textAlign:"center",color:"#6b7280"}}>No pending items in this filter.</div>}
+  </div>;
+}
+
 export default function App() {
   const [items,setItems]=useState([]);
   const [tab,setTab]=useState("dashboard");
@@ -328,11 +399,13 @@ export default function App() {
   const [toast,setToast]=useState(null);
   const [loaded,setLoaded]=useState(false);
   const [cloudOk,setCloudOk]=useState(false);
+  const [reviewData,setReviewData]=useState([]);
   const itemsRef=useRef([]);
   const editingRef=useRef(false);
 
   useEffect(()=>{itemsRef.current=items;},[items]);
   useEffect(()=>{editingRef.current=!!editItem||!!sellId;},[editItem,sellId]);
+  useEffect(()=>{fetch("/review-candidates.json").then(r=>r.ok?r.json():[]).then(setReviewData).catch(()=>setReviewData([]));},[]);
 
   useEffect(()=>{
     (async()=>{
@@ -382,6 +455,7 @@ export default function App() {
   async function saveItem(upd){const stamped={...upd,_syncAt:new Date().toISOString()};const exists=items.find(i=>i.id===stamped.id);const ok=await persist(exists?items.map(i=>i.id===stamped.id?stamped:i):[...items,stamped]);setEditItem(null);setDetailId(null);toast$(ok?"Saved to cloud: "+stamped.id:"Saved only on this device: "+stamped.id,ok);}
   async function saveSale(upd){const stamped={...upd,_syncAt:new Date().toISOString()};const ok=await persist(items.map(i=>i.id===stamped.id?stamped:i));setSellId(null);toast$(ok?"Sale recorded in cloud!":"Sale saved only on this device",ok);}
   async function deleteItem(item){if(!confirm("Delete "+item.id+"? This removes it from all synced devices."))return;const d=deletedLoad();d[item.id]=new Date().toISOString();deletedSave(d);const ok=await persist(items.filter(i=>i.id!==item.id));setEditItem(null);setDetailId(null);setSellId(null);toast$(ok?"Deleted from sync: "+item.id:"Deleted only on this device: "+item.id,ok);}
+  async function applyReviewCost(item,candidate,assignedCost,review){const qty=parseFloat(item.qty)||1;const note=`Cost review ${today()}: linked to ${candidate.invoice} lot ${candidate.lot}; assigned ${money(assignedCost)} from lot total ${money(candidate.total)}.`;const upd={...item,supplier:item.supplier||"Michigan Industrial Auctions",invoice:candidate.invoice,lots:candidate.lot,costTotal:parseFloat(assignedCost.toFixed(2)),costUnit:parseFloat((assignedCost/qty).toFixed(2)),notes:[item.notes,note].filter(Boolean).join("\\n"),_reviewQuestion:review.question};await saveItem(upd);}
   function startNew(){setEditItem({id:nextId(items),name:"",sku:"",cat:"Industrial Automation",cond:"uw",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:today(),received:"",listed:"",rack:1,shelf:1,pos:1,notes:"",channel:"ebay",listP:"",listUrl:"",costTotal:"",costUnit:"",status:"purchased",sales:[]});setDetailId(null);}
   function dupItem(item){setEditItem({...item,id:nextId(items),sales:[],qtySold:0,status:"received",listed:"",_dup:true});setDetailId(null);}
   function exportData(){const blob=new Blob([JSON.stringify(items,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="mp-erp-"+today()+".json";a.click();URL.revokeObjectURL(url);toast$("Backup downloaded!");}
@@ -394,7 +468,7 @@ export default function App() {
   const totalSold=items.reduce((a,i)=>a+(i.qtySold||0),0);
   const totalStock=items.reduce((a,i)=>a+(i.qtyInStock||0),0);
   const filtered=items.filter(i=>{if(stFlt!=="all"&&i.status!==stFlt)return false;if(search){const q=search.toLowerCase();return i.name.toLowerCase().includes(q)||i.id.toLowerCase().includes(q)||(i.sku||"").toLowerCase().includes(q)||(i.invoice||"").toLowerCase().includes(q);}return true;});
-  const TABS=[{id:"dashboard",icon:"📊",label:"Dashboard"},{id:"inventory",icon:"📦",label:"Inventory"},{id:"map",icon:"🗺",label:"Warehouse"},{id:"analytics",icon:"📈",label:"Analytics"}];
+  const TABS=[{id:"dashboard",icon:"📊",label:"Dashboard"},{id:"inventory",icon:"📦",label:"Inventory"},{id:"review",icon:"🧾",label:"Review"},{id:"map",icon:"🗺",label:"Warehouse"},{id:"analytics",icon:"📈",label:"Analytics"}];
 
   if(!loaded)return <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",flexDirection:"column",gap:16,color:"#888",fontFamily:"system-ui"}}><div style={{fontSize:48}}>☁</div><div style={{fontSize:18,fontWeight:700}}>Loading 77 products...</div></div>;
 
@@ -500,6 +574,8 @@ export default function App() {
       </div>}
 
       {tab==="map"&&<WMap items={items} onSelect={id=>setDetailId(id)}/>}
+
+      {tab==="review"&&<CostReview items={items} reviewData={reviewData} onApply={applyReviewCost} onOpen={id=>setDetailId(id)}/>}
 
       {tab==="analytics"&&<div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(150px, 1fr))",gap:10,marginBottom:20}}>
