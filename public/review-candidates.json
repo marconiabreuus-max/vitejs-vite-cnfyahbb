@@ -1,1531 +1,617 @@
 [
   {
-    "id": "MP-006",
-    "confidence": "baixa",
-    "reason": "sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-006 - SICK DUSTHUNTER SP30 DHSP30-T2VATNNNNNXXS NEW?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "11",
-        "total": 321.0,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), DUST MEASURING"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "12",
-        "total": 6.42,
-        "description": "DEVICE, DC 24V, 30W - SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), 1 DUST MEASURING DEVICE, DC 24V, 30W; 11 LBS SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "126",
-        "total": 160.5,
-        "description": "DC 510-720V, 12A, OP 3AC, 0-480V - SIEMENS 6SL3120-2TE15-0AD0, SINAMICS 1 DOUBLE MOTOR MODULE 2X5A, IP DC 510-720V, 12A, OP 3AC, 0-480V, 5A/5A, 0-550HZ; 11 LBS "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "128",
-        "total": 102.72,
-        "description": "LOT OF 5 SICK WL9L-3P2432, PHOTOELECTRIC SENSOR, 10-30VDC, 100MA; 1 1 LBS SIEMENS 3VA5195-6ED31-0AA0, CIRCUIT BREAKER 15A, 3 POLE, ROTARY"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "145",
-        "total": 154.08,
-        "description": "DC 510-720V, 12A, OP 3AC, 0-480V - SIEMENS 6SL3120-2TE15-0AD0, SINAMICS 1 DOUBLE MOTOR MODULE 2X5A, IP DC 510-720V, 12A, OP 3AC, 0-480V, 5A/5A, 0-550HZ; 11 LBS "
-      }
-    ]
-  },
-  {
-    "id": "MP-014",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-014 - STS Brandschutzsysteme LMK1 Fire Protection Control Unit New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "52",
-        "total": 166.92,
-        "description": "1 ANYBUS AB7658-F, PROFINET IO SLAVE-CANOPEN SLAVE; 2 LBS STS RANDSCHUTZSYSTEME GMBH, LMK1D, FIRE EXTINGUISHING CONTROL"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "53",
-        "total": 51.36,
-        "description": "UNIT, 24 VDC, 200 MA - STS RANDSCHUTZSYSTEME GMBH, LMK1D, FIRE 1 EXTINGUISHING CONTROL UNIT, 24 VDC, 200 MA; 1 LBS LOT OF 6 CAMFIL CPU201E, ELECTRIC CONTROL SYS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "79",
-        "total": 295.32,
-        "description": "1 ANYBUS AB7658-F, PROFINET IO SLAVE-CANOPEN SLAVE; 2 LBS STS RANDSCHUTZSYSTEME GMBH, LMK1D, FIRE EXTINGUISHING CONTROL"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "81",
-        "total": 51.36,
-        "description": "UNIT, 24 VDC, 200 MA - STS RANDSCHUTZSYSTEME GMBH, LMK1D, FIRE 1 EXTINGUISHING CONTROL UNIT, 24 VDC, 200 MA; 1 LBS SIEMENS 3VA5195-6ED31-0AA0, CIRCUIT BREAKER 1"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "2",
-        "total": 128.4,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER -"
-      }
-    ]
-  },
-  {
-    "id": "MP-015",
-    "confidence": "alta",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-015 - Camfil CPU201E Electric Control ECS Air Pollution Control Panel New O Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "53",
-        "total": 51.36,
-        "description": "UNIT, 24 VDC, 200 MA - STS RANDSCHUTZSYSTEME GMBH, LMK1D, FIRE 1 EXTINGUISHING CONTROL UNIT, 24 VDC, 200 MA; 1 LBS LOT OF 6 CAMFIL CPU201E, ELECTRIC CONTROL SYS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "54",
-        "total": 166.92,
-        "description": "LOT OF 6 CAMFIL CPU201E, ELECTRIC CONTROL SYSTEM, CONTROL PANEL; 7 1 LBS LOT OF 35 SIEMENS C. BREAKERS W/ ASSORTED AMPS; W/ (2) 5SJ4150-7HG40,"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "2",
-        "total": 128.4,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "12",
-        "total": 6.42,
-        "description": "DEVICE, DC 24V, 30W - SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), 1 DUST MEASURING DEVICE, DC 24V, 30W; 11 LBS SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "22",
-        "total": 166.92,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5W, 50-"
-      }
-    ]
-  },
-  {
-    "id": "MP-017",
-    "confidence": "alta",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-017 - Banner PVA225P6EQ PVA225P6RQ Safety Light Curtain Emitter Receiver?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "61",
-        "total": 102.72,
-        "description": "EMITTER AND RECIEVER - NEW OPEN BANNER PVA225P6EQ / PVA225P6RQ 1 SAFETY LIGHT CURTAIN EMITTER AND RECIEVER; 1 LBS SIEMENS 6SL3120-2TE15-0AD0, SINAMICS DOUBLE MO"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "60",
-        "total": 513.6,
-        "description": "1 SIEMENS 1FK7034-2AK74-1SH0 SERVO MOTOR / LOT WEIGHT 12LBS NEW OPEN BANNER PVA225P6EQ / PVA225P6RQ SAFETY LIGHT CURTAIN"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "22",
-        "total": 166.92,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5W, 50-"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "26",
-        "total": 64.2,
-        "description": "60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 1 W, 50-60HZ; 2 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "42",
-        "total": 77.04,
-        "description": "LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5W, 50- 1 60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 W, 50-6"
-      }
-    ]
-  },
-  {
-    "id": "MP-030",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-030 - Siemens 6EP1433-2BA20 SITOP Power Supply Module New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "184",
-        "total": 57.78,
-        "description": "SIEMENS 6EP1433-2BA20 AND MORE - LOT OF ASSORTED POWER SUPPLYS; 1 W/ SOLA SCP102D24X-C02, DUAL OUTPUT 24V 3.8A CLASS 2; W/ (2) SIEMENS 6EP1433-2BA20 SITOP PSU30"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "153",
-        "total": 6.42,
-        "description": "CIRCUIT TESTER - LOT OF 2 PANDUIT VS-AVT-C08-L10 VERISAFE ABSENCE OF 1 VOLTAGE TESTER, CIRCUIT TESTER; 3 LBS LOT OF 6 SIEMENS 6EP3333-7LB00-0AX0, SITOP PSU6200 "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "156",
-        "total": 44.94,
-        "description": "LOT OF 6 SIEMENS 6EP3333-7LB00-0AX0, SITOP PSU6200 POWER SUPPLY; 9 1 LBS NEW SEALED SIEMENS 1FK7034-2AK74-1SH0 SERVO MOTOR - NEW SEALED"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "225",
-        "total": 44.9,
-        "description": "2 - LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A, 1 CLASS 2; 9 LBS LOT OF 8 SIEMENS SITOP PSE200U SELECTIVITY MODULE; W/ (5) 6EP1961-2BA6"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "7",
-        "total": 32.1,
-        "description": "LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER; 1 4 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A -"
-      }
-    ]
-  },
-  {
-    "id": "MP-031",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-031 - Siemens 6EP1334-3BA10 SITOP Power Supply Module New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "184",
-        "total": 57.78,
-        "description": "SIEMENS 6EP1433-2BA20 AND MORE - LOT OF ASSORTED POWER SUPPLYS; 1 W/ SOLA SCP102D24X-C02, DUAL OUTPUT 24V 3.8A CLASS 2; W/ (2) SIEMENS 6EP1433-2BA20 SITOP PSU30"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "153",
-        "total": 6.42,
-        "description": "CIRCUIT TESTER - LOT OF 2 PANDUIT VS-AVT-C08-L10 VERISAFE ABSENCE OF 1 VOLTAGE TESTER, CIRCUIT TESTER; 3 LBS LOT OF 6 SIEMENS 6EP3333-7LB00-0AX0, SITOP PSU6200 "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "156",
-        "total": 44.94,
-        "description": "LOT OF 6 SIEMENS 6EP3333-7LB00-0AX0, SITOP PSU6200 POWER SUPPLY; 9 1 LBS NEW SEALED SIEMENS 1FK7034-2AK74-1SH0 SERVO MOTOR - NEW SEALED"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "225",
-        "total": 44.9,
-        "description": "2 - LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A, 1 CLASS 2; 9 LBS LOT OF 8 SIEMENS SITOP PSE200U SELECTIVITY MODULE; W/ (5) 6EP1961-2BA6"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "7",
-        "total": 32.1,
-        "description": "LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER; 1 4 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A -"
-      }
-    ]
-  },
-  {
-    "id": "MP-032",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-032 - MurrElektronik 85690 3-Phase Power Supply 24-28V 5A DC New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "69",
-        "total": 32.1,
-        "description": "CIRCUIT TESTER - LOT OF 2 PANDUIT VS-AVT-C08-L10 VERISAFE ABSENCE OF 1 VOLTAGE TESTER, CIRCUIT TESTER; 3 LBS LOT OF 2 MURR ELECTRONIC 85690, POWER SUPPLY, INPUT"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "71",
-        "total": 70.62,
-        "description": "0.30A, 50/60HZ - LOT OF 2 MURR ELECTRONIC 85690, POWER SUPPLY, INPUT 1 3X360-500V, 0.45-0.30A, 50/60HZ; 3 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "7",
-        "total": 32.1,
-        "description": "LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER; 1 4 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "8",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "26",
-        "total": 64.2,
-        "description": "60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 1 W, 50-60HZ; 2 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3"
-      }
-    ]
-  },
-  {
-    "id": "MP-033",
-    "confidence": "media",
-    "reason": "sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-033 - SICK WL9L-3P2432 Photoelectric Sensor New Open Box - Each -?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "126",
-        "total": 160.5,
-        "description": "DC 510-720V, 12A, OP 3AC, 0-480V - SIEMENS 6SL3120-2TE15-0AD0, SINAMICS 1 DOUBLE MOTOR MODULE 2X5A, IP DC 510-720V, 12A, OP 3AC, 0-480V, 5A/5A, 0-550HZ; 11 LBS "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "128",
-        "total": 102.72,
-        "description": "LOT OF 5 SICK WL9L-3P2432, PHOTOELECTRIC SENSOR, 10-30VDC, 100MA; 1 1 LBS SIEMENS 3VA5195-6ED31-0AA0, CIRCUIT BREAKER 15A, 3 POLE, ROTARY"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "145",
-        "total": 154.08,
-        "description": "DC 510-720V, 12A, OP 3AC, 0-480V - SIEMENS 6SL3120-2TE15-0AD0, SINAMICS 1 DOUBLE MOTOR MODULE 2X5A, IP DC 510-720V, 12A, OP 3AC, 0-480V, 5A/5A, 0-550HZ; 11 LBS "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "148",
-        "total": 141.24,
-        "description": "LOT OF 5 SICK WL9L-3P2432, PHOTOELECTRIC SENSOR, 10-30VDC, 100MA; 1 1 LBS LOT OF ASSORTED COMPONENTS; W/ IFM EFECTOR PN7094; W/ KEYENCE FT-"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "11",
-        "total": 321.0,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), DUST MEASURING"
-      }
-    ]
-  },
-  {
-    "id": "MP-034",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-034 - Siemens 3RV2711-1DD10 Motor Starter Protector Circuit Breaker New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "131",
-        "total": 38.52,
-        "description": "W/ 5SY4210-7 AND MORE - LOT OF SIEMENS COMPONENTS; W/ (7) 5SJ4110- 1 7HG40, 1 POLE CIRCUIT BREAKER; W/ 5SJ4104-7HG40, 1 POLE CIRCUIT BREAKER; W/ 5SY4210-7, 2 PO"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "223",
-        "total": 83.46,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS LOT OF "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "228",
-        "total": 263.22,
-        "description": "3RV2711-1JD10 AND MORE - LOT OF SIEMENS COMPONENTS; W/ 3RV2917- 1 1E, BUSBAR; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2711-1JD10, CIRCUIT BREAKER; W/ (2) 3"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "241",
-        "total": 44.9,
-        "description": "3RV2811-1HD10 AND MORE - LOT OF SIEMENS PARTS; W/ (2) 3RV2811-1DD10, 1 CIRCUIT BREAKER; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2811-1HD10, CIRCUIT BREAKER"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "271",
-        "total": 59.86,
-        "description": "3RV2917-1A - LOT OF SIEMENS PARTS; W/ (3) 3RV2811-1DD10, CIRCUIT BREAKER; 1 W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ (3) 3RV2917-1A, PHASE BUSBAR; 10 LBS LOT O"
-      }
-    ]
-  },
-  {
-    "id": "MP-035",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-035 - Siemens 3RV2917-4A Auxiliary Switch Block New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "176",
-        "total": 12.84,
-        "description": "BRADLEY 1000-194RG2 AND MORE - LOT OF ASSORTED COMPONENTS; W/ (4) 1 CONTA-CLIP RK 95, TERMINAL BLOCK; W/ ALLEN BRADLEY 1000-194RG2, LOCKABLE SELECTOR SWITCH; W/"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "8",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "9",
-        "total": 166.92,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS NEW SEALED SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR - NEW SEALED"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "27",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "28",
-        "total": 154.08,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      }
-    ]
-  },
-  {
-    "id": "MP-036",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-036 - Siemens 6EP1961-2BA61 SITOP Select Power Module New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "225",
-        "total": 44.9,
-        "description": "2 - LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A, 1 CLASS 2; 9 LBS LOT OF 8 SIEMENS SITOP PSE200U SELECTIVITY MODULE; W/ (5) 6EP1961-2BA6"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "155",
-        "total": 119.72,
-        "description": "1 TCDEC-8B4P-DYU-G8, HARSHIO SAFETY MODULE; 3 LBS LOT OF 8 SIEMENS SITOP PSE200U SELECTIVITY MODULE; W/ (5) 6EP1961-2BA61,"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "158",
-        "total": 89.79,
-        "description": "W/ (3) 6EP1961-2BA41 - LOT OF 8 SIEMENS SITOP PSE200U SELECTIVITY MODULE; 1 W/ (5) 6EP1961-2BA61, W/ (3) 6EP1961-2BA41; 5 LBS LOT OF 70 SIEMENS CIRCUIT BREAKERS"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "171",
-        "total": 104.76,
-        "description": "1 TCDEC-8B4P-DYU-G8, HARSHIO SAFETY MODULE; 3 LBS LOT OF 8 SIEMENS SITOP PSE200U SELECTIVITY MODULE; W/ (4) 6EP1961-2BA61,"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "175",
-        "total": 97.28,
-        "description": "W/ (4) 6EP1961-2BA41 - LOT OF 8 SIEMENS SITOP PSE200U SELECTIVITY MODULE; 1 W/ (4) 6EP1961-2BA61, W/ (4) 6EP1961-2BA41; 5 LBS LOT OF 70 SIEMENS CIRCUIT BREAKERS"
-      }
-    ]
-  },
-  {
-    "id": "MP-037",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-037 - Siemens 6FC5348-0AA30-3AA0 SINUMERIK Dual Fan Module New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "2",
-        "total": 128.4,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "7",
-        "total": 32.1,
-        "description": "LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER; 1 4 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "8",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "12",
-        "total": 6.42,
-        "description": "DEVICE, DC 24V, 30W - SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), 1 DUST MEASURING DEVICE, DC 24V, 30W; 11 LBS SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "22",
-        "total": 166.92,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5W, 50-"
-      }
-    ]
-  },
-  {
-    "id": "MP-039",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-039 - Siemens 6ES7954-8LF03-0AA0 SIMATIC S7 24MB Memory Card New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "10",
-        "total": 391.62,
-        "description": "1 SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR / LOT WEIGHT 12LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "11",
-        "total": 321.0,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), DUST MEASURING"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "28",
-        "total": 154.08,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "29",
-        "total": 327.42,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS HIRSCHMANN OS20-002800T5T5T5-TBBY999GMSE3S, OCTOPUS OS20"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "44",
-        "total": 128.4,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      }
-    ]
-  },
-  {
-    "id": "MP-040",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-040 - Siemens 3RV2711-1DD10 Motor Starter Protector Circuit Breaker New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "131",
-        "total": 38.52,
-        "description": "W/ 5SY4210-7 AND MORE - LOT OF SIEMENS COMPONENTS; W/ (7) 5SJ4110- 1 7HG40, 1 POLE CIRCUIT BREAKER; W/ 5SJ4104-7HG40, 1 POLE CIRCUIT BREAKER; W/ 5SY4210-7, 2 PO"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "223",
-        "total": 83.46,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS LOT OF "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "228",
-        "total": 263.22,
-        "description": "3RV2711-1JD10 AND MORE - LOT OF SIEMENS COMPONENTS; W/ 3RV2917- 1 1E, BUSBAR; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2711-1JD10, CIRCUIT BREAKER; W/ (2) 3"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "241",
-        "total": 44.9,
-        "description": "3RV2811-1HD10 AND MORE - LOT OF SIEMENS PARTS; W/ (2) 3RV2811-1DD10, 1 CIRCUIT BREAKER; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2811-1HD10, CIRCUIT BREAKER"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "271",
-        "total": 59.86,
-        "description": "3RV2917-1A - LOT OF SIEMENS PARTS; W/ (3) 3RV2811-1DD10, CIRCUIT BREAKER; 1 W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ (3) 3RV2917-1A, PHASE BUSBAR; 10 LBS LOT O"
-      }
-    ]
-  },
-  {
     "id": "MP-041",
     "confidence": "sem candidato",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Você sabe de qual compra/lote veio o produto MP-041 - Siemens sentron Sicherungshalter 3NW753-30HG ( 3NW7 5330HG ) New open box.?",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-041: Siemens sentron Sicherungshalter 3NW753-30HG ( 3NW7 5330HG ) New open box.",
     "candidates": []
   },
   {
-    "id": "MP-042",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-042 - Siemens 3NW1040-0HG 4A Time Delay Fuse Class CC Current Limiting NEW O BOX?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "184",
-        "total": 57.78,
-        "description": "SIEMENS 6EP1433-2BA20 AND MORE - LOT OF ASSORTED POWER SUPPLYS; 1 W/ SOLA SCP102D24X-C02, DUAL OUTPUT 24V 3.8A CLASS 2; W/ (2) SIEMENS 6EP1433-2BA20 SITOP PSU30"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "159",
-        "total": 29.93,
-        "description": "7HG40 AND MORE - LOT OF 70 SIEMENS CIRCUIT BREAKERS; W/ (44) 5SJ4110- 1 7HG40, W/ (8) 5SJ4106-7HG40, W/ (6) 5SJ4130-7HG40, W/ (5) 5SJ4102-7HG40, W/ (4) 5SJ4104-"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "160",
-        "total": 52.38,
-        "description": "2 - LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A, 1 CLASS 2; 9 LBS LOT OF ASSORTED PARTS; W/ (3) PHOENIX CONTACT 15 17 17 8 SACB-8/8-L-10"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "176",
-        "total": 29.93,
-        "description": "7HG40 AND MORE - LOT OF 70 SIEMENS CIRCUIT BREAKERS; W/ (61) 5SJ4110- 1 7HG40, W/ (3) 5SJ4150-7HG40, W/ (3) 5SJ4104-7HG40, W/ (2) 5SJ4102-7HG40, W/ 5SJ4130-7HG4"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "177",
-        "total": 44.9,
-        "description": "2 - LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A, 1 CLASS 2; 9 LBS LOT OF 3 SIEMENS 3VA5260-6ED31-0AA0, CIRCUIT BREAKERS - LOT OF 3 SIEME"
-      }
-    ]
-  },
-  {
-    "id": "MP-043",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-043 - Siemens 3SK1211-1BB40 SIRIUS Safety Relay Output Expansion 4NO 1NC 24VDC?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "136",
-        "total": 256.8,
-        "description": "PDSIGE2IT0A0LU O SUEPLEUCTTSI V2I4TVYD MC,O 0D.5UAL E- ;S 7IE LMBSENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "198",
-        "total": 385.2,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NC00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX10.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "221",
-        "total": 282.48,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS LOT OF 2 PANDUIT VS-AVT-C08-L"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "259",
-        "total": 359.52,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "277",
-        "total": 321.0,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NC00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX10.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      }
-    ]
-  },
-  {
-    "id": "MP-044",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-044 - Siemens 3RT2016-1HB42 SIRIUS Contactor w 3RT2916-1BB00 New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "201",
-        "total": 157.14,
-        "description": "LOT OF SIEMENS COMPONENTS; W/ (70) 3RT2016-1BB42; W/ (30) 3RH2911-1FA40, 1 W/ (70) 3RT2916-1BB00 - LOT OF SIEMENS COMPONENTS; W/ (70) 3RT2016- 1BB42, SIRIUS POW"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "246",
-        "total": 74.83,
-        "description": "3RT2916-1BB00 AND MORE - LOT OF SIEMENS PARTS; W/ (3) 3RT2026-1BB40, W/ 1 (5) 3RH2911-1FA40, W/ (19) 3RT2916-1BB00, W/ (19) 3RT2016-1BB42; W/ (7) 3RV2711-1DD10,"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "124",
-        "total": 147.66,
-        "description": "MANAGED IP67 ETHERNET SWITCH - HIRSCHMANN OS20-002800T5T5T5- 1 TBBY999GMSE3S, OCTOPUS OS20 MANAGED IP67 ETHERNET SWITCH; 10 LBS LOT OF 3 SIEMENS SIRIUS MOTOR CO"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "125",
-        "total": 38.52,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "143",
-        "total": 205.44,
-        "description": "1 3VA5210-6ED31-0AA0, CIRCUIT BREAKER, 100A, 800V; 5 LBS LOT OF 3 SIEMENS SIRIUS MOTOR CONTROLLER / C. BREAKERS; W/ (2)"
-      }
-    ]
-  },
-  {
-    "id": "MP-045",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-045 - Siemens 3RT2015-1BB41 SIRIUS Power Contactor New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "201",
-        "total": 157.14,
-        "description": "LOT OF SIEMENS COMPONENTS; W/ (70) 3RT2016-1BB42; W/ (30) 3RH2911-1FA40, 1 W/ (70) 3RT2916-1BB00 - LOT OF SIEMENS COMPONENTS; W/ (70) 3RT2016- 1BB42, SIRIUS POW"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "7",
-        "total": 32.1,
-        "description": "LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER; 1 4 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "8",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "9",
-        "total": 166.92,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS NEW SEALED SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR - NEW SEALED"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "26",
-        "total": 64.2,
-        "description": "60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 1 W, 50-60HZ; 2 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3"
-      }
-    ]
-  },
-  {
-    "id": "MP-046",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-046 - Siemens 3RV2711-1JD10 SIRIUS Motor Starter Protector New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "228",
-        "total": 263.22,
-        "description": "3RV2711-1JD10 AND MORE - LOT OF SIEMENS COMPONENTS; W/ 3RV2917- 1 1E, BUSBAR; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2711-1JD10, CIRCUIT BREAKER; W/ (2) 3"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "223",
-        "total": 83.46,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS LOT OF "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "124",
-        "total": 147.66,
-        "description": "MANAGED IP67 ETHERNET SWITCH - HIRSCHMANN OS20-002800T5T5T5- 1 TBBY999GMSE3S, OCTOPUS OS20 MANAGED IP67 ETHERNET SWITCH; 10 LBS LOT OF 3 SIEMENS SIRIUS MOTOR CO"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "125",
-        "total": 38.52,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "143",
-        "total": 205.44,
-        "description": "1 3VA5210-6ED31-0AA0, CIRCUIT BREAKER, 100A, 800V; 5 LBS LOT OF 3 SIEMENS SIRIUS MOTOR CONTROLLER / C. BREAKERS; W/ (2)"
-      }
-    ]
-  },
-  {
-    "id": "MP-047",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-047 - Siemens 3RV2011-0AA10 SIRIUS Motor Starter Protector New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "228",
-        "total": 263.22,
-        "description": "3RV2711-1JD10 AND MORE - LOT OF SIEMENS COMPONENTS; W/ 3RV2917- 1 1E, BUSBAR; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2711-1JD10, CIRCUIT BREAKER; W/ (2) 3"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "124",
-        "total": 147.66,
-        "description": "MANAGED IP67 ETHERNET SWITCH - HIRSCHMANN OS20-002800T5T5T5- 1 TBBY999GMSE3S, OCTOPUS OS20 MANAGED IP67 ETHERNET SWITCH; 10 LBS LOT OF 3 SIEMENS SIRIUS MOTOR CO"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "125",
-        "total": 38.52,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "143",
-        "total": 205.44,
-        "description": "1 3VA5210-6ED31-0AA0, CIRCUIT BREAKER, 100A, 800V; 5 LBS LOT OF 3 SIEMENS SIRIUS MOTOR CONTROLLER / C. BREAKERS; W/ (2)"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "144",
-        "total": 44.94,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS SIEMENS"
-      }
-    ]
-  },
-  {
-    "id": "MP-048",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-048 - Siemens 3RV2917-1E SIRIUS 3-Phase Busbar Right Infeed New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "223",
-        "total": 83.46,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS LOT OF "
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "196",
-        "total": 52.38,
-        "description": "CWO/M (3B)I 3NRAVT2IO9N17 M-1OAD - ULOLET; OWF/ S (I2E)M 1E7N34S- CROTBMSP SOENRIEENS TAS,; TWER/ M(3I)N 3ARLV B2L8O1C1K-1; DWD/1 (03, ) 1 1C7IR3C4U-MITB B SREE"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "241",
-        "total": 44.9,
-        "description": "3RV2811-1HD10 AND MORE - LOT OF SIEMENS PARTS; W/ (2) 3RV2811-1DD10, 1 CIRCUIT BREAKER; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2811-1HD10, CIRCUIT BREAKER"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "271",
-        "total": 59.86,
-        "description": "3RV2917-1A - LOT OF SIEMENS PARTS; W/ (3) 3RV2811-1DD10, CIRCUIT BREAKER; 1 W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ (3) 3RV2917-1A, PHASE BUSBAR; 10 LBS LOT O"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "228",
-        "total": 263.22,
-        "description": "3RV2711-1JD10 AND MORE - LOT OF SIEMENS COMPONENTS; W/ 3RV2917- 1 1E, BUSBAR; W/ (3) 3RV2711-1DD10, CIRCUIT BREAKER; W/ 3RV2711-1JD10, CIRCUIT BREAKER; W/ (2) 3"
-      }
-    ]
-  },
-  {
-    "id": "MP-049",
-    "confidence": "alta",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-049 - IFM Efector PN7094 Electronic Pressure Switches /Sensor With Display?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "149",
-        "total": 32.1,
-        "description": "50AWP AND MORE - LOT OF ASSORTED COMPONENTS; W/ IFM EFECTOR 1 PN7094, ELECTRONIC PRESSURE SWITCH/SENSOR W/ DISPLAY; W/ KEYENCE FT-50AWP, DIGITAL INFRARED TEMPER"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "148",
-        "total": 141.24,
-        "description": "LOT OF 5 SICK WL9L-3P2432, PHOTOELECTRIC SENSOR, 10-30VDC, 100MA; 1 1 LBS LOT OF ASSORTED COMPONENTS; W/ IFM EFECTOR PN7094; W/ KEYENCE FT-"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "285",
-        "total": 102.72,
-        "description": "DISPLAY, CLAMP ON FLOW SENSOR - KEYENCE FD-XA5E, PANEL TYPE MAIN 1 UNIT CONTROLLER 4-DIGIT 7 SEGMENT DISPLAY, CLAMP ON FLOW SENSOR; 1 LBS NEW SEALED IN BOX SIEM"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "69",
-        "total": 32.1,
-        "description": "CIRCUIT TESTER - LOT OF 2 PANDUIT VS-AVT-C08-L10 VERISAFE ABSENCE OF 1 VOLTAGE TESTER, CIRCUIT TESTER; 3 LBS LOT OF 2 MURR ELECTRONIC 85690, POWER SUPPLY, INPUT"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "71",
-        "total": 70.62,
-        "description": "0.30A, 50/60HZ - LOT OF 2 MURR ELECTRONIC 85690, POWER SUPPLY, INPUT 1 3X360-500V, 0.45-0.30A, 50/60HZ; 3 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOC"
-      }
-    ]
-  },
-  {
-    "id": "MP-050",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-050 - Schneider Electric M9U21101 Multi9 C60H-DC 1A Circuit Breaker New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "10",
-        "total": 391.62,
-        "description": "1 SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR / LOT WEIGHT 12LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "11",
-        "total": 321.0,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), DUST MEASURING"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "28",
-        "total": 154.08,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "29",
-        "total": 327.42,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS HIRSCHMANN OS20-002800T5T5T5-TBBY999GMSE3S, OCTOPUS OS20"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "44",
-        "total": 128.4,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      }
-    ]
-  },
-  {
-    "id": "MP-051",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-051 - Keyence FT-50AWP Infrared Temperature Sensor 24VDC 1.6W OPEN BOX?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "136",
-        "total": 256.8,
-        "description": "PDSIGE2IT0A0LU O SUEPLEUCTTSI V2I4TVYD MC,O 0D.5UAL E- ;S 7IE LMBSENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "198",
-        "total": 385.2,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NC00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX10.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "221",
-        "total": 282.48,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS LOT OF 2 PANDUIT VS-AVT-C08-L"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "259",
-        "total": 359.52,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "277",
-        "total": 321.0,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NC00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX10.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      }
-    ]
-  },
-  {
-    "id": "MP-052",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-052 - Schneider Electric M9F42106 Multi 9 Miniature Circuit Breaker 1P 6A 277V?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "10",
-        "total": 391.62,
-        "description": "1 SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR / LOT WEIGHT 12LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "11",
-        "total": 321.0,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), DUST MEASURING"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "28",
-        "total": 154.08,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "29",
-        "total": 327.42,
-        "description": "1 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V; 5 LBS HIRSCHMANN OS20-002800T5T5T5-TBBY999GMSE3S, OCTOPUS OS20"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "44",
-        "total": 128.4,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS SIEMENS 3VA5260-6ED31-0AA0 CIRCUIT BREAKER, 60A, 800V - SIEMENS"
-      }
-    ]
-  },
-  {
-    "id": "MP-053",
-    "confidence": "alta",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-053 - Brad Connectivity Molex 1300180466 Mini-Change 3-Way Junction Tee OPEN BOX?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "150",
-        "total": 205.44,
-        "description": "SSCIEHMNEENIDSE 1RF KE7LE0C8T6R-4ICC FM7 94U-12S1H100 1S,I MCIORCTUICIST MBROETAOKRE R- ;S WIE/M (E3N) SSC 1HFNK7E0ID8E6R-4 CF7 4- 1 E1LSEHC0T SRIIMC OMT9ICF4S "
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "152",
-        "total": 14.97,
-        "description": "PDE1C183, W/ MOUNTING PLATE - LOT OF MISCELLANEOUS COMPONENTS; W/ 1 SOLA SCP 102D24X-C02, POWER SUPPLY, W/ ALLEN BRADLEY 1492-PDE1C183, POWER DISTRIBUTION BLOCK"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "168",
-        "total": 14.97,
-        "description": "AVT-C08-L10, TESTER HEADS - LOT OF PANDUIT COMPONENTS; W/ (4) VS-AVT-C08- 1 L10, VERISAFE ABSENCE OF VOLTAGE TESTER (BASE/BLOCK), W/ (2) VS-AVT-C08- L10, TESTER"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "183",
-        "total": 194.55,
-        "description": "1 3VA5260-6ED31-0AA0, CIRCUIT BREAKERS; 15 LBS BRAD MOLEX TCDEC-8B4P-DYU-G8, HARSHIO SAFETY MODULE - BRAD MOLEX"
-      }
-    ]
-  },
-  {
-    "id": "MP-054",
-    "confidence": "alta",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-054 - Rittal SK3110 Temperature Control Thermostat New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "150",
-        "total": 205.44,
-        "description": "SSCIEHMNEENIDSE 1RF KE7LE0C8T6R-4ICC FM7 94U-12S1H100 1S,I MCIORCTUICIST MBROETAOKRE R- ;S WIE/M (E3N) SSC 1HFNK7E0ID8E6R-4 CF7 4- 1 E1LSEHC0T SRIIMC OMT9ICF4S "
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "199",
-        "total": 29.93,
-        "description": "EUCHNER ZSM2300-112803 - LOT OF MISC. COMPONENTS; W/ MAYR 2/028.600.2, 1 ROBA-BRAKE-CHECKER PLUS DC, UIN/4V, ART.NR. 8288568; W/ (3) RITTAL SK 3110, TEMPERATURE"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "2",
-        "total": 128.4,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "12",
-        "total": 6.42,
-        "description": "DEVICE, DC 24V, 30W - SICK DHSP30-T2**GPNLMNNXXS (INCOMPLETE MPN), 1 DUST MEASURING DEVICE, DC 24V, 30W; 11 LBS SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "22",
-        "total": 166.92,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5W, 50-"
-      }
-    ]
-  },
-  {
-    "id": "MP-055",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-055 - Siemens 6SL3162-2MA00-0AC0 SINAMICS Power Plug New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "150",
-        "total": 205.44,
-        "description": "SSCIEHMNEENIDSE 1RF KE7LE0C8T6R-4ICC FM7 94U-12S1H100 1S,I MCIORCTUICIST MBROETAOKRE R- ;S WIE/M (E3N) SSC 1HFNK7E0ID8E6R-4 CF7 4- 1 E1LSEHC0T SRIIMC OMT9ICF4S "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "7",
-        "total": 32.1,
-        "description": "LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER; 1 4 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "8",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "9",
-        "total": 166.92,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS NEW SEALED SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR - NEW SEALED"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "26",
-        "total": 64.2,
-        "description": "60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 1 W, 50-60HZ; 2 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3"
-      }
-    ]
-  },
-  {
-    "id": "MP-056",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-056 - Weidmüller 8442960000 MCZ R 24VDC 5UAU Relay Module New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "150",
-        "total": 205.44,
-        "description": "SSCIEHMNEENIDSE 1RF KE7LE0C8T6R-4ICC FM7 94U-12S1H100 1S,I MCIORCTUICIST MBROETAOKRE R- ;S WIE/M (E3N) SSC 1HFNK7E0ID8E6R-4 CF7 4- 1 E1LSEHC0T SRIIMC OMT9ICF4S "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "136",
-        "total": 256.8,
-        "description": "PDSIGE2IT0A0LU O SUEPLEUCTTSI V2I4TVYD MC,O 0D.5UAL E- ;S 7IE LMBSENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "198",
-        "total": 385.2,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NC00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX10.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "221",
-        "total": 282.48,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS LOT OF 2 PANDUIT VS-AVT-C08-L"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "259",
-        "total": 359.52,
-        "description": "DIGITAL OUPUTS 24VDC, 0.5A - SIEMENS 6SL3040-1NB00-0AA0, SINUMERIK 1 NUMERICAL EXTENSION NX15.3, DIGITAL OUPUTS 24VDC, 0.5A; 6 LBS SIEMENS 3VA5195-6ED31-0AA0, C"
-      }
-    ]
-  },
-  {
-    "id": "MP-057",
-    "confidence": "alta",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-057 - Allen Bradley 1000-194RG2 w 194R-PB 800F-N3G Selector Switch Assembly OpenBox124?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "176",
-        "total": 12.84,
-        "description": "BRADLEY 1000-194RG2 AND MORE - LOT OF ASSORTED COMPONENTS; W/ (4) 1 CONTA-CLIP RK 95, TERMINAL BLOCK; W/ ALLEN BRADLEY 1000-194RG2, LOCKABLE SELECTOR SWITCH; W/"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "31",
-        "total": 256.8,
-        "description": "MANAGED IP67 ETHERNET SWITCH - HIRSCHMANN OS20-002800T5T5T5- 1 TBBY999GMSE3S, OCTOPUS OS20 MANAGED IP67 ETHERNET SWITCH; 10 LBS SIEMENS 6FC5303-1AF10-8AA0, SINU"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "46",
-        "total": 128.4,
-        "description": "MANAGED IP67 ETHERNET SWITCH - HIRSCHMANN OS20-002800T5T5T5- 1 TBBY999GMSE3S, OCTOPUS OS20 MANAGED IP67 ETHERNET SWITCH; 10 LBS SIEMENS 6SL3120-2TE15-0AD0, SINA"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "74",
-        "total": 179.76,
-        "description": "MANAGED IP67 ETHERNET SWITCH - HIRSCHMANN OS20-002800T5T5T5- 1 TBBY999GMSE3S, OCTOPUS OS20 MANAGED IP67 ETHERNET SWITCH; 10 LBS LOT OF 2 ANYBUS AB7658-F, PROFIN"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "124",
-        "total": 147.66,
-        "description": "MANAGED IP67 ETHERNET SWITCH - HIRSCHMANN OS20-002800T5T5T5- 1 TBBY999GMSE3S, OCTOPUS OS20 MANAGED IP67 ETHERNET SWITCH; 10 LBS LOT OF 3 SIEMENS SIRIUS MOTOR CO"
-      }
-    ]
-  },
-  {
-    "id": "MP-058",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-058 - Conta-Clip RK 95 Terminal Block DIN Rail Feed Through New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "176",
-        "total": 12.84,
-        "description": "BRADLEY 1000-194RG2 AND MORE - LOT OF ASSORTED COMPONENTS; W/ (4) 1 CONTA-CLIP RK 95, TERMINAL BLOCK; W/ ALLEN BRADLEY 1000-194RG2, LOCKABLE SELECTOR SWITCH; W/"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "173",
-        "total": 44.94,
-        "description": "CIRCUIT TESTER - LOT OF 2 PANDUIT VS-AVT-C08-L10 VERISAFE ABSENCE OF 1 VOLTAGE TESTER, CIRCUIT TESTER; 3 LBS LOT OF ASSORTED COMPONENTS; W/ (4) CONTA-CLIP RK 95"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "163",
-        "total": 112.24,
-        "description": "PUR SCO AND MORE - LOT OF ASSORTED PARTS; W/ (3) PHOENIX CONTACT 15 17 1 17 8 SACB-8/8-L-10,0PUR SCO, DISTRIBUTOR BLOCK; W/ (2) SIEMENS 6SL3055- 0AA00-3PA1, SIN"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "8",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "9",
-        "total": 166.92,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS NEW SEALED SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR - NEW SEALED"
-      }
-    ]
-  },
-  {
-    "id": "MP-059",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-059 - Datalogic Powerscan Handheld Scanner PD9531-K2 Standard 5VDC RS-232?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "183",
-        "total": 25.68,
-        "description": "- LOT OF DATALOGIC COMPONENTS; W/ POWERSCAN PD9531, HANDHELD 1 BARCODE SCANNER; W/ (2) FBC9080, FIELDBUS COVERTER; 4 LBS LOT OF ASSORTED POWER SUPPLYS; W/ SOLA "
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "236",
-        "total": 7.48,
-        "description": "DELTA ELECTRONICS EOE11010006 - LOT OF ASSORTED PARTS; W/ DATALOGIC 1 FBC9080, CONVERTER TYPE; W/ DATALOGIC POWERSCAN PD9531, WIRED HANDHELD LASER 2D BARCODE SC"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "307",
-        "total": 67.34,
-        "description": "1 SIEMENS 6EP1961-2BA61 SITOP SELECTIVITY MODULE; 4 LBS LOT OF 2 DATALOGIC POWERSCAN PD9531, HANDHELD BARCODE SCANNERS; W/"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "313",
-        "total": 7.48,
-        "description": "(2) FBC9080 - LOT OF 2 DATALOGIC POWERSCAN PD9531, HANDHELD BARCODE 1 SCANNERS; W/ (2) FBC9080, FIELDBUS COVERTER; 5 LBS SIEMENS 6FC5303-0AF14-0AA0, SINUMERIK O"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "348",
-        "total": 14.97,
-        "description": "DATALOGIC FBC9080 AND MORE - LOT OF MISCELLANEOUS COMPONENTS; W/ 1 EUCHNER ZSM2300-112803, ENABLING SWITCH; W/ DATALOGIC FBC9080, FIELDBUS CONVERTER; W/ DATALOG"
-      }
-    ]
-  },
-  {
-    "id": "MP-060",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-060 - Datalogic FBC9080-N100 Fieldbus Converter PROFINET Gateway New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "348",
-        "total": 14.97,
-        "description": "DATALOGIC FBC9080 AND MORE - LOT OF MISCELLANEOUS COMPONENTS; W/ 1 EUCHNER ZSM2300-112803, ENABLING SWITCH; W/ DATALOGIC FBC9080, FIELDBUS CONVERTER; W/ DATALOG"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "183",
-        "total": 25.68,
-        "description": "- LOT OF DATALOGIC COMPONENTS; W/ POWERSCAN PD9531, HANDHELD 1 BARCODE SCANNER; W/ (2) FBC9080, FIELDBUS COVERTER; 4 LBS LOT OF ASSORTED POWER SUPPLYS; W/ SOLA "
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "236",
-        "total": 7.48,
-        "description": "DELTA ELECTRONICS EOE11010006 - LOT OF ASSORTED PARTS; W/ DATALOGIC 1 FBC9080, CONVERTER TYPE; W/ DATALOGIC POWERSCAN PD9531, WIRED HANDHELD LASER 2D BARCODE SC"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "313",
-        "total": 7.48,
-        "description": "(2) FBC9080 - LOT OF 2 DATALOGIC POWERSCAN PD9531, HANDHELD BARCODE 1 SCANNERS; W/ (2) FBC9080, FIELDBUS COVERTER; 5 LBS SIEMENS 6FC5303-0AF14-0AA0, SINUMERIK O"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "182",
-        "total": 77.04,
-        "description": "60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 1 W, 50-60HZ; 2 LBS LOT OF DATALOGIC COMPONENTS; W/ POWERSCAN PD9531, W/ (2) FBC9080"
-      }
-    ]
-  },
-  {
-    "id": "MP-061",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-061 - Datalogic FBC9080-N100 Fieldbus Converter PROFINET Gateway New Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "348",
-        "total": 14.97,
-        "description": "DATALOGIC FBC9080 AND MORE - LOT OF MISCELLANEOUS COMPONENTS; W/ 1 EUCHNER ZSM2300-112803, ENABLING SWITCH; W/ DATALOGIC FBC9080, FIELDBUS CONVERTER; W/ DATALOG"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "183",
-        "total": 25.68,
-        "description": "- LOT OF DATALOGIC COMPONENTS; W/ POWERSCAN PD9531, HANDHELD 1 BARCODE SCANNER; W/ (2) FBC9080, FIELDBUS COVERTER; 4 LBS LOT OF ASSORTED POWER SUPPLYS; W/ SOLA "
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "236",
-        "total": 7.48,
-        "description": "DELTA ELECTRONICS EOE11010006 - LOT OF ASSORTED PARTS; W/ DATALOGIC 1 FBC9080, CONVERTER TYPE; W/ DATALOGIC POWERSCAN PD9531, WIRED HANDHELD LASER 2D BARCODE SC"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "313",
-        "total": 7.48,
-        "description": "(2) FBC9080 - LOT OF 2 DATALOGIC POWERSCAN PD9531, HANDHELD BARCODE 1 SCANNERS; W/ (2) FBC9080, FIELDBUS COVERTER; 5 LBS SIEMENS 6FC5303-0AF14-0AA0, SINUMERIK O"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "182",
-        "total": 77.04,
-        "description": "60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 1 W, 50-60HZ; 2 LBS LOT OF DATALOGIC COMPONENTS; W/ POWERSCAN PD9531, W/ (2) FBC9080"
-      }
-    ]
-  },
-  {
-    "id": "MP-062",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-062 - DEHNguard DG MU 3PY 908314 w DGPLU385 908014 Surge Protector Open Box?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "232",
-        "total": 12.84,
-        "description": "39R52T 2001135, -W1B/B (431) ,9 C5O2 N0T7A3 C- TLOORT; OWF/ D (E2H) 3N4GDUXA URLD4 C24O8M-4P FOUNSEEN HTOS;L WDE/R (;6 W) 9/0 (82 ) 1 30S1K41, 2SU11R-G1EB BS4U0"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "359",
-        "total": 7.48,
-        "description": "6ES7137-6AA01-0BA0 AND MORE - LOT OF 4 SIEMENS SIMATIC COMPONENTS; W/ 1 (2) 6ES7134-6GF00-0AA1, ANALOG INPUT MODULE; W/ 6ES7137-6AA01-0BA0, COMMUNICATION MODULE"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "361",
-        "total": 59.86,
-        "description": "908 014, W/ (9) 908 314 - LOT OF DEHNGUARD COMPONENTS; W/ (16) 952 013, 1 W/ (16) 952 073, W/ (27) 908 014, W/ (9) 908 314; 12 LBS LOT OF 3 SIEMENS CIRCUIT BREA"
-      }
-    ]
-  },
-  {
-    "id": "MP-063",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-063 - DEHNguard DG MOD 320  952 013 DG S 320 320V40  125 AMP NEW NO BOX?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "232",
-        "total": 12.84,
-        "description": "39R52T 2001135, -W1B/B (431) ,9 C5O2 N0T7A3 C- TLOORT; OWF/ D (E2H) 3N4GDUXA URLD4 C24O8M-4P FOUNSEEN HTOS;L WDE/R (;6 W) 9/0 (82 ) 1 30S1K41, 2SU11R-G1EB BS4U0"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "359",
-        "total": 7.48,
-        "description": "6ES7137-6AA01-0BA0 AND MORE - LOT OF 4 SIEMENS SIMATIC COMPONENTS; W/ 1 (2) 6ES7134-6GF00-0AA1, ANALOG INPUT MODULE; W/ 6ES7137-6AA01-0BA0, COMMUNICATION MODULE"
-      },
-      {
-        "invoice": "1410243-313085-1",
-        "lot": "361",
-        "total": 59.86,
-        "description": "908 014, W/ (9) 908 314 - LOT OF DEHNGUARD COMPONENTS; W/ (16) 952 013, 1 W/ (16) 952 073, W/ (27) 908 014, W/ (9) 908 314; 12 LBS LOT OF 3 SIEMENS CIRCUIT BREA"
-      }
-    ]
-  },
-  {
-    "id": "MP-064",
-    "confidence": "baixa",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-064 - IXYS VUO190-16NO7 1600V 195A Three-Phase Rectifier Power Module Open Box 1.3.2b?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "7",
-        "total": 32.1,
-        "description": "LOT OF 3 PANDUIT VS-AVT-C08-L10, VERISAFE ABSENCE OF VOLTAGE TESTER; 1 4 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A -"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "8",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "9",
-        "total": 166.92,
-        "description": "/DC CU9 - LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 1 760A, 600V, AC/DC CU9; 6 LBS NEW SEALED SIEMENS 1FK7034-2AK74-1SH0 SIMOTICS MOTOR - NEW SEALED"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "26",
-        "total": 64.2,
-        "description": "60HZ - LOT OF 4 PILZ PN0Z X2.8P, 777301, SAFETY RELAY; 24VAC/DC, 5.5VA, 2.5 1 W, 50-60HZ; 2 LBS LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "27",
-        "total": 44.94,
-        "description": "LOT OF 2 SOLA SCP 102D24X-C02, POWER SUPPLY, DUAL OUTPUT, 24V, 3.8A; 1 10 LBS LOT OF 3 MARATHON EPBCP84, POWER DISTRIBUTION BLOCK, 760A, 600V, AC"
-      }
-    ]
-  },
-  {
-    "id": "MP-065",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-065 - Siemens 6AV2125-2AE23-0AX0 SIMATIC HMI Connection Box w/ M12 Cables?",
-    "candidates": [
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "244",
-        "total": 32.1,
-        "description": "TURCK FEN20-16DXP AND MORE - LOT OF ASSORTED COMPONENTS; W/ 1 SIEMENS 6AV2125-2AE23-0AX0, CONNECTION BOX ADVANCED, SIMATIC HMI; W/ TURCK FEN20-16DXP COMPACT IP2"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "241",
-        "total": 77.04,
-        "description": "3RV2742-5ED10, W/ (1) 3RV2742-5BD10 - LOT OF 3 SIEMENS SIRIUS MOTOR 1 CONTROLLER / CIRCUIT BREAKERS; W/ (2) 3RV2742-5ED10, W/ (1) 3RV2742- 5BD10; 16 LBS LOT OF "
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "38",
-        "total": 263.22,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS SIEMENS 6AV2124-0MC01-0AX0, TP1200 COMFORT, SIMATIC HMI, TOUCH"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "41",
-        "total": 353.1,
-        "description": "SCREEN - SIEMENS 6AV2124-0MC01-0AX0, TP1200 COMFORT, SIMATIC HMI, 1 TOUCH SCREEN; 7 LBS 1410243-312676-1 PAID"
-      },
-      {
-        "invoice": "1410243-312676-1",
-        "lot": "89",
-        "total": 224.7,
-        "description": "SIEMENS 6FC5303-1AF10-8AA0, SINUMERIK OPERATOR CONTROL PANEL; 7 1 LBS SIEMENS 6AV2124-0MC01-0AX0, TP1200 COMFORT, SIMATIC HMI, TOUCH"
-      }
-    ]
-  },
-  {
-    "id": "MP-066",
+    "id": "MP-078",
     "confidence": "sem candidato",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Você sabe de qual compra/lote veio o produto MP-066 - Murrelektronik MICO+ 4.4 9000-41084-0100400 D-71570 Protection Module?",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-078: Pilz PNOZ X2.8P 24VACDC 3N/O 1N/C 777301 Safety Relay New Open Box",
     "candidates": []
   },
   {
-    "id": "MP-067",
+    "id": "MP-080",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-080: Siemens 6AV6643-0DD01-1AX1 SIMATIC MP277 Operator Panel Refurbished",
+    "candidates": []
+  },
+  {
+    "id": "MP-082",
     "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-067 - KEYENCE FD-XA5E Clamp-On Micro Flow Sensor Controller Open Box?",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-082: Allen-Bradley 1732ES-IB12XOB4 ArmorBlock Guard I/O Safety Module Open Box",
     "candidates": [
       {
-        "invoice": "1410243-312676-1",
-        "lot": "285",
-        "total": 102.72,
-        "description": "DISPLAY, CLAMP ON FLOW SENSOR - KEYENCE FD-XA5E, PANEL TYPE MAIN 1 UNIT CONTROLLER 4-DIGIT 7 SEGMENT DISPLAY, CLAMP ON FLOW SENSOR; 1 LBS NEW SEALED IN BOX SIEM"
+        "invoice": "1410243-315969-1",
+        "lot": "372",
+        "description": "LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, W/ 442G-MABE1 372 1410243 SERIES A, - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, 1 $65.00 $65.00 $11.70 $0.00 $76.70 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 90.68
       },
       {
-        "invoice": "1410243-312676-1",
-        "lot": "284",
-        "total": 38.52,
-        "description": "OPERATOR; W/ 3VA9137-0EK11 - SIEMENS 3VA5195-6ED31-0AA0, CIRCUIT 1 BREAKER 15A, 3 POLE, ROTARY OPERATOR; W/ 3VA9137-0EK11; 3 LBS KEYENCE FD-XA5E, PANEL TYPE MAI"
+        "invoice": "1410243-315969-1",
+        "lot": "382",
+        "description": "LBS LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, W/ 442G-MABE1 382 1410243 SERIES A, - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, 1 $60.00 $60.00 $10.80 $0.00 $70.80 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 83.71
       },
       {
-        "invoice": "1410243-312676-1",
-        "lot": "148",
-        "total": 141.24,
-        "description": "LOT OF 5 SICK WL9L-3P2432, PHOTOELECTRIC SENSOR, 10-30VDC, 100MA; 1 1 LBS LOT OF ASSORTED COMPONENTS; W/ IFM EFECTOR PN7094; W/ KEYENCE FT-"
+        "invoice": "1410243-317016-1",
+        "lot": "118",
+        "description": "LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-L SERIES A, W/ 442G-MABE1 118 1410243 SERIES A - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-L SERIES A, 1 $85.00 $85.00 $15.30 $0.00 $100.30 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 117.21
       },
       {
-        "invoice": "1410243-312676-1",
-        "lot": "149",
-        "total": 32.1,
-        "description": "50AWP AND MORE - LOT OF ASSORTED COMPONENTS; W/ IFM EFECTOR 1 PN7094, ELECTRONIC PRESSURE SWITCH/SENSOR W/ DISPLAY; W/ KEYENCE FT-50AWP, DIGITAL INFRARED TEMPER"
+        "invoice": "1410243-315969-1",
+        "lot": "17",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 17 1410243 LOCK MODULE PTR; W/ 442G-MABH-L - ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 1 $270.00 $270.00 $48.60 $0.00 $318.60 SERIES A, GUARDMASTER, ETHERNET LOCK MODULE PTR; W/ 442G-MABH-L SERIES",
+        "total": 376.68
       },
       {
-        "invoice": "1410243-312676-1",
-        "lot": "192",
-        "total": 12.84,
-        "description": "NIENTECH USB-NANO 485 - LOT OF ASSORTED COMPONENTS; W/ (4) KEYENCE 1 FT-50AWP, DIGITAL INFRARED TEMPERATURE SENSOR AMPLIFIER; W/ (2) NIENTECH USB-NANO 485, INTE"
+        "invoice": "1410243-315969-1",
+        "lot": "87",
+        "description": "ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, W/ 442G-MABH-R SERIES A - 87 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $220.00 $220.00 $39.60 $0.00 $259.60",
+        "total": 306.92
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "146",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 146 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "166",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6APLLAE0N0 -B0RAAAD0L, ESYE R4V4E2RG -MMOADBURLBE-U; 2R -LEB0SJP4679 SERIES A, W/ 442G-MABH-R SERIES A - 166 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "206",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 206 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "47",
+        "description": "MODULE; W/ (2) 6ES7136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6AELSLE7N19 B3R-6APDAL0E0Y- 404A2AG0-, MSIAMBART-UICT E-CT0 230 S0ESRPI ESES RAV, ELRO CMKO MDOULDEU; L2E L PBTSR UNIQUE; W/ 47 1410243 442G-MABH-L SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "57",
+        "description": "ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK MODULE PTR UNIQUE; W/ 57 1410243 442G-MABH-L SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
       }
     ]
   },
   {
-    "id": "MP-069",
-    "confidence": "media",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-069 - NIENTECH USB-NANO 485 USB to RS-485 Industrial Converter Open Box?",
+    "id": "MP-084",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-084: Siemens 6ES7972-0BA52-0XA0 PROFIBUS Bus Connector New Open Box - Each-",
+    "candidates": []
+  },
+  {
+    "id": "MP-085",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-085: Siemens 6AV6671-1CB00-0AX2 SIMATIC HMI 128MB MMC Memory Card Open BoxEach",
+    "candidates": []
+  },
+  {
+    "id": "MP-086",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-086: Siemens 3RV2917-1A SIRIUS Front Mounted Auxiliary Contact Block Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-087",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-087: Siemens 3RV2811-1DD10 SIRIUS Side Mounted Auxiliary Contact Block Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-088",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-088: Siemens 3RV2917-5CA00 SIRIUS Auxiliary Contact Block New Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-089",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-089: Siemens 3RV1927-5AA00 SIRIUS Terminal Cover Set New Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-090",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-090: Siemens 6SL3055-0AA00-3PA1 SINAMICS S120 TM41 Terminal Module Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-091",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-091: Molex FMK1G FCT D-Sub 9 Pin Metal Backshell Connector Hood Open BoxLOT OF 2",
+    "candidates": []
+  },
+  {
+    "id": "MP-092",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-092: Siemens 3RV2711-1DD10 Motor Starter Protector Circuit Breaker New Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-093",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-093: Siemens 3RV2811-1DD10 SIRIUS Side Mounted Auxiliary Contact Block Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-094",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-094: Siemens 6EP1961-2BA41 SITOP PSE200U 10A 4-Channel Selectivity Module OpenBox/133",
+    "candidates": []
+  },
+  {
+    "id": "MP-095",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-095: SOLA SCP 102D24X-C02 Dual Output Power Supply 24V 3.8A Industrial PSU",
+    "candidates": []
+  },
+  {
+    "id": "MP-096",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-096: Siemens 3RV2011-0FA10 SIRIUS Motor Protection Circuit Breaker 0.35-0.5A New",
+    "candidates": []
+  },
+  {
+    "id": "MP-097",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-097: Siemens 3RV2011-0FA10 SIRIUS Motor Protection Circuit Breaker 0.35-0.5A New",
+    "candidates": []
+  },
+  {
+    "id": "MP-098",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-098: Emerson SolaHD SCP100S24X-CP1 24VDC 3.8A Power Supply New Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-099",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-099: Siemens 3RV2711-4AD10 SIRIUS Circuit Breaker 11-16A NewOpen Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-100",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-100: Delta DRP024V060W1AA 24VDC 2.5A 60W Industrial Power Supply Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-102",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-102: Allen Bradley 1734-8CFG POINT I/O 8 Ch Configurable Module Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-103",
+    "confidence": "baixa",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-103: Siemens 6ES7193-6PA00-0AA0 SIMATIC ET 200SP BaseUnit Open Box",
     "candidates": [
       {
-        "invoice": "1410243-312676-1",
-        "lot": "192",
-        "total": 12.84,
-        "description": "NIENTECH USB-NANO 485 - LOT OF ASSORTED COMPONENTS; W/ (4) KEYENCE 1 FT-50AWP, DIGITAL INFRARED TEMPERATURE SENSOR AMPLIFIER; W/ (2) NIENTECH USB-NANO 485, INTE"
+        "invoice": "1410243-315969-1",
+        "lot": "30",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 08A SAI0EM, SEENRVS EPRA RMTOS;D WUL/E (;2 2) 6LEBSS7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 30 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $200.00 $200.00 $36.00 $0.00 $236.00 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 279.02
       },
       {
-        "invoice": "1410243-313085-1",
-        "lot": "236",
-        "total": 7.48,
-        "description": "DELTA ELECTRONICS EOE11010006 - LOT OF ASSORTED PARTS; W/ DATALOGIC 1 FBC9080, CONVERTER TYPE; W/ DATALOGIC POWERSCAN PD9531, WIRED HANDHELD LASER 2D BARCODE SC"
+        "invoice": "1410243-315969-1",
+        "lot": "40",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 08A SAI0EM, SEENRVS EPRA RMTOS;D WUL/E (;2 2) 6LEBSS7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 40 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $180.00 $180.00 $32.40 $0.00 $212.40 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 251.12
       },
       {
-        "invoice": "1410243-313085-1",
-        "lot": "348",
-        "total": 14.97,
-        "description": "DATALOGIC FBC9080 AND MORE - LOT OF MISCELLANEOUS COMPONENTS; W/ 1 EUCHNER ZSM2300-112803, ENABLING SWITCH; W/ DATALOGIC FBC9080, FIELDBUS CONVERTER; W/ DATALOG"
+        "invoice": "1410243-315969-1",
+        "lot": "61",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 61 1410243 6SIPEAM0E0N-0SA 6AG0T, 2S0E0R2V-E0RJ EM20O,D SUIMLEA;T 2IC L BRSF186C, COMMUNICATION MODULE - SIEMENS 1 $85.00 $85.00 $15.30 $0.00 $100.30 6GT2002-0JE20, SIMATIC RF186C, COMMUNICATION MODULE; 1 LBS",
+        "total": 118.58
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "82",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 03A CAA0P, TSREROVNE TRO MUOCHDU SLWE;I TWCH/ E6SE;S W7 1/ 3(22)- 6CBHFT030--108CHAB0-,H D/ITGGIT-SARL, OWU/T CPHUTT3 181B 82 1410243 MH/OTGD USLRE -; L2O LTB SOF 3 CAPTRON TOUCH SWITCHES; W/ (2) CHT3-18HB-H/TG-SR, W/ 1 $10.00 $10.00 $1.80 $0.00 $11.80 CHT3 181B H/TG SR; 13 LBS",
+        "total": 13.95
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "166",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6APLLAE0N0 -B0RAAAD0L, ESYE R4V4E2RG -MMOADBURLBE-U; 2R -LEB0SJP4679 SERIES A, W/ 442G-MABH-R SERIES A - 166 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "197",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 02A SAI0EM, SEENRVS E6RG MT2O00D2U-L0EJE; 220 L,B SSIMATIC RF186C, RFID COMMUNICATION 197 1410243 MODULE - LOT OF 2 SIEMENS 6GT2002-0JE20, SIMATIC RF186C, RFID 1 $125.00 $125.00 $22.50 $0.00 $147.50 COMMUNICATION MODULE; 2 LBS",
+        "total": 174.39
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "43",
+        "description": "LOT OF 7 SIEMENS PARTS; W/ 6ES7155-6AU01-0CN0, W/ (2) 6ES7131-6BF00-0CA0 43 1410243 +4MORE - LOT OF 7 SIEMENS PARTS; W/ 6ES7155-6AU01-0CN0, SIMATIC ET 200SP 1 $100.00 $100.00 $18.00 $0.00 $118.00 INTERFACE MODULE; W/ (2) 6ES7131-6BF00-0CA0, SIMATIC S7 DIGITAL INPUT",
+        "total": 137.89
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "47",
+        "description": "MODULE; W/ (2) 6ES7136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6AELSLE7N19 B3R-6APDAL0E0Y- 404A2AG0-, MSIAMBART-UICT E-CT0 230 S0ESRPI ESES RAV, ELRO CMKO MDOULDEU; L2E L PBTSR UNIQUE; W/ 47 1410243 442G-MABH-L SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
       }
     ]
   },
   {
-    "id": "MP-076",
-    "confidence": "alta",
-    "reason": "sem invoice, sem lote, sem custo",
-    "question": "Em qual lote da Michigan está o produto MP-076 - Turck FEN20-16DXP Compact IP20 Ethernet I/O Module New Open Box?",
+    "id": "MP-104",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-104: Allen Bradley 1734-RTBS POINT I/O Terminal Base Series A Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-105",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-105: Allen Bradley 1734-MB Series A POINT I/O Mounting Base Open Box",
+    "candidates": []
+  },
+  {
+    "id": "MP-106",
+    "confidence": "baixa",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-106: Siemens 6ES7193-6BP00-0BA0 SIMATIC ET 200SP BaseUnit Open Box",
     "candidates": [
       {
-        "invoice": "1410243-312676-1",
-        "lot": "244",
-        "total": 32.1,
-        "description": "TURCK FEN20-16DXP AND MORE - LOT OF ASSORTED COMPONENTS; W/ 1 SIEMENS 6AV2125-2AE23-0AX0, CONNECTION BOX ADVANCED, SIMATIC HMI; W/ TURCK FEN20-16DXP COMPACT IP2"
+        "invoice": "1410243-315969-1",
+        "lot": "30",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 08A SAI0EM, SEENRVS EPRA RMTOS;D WUL/E (;2 2) 6LEBSS7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 30 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $200.00 $200.00 $36.00 $0.00 $236.00 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 279.02
       },
       {
         "invoice": "1410243-315969-1",
-        "lot": "10",
-        "total": 111.61,
-        "description": "1 ELECTRIC 10-500-290-00056, MANUAL PULSE GENERATOR; 6 LBS LOT OF 5 TURCK FEN20-4DIP-4DXP, ETHERNET I/O MODULE - LOT OF 5 TURCK"
+        "lot": "40",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 08A SAI0EM, SEENRVS EPRA RMTOS;D WUL/E (;2 2) 6LEBSS7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 40 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $180.00 $180.00 $32.40 $0.00 $212.40 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 251.12
       },
       {
         "invoice": "1410243-315969-1",
-        "lot": "46",
-        "total": 251.12,
-        "description": "6LOPAT 0O0F- 05A TAU0R, CSEKR FVEENR2 M0-O4DDIUP-L4ED; 2X PL,B ESTHERNET I/O MODULE - LOT OF 5 TURCK 1 FEN20-4DIP-4DXP, ETHERNET I/O MODULE; 2 LBS LOT OF 8 SIEM"
+        "lot": "61",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 61 1410243 6SIPEAM0E0N-0SA 6AG0T, 2S0E0R2V-E0RJ EM20O,D SUIMLEA;T 2IC L BRSF186C, COMMUNICATION MODULE - SIEMENS 1 $85.00 $85.00 $15.30 $0.00 $100.30 6GT2002-0JE20, SIMATIC RF186C, COMMUNICATION MODULE; 1 LBS",
+        "total": 118.58
       },
       {
         "invoice": "1410243-315969-1",
-        "lot": "122",
-        "total": 181.36,
-        "description": "LOT OF 2 SIEMENS 142-6BF00-0AB0, SIMATIC ET 200 DIGITAL OUTPUT MODULE; 3 1 LBS LOT OF 6 TURCK FEN20-4DIP-4DXP, ETHERNET I/O MODULE - LOT OF 6 TURCK"
+        "lot": "82",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 03A CAA0P, TSREROVNE TRO MUOCHDU SLWE;I TWCH/ E6SE;S W7 1/ 3(22)- 6CBHFT030--108CHAB0-,H D/ITGGIT-SARL, OWU/T CPHUTT3 181B 82 1410243 MH/OTGD USLRE -; L2O LTB SOF 3 CAPTRON TOUCH SWITCHES; W/ (2) CHT3-18HB-H/TG-SR, W/ 1 $10.00 $10.00 $1.80 $0.00 $11.80 CHT3 181B H/TG SR; 13 LBS",
+        "total": 13.95
       },
       {
         "invoice": "1410243-315969-1",
-        "lot": "16",
-        "total": 292.97,
-        "description": "1 FEN20-4DIP-4DXP, ETHERNET I/O MODULE; 2 LBS ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET"
+        "lot": "166",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6APLLAE0N0 -B0RAAAD0L, ESYE R4V4E2RG -MMOADBURLBE-U; 2R -LEB0SJP4679 SERIES A, W/ 442G-MABH-R SERIES A - 166 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "197",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 02A SAI0EM, SEENRVS E6RG MT2O00D2U-L0EJE; 220 L,B SSIMATIC RF186C, RFID COMMUNICATION 197 1410243 MODULE - LOT OF 2 SIEMENS 6GT2002-0JE20, SIMATIC RF186C, RFID 1 $125.00 $125.00 $22.50 $0.00 $147.50 COMMUNICATION MODULE; 2 LBS",
+        "total": 174.39
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "43",
+        "description": "LOT OF 7 SIEMENS PARTS; W/ 6ES7155-6AU01-0CN0, W/ (2) 6ES7131-6BF00-0CA0 43 1410243 +4MORE - LOT OF 7 SIEMENS PARTS; W/ 6ES7155-6AU01-0CN0, SIMATIC ET 200SP 1 $100.00 $100.00 $18.00 $0.00 $118.00 INTERFACE MODULE; W/ (2) 6ES7131-6BF00-0CA0, SIMATIC S7 DIGITAL INPUT",
+        "total": 137.89
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "47",
+        "description": "MODULE; W/ (2) 6ES7136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6AELSLE7N19 B3R-6APDAL0E0Y- 404A2AG0-, MSIAMBART-UICT E-CT0 230 S0ESRPI ESES RAV, ELRO CMKO MDOULDEU; L2E L PBTSR UNIQUE; W/ 47 1410243 442G-MABH-L SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
+      }
+    ]
+  },
+  {
+    "id": "MP-107",
+    "confidence": "media",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-107: Allen-Bradley 442G-MABE1 Guardmaster Escape Release Module Open Box Each",
+    "candidates": [
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "372",
+        "description": "LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, W/ 442G-MABE1 372 1410243 SERIES A, - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, 1 $65.00 $65.00 $11.70 $0.00 $76.70 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 90.68
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "382",
+        "description": "LBS LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, W/ 442G-MABE1 382 1410243 SERIES A, - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, 1 $60.00 $60.00 $10.80 $0.00 $70.80 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 83.71
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "118",
+        "description": "LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-L SERIES A, W/ 442G-MABE1 118 1410243 SERIES A - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-L SERIES A, 1 $85.00 $85.00 $15.30 $0.00 $100.30 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 117.21
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "17",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 17 1410243 LOCK MODULE PTR; W/ 442G-MABH-L - ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 1 $270.00 $270.00 $48.60 $0.00 $318.60 SERIES A, GUARDMASTER, ETHERNET LOCK MODULE PTR; W/ 442G-MABH-L SERIES",
+        "total": 376.68
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "87",
+        "description": "ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, W/ 442G-MABH-R SERIES A - 87 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $220.00 $220.00 $39.60 $0.00 $259.60",
+        "total": 306.92
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "146",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 146 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "166",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6APLLAE0N0 -B0RAAAD0L, ESYE R4V4E2RG -MMOADBURLBE-U; 2R -LEB0SJP4679 SERIES A, W/ 442G-MABH-R SERIES A - 166 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "206",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 206 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "47",
+        "description": "MODULE; W/ (2) 6ES7136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6AELSLE7N19 B3R-6APDAL0E0Y- 404A2AG0-, MSIAMBART-UICT E-CT0 230 S0ESRPI ESES RAV, ELRO CMKO MDOULDEU; L2E L PBTSR UNIQUE; W/ 47 1410243 442G-MABH-L SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "57",
+        "description": "ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK MODULE PTR UNIQUE; W/ 57 1410243 442G-MABH-L SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
+      }
+    ]
+  },
+  {
+    "id": "MP-108",
+    "confidence": "media",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-108: Allen-Bradley 442G-MABH-R Guardmaster 442G Handle Assembly Open Box",
+    "candidates": [
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "87",
+        "description": "ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, W/ 442G-MABH-R SERIES A - 87 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $220.00 $220.00 $39.60 $0.00 $259.60",
+        "total": 306.92
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "166",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6APLLAE0N0 -B0RAAAD0L, ESYE R4V4E2RG -MMOADBURLBE-U; 2R -LEB0SJP4679 SERIES A, W/ 442G-MABH-R SERIES A - 166 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "372",
+        "description": "LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, W/ 442G-MABE1 372 1410243 SERIES A, - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, 1 $65.00 $65.00 $11.70 $0.00 $76.70 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 90.68
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "382",
+        "description": "LBS LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, W/ 442G-MABE1 382 1410243 SERIES A, - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-R SERIES A, 1 $60.00 $60.00 $10.80 $0.00 $70.80 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 83.71
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "67",
+        "description": "ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK MODULE PTR UNIQUE; W/ 67 1410243 442G-MABH-R SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "118",
+        "description": "LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-L SERIES A, W/ 442G-MABE1 118 1410243 SERIES A - LOT OF 2 ALLEN BRADLEY PARTS; W/ 442G-MABH-L SERIES A, 1 $85.00 $85.00 $15.30 $0.00 $100.30 GUARDMASTER HANDLE ASSEMBLY; W/ 442G-MABE1 SERIES A, ESCAPE RELEASE; 6",
+        "total": 117.21
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "17",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 17 1410243 LOCK MODULE PTR; W/ 442G-MABH-L - ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 1 $270.00 $270.00 $48.60 $0.00 $318.60 SERIES A, GUARDMASTER, ETHERNET LOCK MODULE PTR; W/ 442G-MABH-L SERIES",
+        "total": 376.68
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "146",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 146 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "206",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 206 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "47",
+        "description": "MODULE; W/ (2) 6ES7136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6AELSLE7N19 B3R-6APDAL0E0Y- 404A2AG0-, MSIAMBART-UICT E-CT0 230 S0ESRPI ESES RAV, ELRO CMKO MDOULDEU; L2E L PBTSR UNIQUE; W/ 47 1410243 442G-MABH-L SERIES A - ALLEN BRADLEY 442G-MABR-UT-C03 SERIES A, LOCK 1 $90.00 $90.00 $16.20 $0.00 $106.20 MODULE PTR UNIQUE; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 6 LBS",
+        "total": 124.1
+      }
+    ]
+  },
+  {
+    "id": "MP-109",
+    "confidence": "media",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-109: Allen Bradley 442G-MABRB-UL-E0JP4679 Ethernet Lock Module Open Box New",
+    "candidates": [
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "17",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 17 1410243 LOCK MODULE PTR; W/ 442G-MABH-L - ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 1 $270.00 $270.00 $48.60 $0.00 $318.60 SERIES A, GUARDMASTER, ETHERNET LOCK MODULE PTR; W/ 442G-MABH-L SERIES",
+        "total": 376.68
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "146",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 146 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "206",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 206 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "87",
+        "description": "ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, W/ 442G-MABH-R SERIES A - 87 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $220.00 $220.00 $39.60 $0.00 $259.60",
+        "total": 306.92
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "166",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6APLLAE0N0 -B0RAAAD0L, ESYE R4V4E2RG -MMOADBURLBE-U; 2R -LEB0SJP4679 SERIES A, W/ 442G-MABH-R SERIES A - 166 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      }
+    ]
+  },
+  {
+    "id": "MP-110",
+    "confidence": "media",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-110: Allen Bradley 442G-MABRB-UR-E0JP4679 Ethernet Lock Module Open Box New",
+    "candidates": [
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "87",
+        "description": "ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, W/ 442G-MABH-R SERIES A - 87 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $220.00 $220.00 $39.60 $0.00 $259.60",
+        "total": 306.92
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "166",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6APLLAE0N0 -B0RAAAD0L, ESYE R4V4E2RG -MMOADBURLBE-U; 2R -LEB0SJP4679 SERIES A, W/ 442G-MABH-R SERIES A - 166 1410243 ALLEN BRADLEY 442G-MABRB-UR-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-R SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "17",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 17 1410243 LOCK MODULE PTR; W/ 442G-MABH-L - ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 1 $270.00 $270.00 $48.60 $0.00 $318.60 SERIES A, GUARDMASTER, ETHERNET LOCK MODULE PTR; W/ 442G-MABH-L SERIES",
+        "total": 376.68
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "146",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 146 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "206",
+        "description": "ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, W/ 442G-MABH-L SERIES A - 206 1410243 ALLEN BRADLEY 442G-MABRB-UL-E0JP4679 SERIES A, GUARDMASTER, ETHERNET 1 $200.00 $200.00 $36.00 $0.00 $236.00 LOCK MODULE PTR; W/ 442G-MABH-L SERIES A, HANDLE ASSEMBLY; 11 LBS",
+        "total": 279.02
+      }
+    ]
+  },
+  {
+    "id": "MP-112",
+    "confidence": "sem candidato",
+    "reason": "Não encontrei lote provável nas invoices Michigan usando número de peça/descrição.",
+    "question": "Identifique qual lote pertence ao produto MP-112: PEPPERL+FUCHS BACKGROUND SUPPRESSION SENSOR RL28-8-H-1500-LAS/47/105 180708",
+    "candidates": []
+  },
+  {
+    "id": "MP-115",
+    "confidence": "media",
+    "reason": "Candidatos encontrados por part number/descrição; revise antes de aplicar custo.",
+    "question": "Identifique qual lote pertence ao produto MP-115: Siemens 6ES7131-6BF00-0CA0 DI 8x24VDC HF SIMATIC S7 PLC New Open Box",
+    "candidates": [
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "20",
+        "description": "A, HANDLE ASSEMBLY; 11 LBS LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 20 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $260.00 $260.00 $46.80 $0.00 $306.80 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 362.73
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "30",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 08A SAI0EM, SEENRVS EPRA RMTOS;D WUL/E (;2 2) 6LEBSS7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 30 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $200.00 $200.00 $36.00 $0.00 $236.00 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 279.02
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "40",
+        "description": "(2) 6ES7 136-6BA01-0CA0, SIMATIC ET 200SP DIGITAL INPUT; W/ (2) 6ES7 193- 6LOPAT 0O0F- 08A SAI0EM, SEENRVS EPRA RMTOS;D WUL/E (;2 2) 6LEBSS7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 40 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $180.00 $180.00 $32.40 $0.00 $212.40 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 251.12
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "50",
+        "description": "LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 50 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $135.00 $135.00 $24.30 $0.00 $159.30 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 188.34
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "78",
+        "description": "3SU1400-1AA10-1BA0, CONTACT MODULE; W/ SIEMENS 3SU1400-1AA10-1CA0, LOT OF 9 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- INDICATOR LIGHT ACCESSORY CONTACT MODULE; W/ SIEMENS 3SU1400-1AA10- 78 1410243 0CA0 +5MORE - LOT OF 9 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $235.00 $235.00 $42.30 $0.00 $277.30 3CA0, CONTACT MODULE; 6 LBS INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 327.85
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "150",
+        "description": "LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 150 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $150.00 $150.00 $27.00 $0.00 $177.00 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 209.27
+      },
+      {
+        "invoice": "1410243-315969-1",
+        "lot": "188",
+        "description": "LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, W/ (2) 6ES7 131-6BF00- 188 1410243 0CA0 +4MORE - LOT OF 8 SIEMENS PARTS; W/ (2) 6ES7 155-6AU01-0CN0, 1 $150.00 $150.00 $27.00 $0.00 $177.00 INTERFACE MODULE; W/ (2) 6ES7 131-6BF00-0CA0, DIGITAL INPUT MODULE; W/",
+        "total": 209.27
+      },
+      {
+        "invoice": "1410243-317016-1",
+        "lot": "43",
+        "description": "LOT OF 7 SIEMENS PARTS; W/ 6ES7155-6AU01-0CN0, W/ (2) 6ES7131-6BF00-0CA0 43 1410243 +4MORE - LOT OF 7 SIEMENS PARTS; W/ 6ES7155-6AU01-0CN0, SIMATIC ET 200SP 1 $100.00 $100.00 $18.00 $0.00 $118.00 INTERFACE MODULE; W/ (2) 6ES7131-6BF00-0CA0, SIMATIC S7 DIGITAL INPUT",
+        "total": 137.89
       }
     ]
   }
