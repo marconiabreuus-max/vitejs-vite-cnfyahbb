@@ -86,6 +86,19 @@ function statusInfo(item) {
 function calcPL(item) {
   const cu=parseFloat(item.costUnit)||0,lp=parseFloat(item.listP)||0;
   const fee=lp*(PLATFORMS[item.channel]?.fee||0),eG=lp-fee-cu,eT=eG>0?eG*TAX:0,eN=eG-eT,eM=cu>0?(eN/cu)*100:0;
+  const report=item._ebaySoldReport;
+  if(report){
+    const soldQty=parseFloat(report.quantitySold)||parseFloat(item.qtySold)||0;
+    const itemSales=parseFloat(report.itemSales)||0;
+    const shippingPaid=parseFloat(report.shippingPaidByBuyer)||0;
+    const ebayNet=parseFloat(report.netSalesEbayReported)||0;
+    const reportRevenue=parseFloat(report.totalSalesIncludesTaxes)||(itemSales+shippingPaid);
+    const sellingCosts=Math.max(0,(itemSales+shippingPaid)-ebayNet);
+    const gross=ebayNet-(cu*soldQty);
+    const taxAmt=gross>0?gross*TAX:0;
+    const net=gross-taxAmt;
+    return{cu,lp,fee,eG,eT,eN,eM,rev:reportRevenue,pfee:sellingCosts,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0,report};
+  }
   let rev=0,pfee=0,gross=0,taxAmt=0,net=0;
   (item.sales||[]).forEach(s=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-cu;const t=g>0?g*TAX:0;rev+=r;pfee+=pf;gross+=g;taxAmt+=t;net+=(g-t);});
   return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
@@ -190,10 +203,9 @@ function PLBox({item}) {
     <div style={{fontWeight:700,fontSize:10,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:8}}>{(item.sales||[]).length>0?"Actual P&L":"Projected P&L"}</div>
     <FRow label="Cost/Unit" val={money(c.cu)} color="#dc2626"/>
     <FRow label="List Price" val={money(c.lp)}/>
-    <FRow label={"Fee ("+PLATFORMS[item.channel]?.label+")"} val={"-"+money(c.fee)}/>
-    <FRow label="Est. Net/Unit (28.5%)" val={money(c.eN)} color={c.eN>=0?"#16a34a":"#dc2626"} bold/>
-    <FRow label="Est. Margin" val={pct(c.eM)} color={c.eM>=120?"#16a34a":c.eM>=50?"#d97706":"#dc2626"}/>
-    {(item.sales||[]).length>0&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`Revenue (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="Net Profit" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
+    {!c.report&&<><FRow label={"Fee ("+PLATFORMS[item.channel]?.label+")"} val={"-"+money(c.fee)}/><FRow label="Est. Net/Unit (28.5%)" val={money(c.eN)} color={c.eN>=0?"#16a34a":"#dc2626"} bold/><FRow label="Est. Margin" val={pct(c.eM)} color={c.eM>=120?"#16a34a":c.eM>=50?"#d97706":"#dc2626"}/></>}
+    {c.report&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`eBay Total Sales (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="eBay Selling Cost" val={"-"+money(c.pfee)} color="#dc2626"/><FRow label="eBay Net Sales" val={money(c.report.netSalesEbayReported)} color="#16a34a"/><FRow label="Product Cost Sold" val={"-"+money(c.cu*(parseFloat(c.report.quantitySold)||item.qtySold||0))} color="#dc2626"/><FRow label="Gross Profit" val={money(c.gross)} bold/><FRow label="Tax Reserve (28.5%)" val={"-"+money(c.taxAmt)} color="#dc2626"/><FRow label="Net Profit After Tax Reserve" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
+    {!c.report&&(item.sales||[]).length>0&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`Revenue (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="Net Profit" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
   </div>;
 }
 
@@ -276,7 +288,7 @@ function Drawer({item,onClose,onEdit,onSell,onDup,onDelete}) {
       {item.listUrl&&<div style={{marginTop:8}}><a href={item.listUrl} target="_blank" rel="noreferrer" style={{color:"#2563eb",fontSize:12,fontWeight:600,textDecoration:"none"}}>🔗 View on eBay →</a></div>}
       <div style={{marginTop:14}}><PLBox item={item}/></div>
       {(item.sales||[]).length>0&&<div style={{marginTop:14}}><div style={{fontWeight:700,fontSize:12,marginBottom:8}}>Sales History</div>
-        {item.sales.map((s,i)=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-item.costUnit;const n=g-(g>0?g*TAX:0);
+        {item._ebaySoldReport?<div style={{display:"flex",justifyContent:"space-between",fontSize:12,padding:"6px 10px",background:"#fff",borderRadius:6,marginBottom:3}}><span style={{color:"#888"}}>eBay report · {item._ebaySoldReport.quantitySold} sold · total {money(item._ebaySoldReport.totalSalesIncludesTaxes)}</span><span style={{fontWeight:700,color:c.net>=0?"#16a34a":"#dc2626"}}>{money(c.net)} net after cost/tax reserve</span></div>:item.sales.map((s,i)=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-item.costUnit;const n=g-(g>0?g*TAX:0);
           return <div key={i} style={{display:"flex",justifyContent:"space-between",fontSize:12,padding:"6px 10px",background:i%2?"#fafafa":"#fff",borderRadius:6,marginBottom:3}}><span style={{color:"#888"}}>{s.date} · {money(s.price)}</span><span style={{fontWeight:700,color:n>=0?"#16a34a":"#dc2626"}}>{money(n)} net</span></div>;
         })}
       </div>}
