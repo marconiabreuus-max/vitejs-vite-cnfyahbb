@@ -104,7 +104,7 @@ function calcPL(item) {
   (item.sales||[]).forEach(s=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-cu;const t=g>0?g*TAX:0;rev+=r;pfee+=pf;gross+=g;taxAmt+=t;net+=(g-t);});
   return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
 }
-function needsCostReview(item) { return !item._deleted&&(item.name||"").toLowerCase()!=="teste"&&(!item.invoice||!item.lots||!(parseFloat(item.costTotal)||0)||!(parseFloat(item.costUnit)||0)); }
+function needsCostReview(item) { return !item._deleted&&(item.name||"").toLowerCase()!=="teste"&&(!(parseFloat(item.costTotal)||0)||!(parseFloat(item.costUnit)||0)); }
 
 function buildSeed() {
   return [
@@ -342,7 +342,7 @@ function CostReview({items,reviewData,onApply,onOpen}) {
   const [selected,setSelected]=useState({});
   const [costs,setCosts]=useState({});
   const dataById=Object.fromEntries((reviewData||[]).map(r=>[r.id,r]));
-  const pending=items.filter(needsCostReview).map(item=>({item,review:dataById[item.id]||{id:item.id,confidence:"sem candidato",reason:"sem candidato",question:"Confirme o lote deste produto.",candidates:[]}}));
+  const pending=items.filter(needsCostReview).map(item=>({item,review:item._reviewCandidates||dataById[item.id]||{id:item.id,confidence:"sem candidato",reason:"sem candidato",question:"Confirme o lote deste produto.",candidates:[]}}));
   const visible=pending.filter(x=>filter==="all"||x.review.confidence===filter);
   const applyChoice=(item,review)=>{
     const c=selected[item.id];
