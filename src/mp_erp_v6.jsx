@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 const SB_URL = "https://fpjapzovpxwdvrsgosxe.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwamFwem92cHh3ZHZyc2dvc3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3MTA0NjQsImV4cCI6MjA5NDI4NjQ2NH0.xiO-OBQbh9gn8ZZbQn4jyAA3JBUyAySqNi2Y4IRhedk";
 const SB_H = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates" };
-const SYNC_VERSION = "sync-v5-delete-safe";
+const SYNC_VERSION = "sync-v6-cloud-authority";
 const TAX = 0.285;
 const RACKS = 7;
 const SHELF_NAMES = { 1:"Shelf 1 (top)", 2:"Shelf 2", 3:"Shelf 3", 4:"Shelf 4", 5:"Floor" };
@@ -67,7 +67,8 @@ async function supabaseLoadCopies() { try { const r=await withTimeout(signal=>fe
 async function cloudLoadCopies() { if(preferSharedApi()){const shared=await sharedLoad(); if(shared)return [shared];} const supa=await supabaseLoadCopies(); if(supa)return supa; const shared=await sharedLoad(); return shared?[shared]:null; }
 async function cloudLoad() { const copies=await cloudLoadCopies(); return copies?mergeInventories(...copies):null; }
 async function supabaseSave(payload) { try { const body=JSON.stringify({data:payload}); const patchHeaders={...SB_H,Prefer:"return=representation"}; const p=await withTimeout(signal=>fetch(SB_URL+"/rest/v1/inventory?id=eq.mp_erp_data",{method:"PATCH",headers:patchHeaders,body,signal})); if(p.ok){const rows=await p.json().catch(()=>[]); if(Array.isArray(rows)&&rows.length>0)return true;} const r=await withTimeout(signal=>fetch(SB_URL+"/rest/v1/inventory",{method:"POST",headers:SB_H,body:JSON.stringify([{id:"mp_erp_data",data:payload}]),signal})); return r.ok; } catch(e){console.warn("Cloud:",e);return false;} }
-async function cloudSave(items) { const payload=[...items.filter(i=>!i._deleted),...deletedTombstones()]; if(preferSharedApi()){const sharedOk=await sharedSave(payload); if(sharedOk)return true;} const supaOk=await supabaseSave(payload); if(supaOk)return true; return await sharedSave(payload); }
+function isRealItem(i) { return i && !i._deleted && String(i.name||"").toLowerCase()!=="deleted item"; }
+async function cloudSave(items) { const payload=items.filter(isRealItem); if(preferSharedApi()){const sharedOk=await sharedSave(payload); if(sharedOk)return true;} const supaOk=await supabaseSave(payload); if(supaOk)return true; return await sharedSave(payload); }
 function sameItems(a,b) { try{return JSON.stringify(a)===JSON.stringify(b);}catch{return false;} }
 function localSave(items) { try{localStorage.setItem("mp_erp_77",JSON.stringify(items));}catch{} }
 function localLoad() { try{const d=localStorage.getItem("mp_erp_77");return d?JSON.parse(d):null;}catch{return null;} }
@@ -431,10 +432,13 @@ export default function App() {
       try{
         const cloudCopies=await cloudLoadCopies();
         const cloud=cloudCopies?mergeInventories(...cloudCopies):null;
+        if(cloud&&cloud.length>=seed.length){
+          deletedSave({});
+          setItems(cloud);localSave(cloud);setCloudOk(true);setLoaded(true);return;
+        }
         const local=localLoad();
-        if((cloud&&cloud.length>=seed.length)||(local&&local.length>=seed.length)){
-          const merged=mergeInventories(seed,cloud,local);
-          setItems(merged);localSave(merged);setCloudOk(await cloudSave(merged));setLoaded(true);return;
+        if(local&&local.length>=seed.length){
+          setItems(local);localSave(local);setCloudOk(await cloudSave(local));setLoaded(true);return;
         }
         setItems(seed);localSave(seed);setCloudOk(await cloudSave(seed));
       }catch{setItems(seed);}
@@ -450,19 +454,10 @@ export default function App() {
       if(!cloud){setCloudOk(false);return;}
       setCloudOk(true);
       const current=itemsRef.current;
-      const merged=mergeInventories(cloud,current);
-      if(editingRef.current||sameItems(merged,current))return;
-      if(dataScore(current)>=dataScore(cloud)){
-        const ok=await cloudSave(merged);
-        setCloudOk(ok);
-        if(ok){setItems(merged);localSave(merged);toast$("Sent local updates to cloud: "+merged.length+" products");}
-        return;
-      }
-      if(dataScore(cloud)>dataScore(current)){
-        setItems(merged);
-        localSave(merged);
-        toast$("Updated from cloud: "+merged.length+" products");
-      }
+      if(editingRef.current||sameItems(cloud,current))return;
+      setItems(cloud);
+      localSave(cloud);
+      toast$("Updated from cloud: "+cloud.length+" products");
     };
     const timer=setInterval(sync,10000);
     return()=>clearInterval(timer);
