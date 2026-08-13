@@ -1,4 +1,3 @@
-
 // @ts-nocheck
 /* eslint-disable */
 import { useState, useEffect, useRef } from "react";
@@ -6,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 const SB_URL = "https://fpjapzovpxwdvrsgosxe.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwamFwem92cHh3ZHZyc2dvc3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3MTA0NjQsImV4cCI6MjA5NDI4NjQ2NH0.xiO-OBQbh9gn8ZZbQn4jyAA3JBUyAySqNi2Y4IRhedk";
 const SB_H = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates" };
-const SYNC_VERSION = "sync-v5-delete-safe";
+const SYNC_VERSION = "sync-v6-cloud-authority";
 const TAX = 0.285;
 const RACKS = 7;
 const SHELF_NAMES = { 1:"Shelf 1 (top)", 2:"Shelf 2", 3:"Shelf 3", 4:"Shelf 4", 5:"Floor" };
@@ -68,7 +67,8 @@ async function supabaseLoadCopies() { try { const r=await withTimeout(signal=>fe
 async function cloudLoadCopies() { if(preferSharedApi()){const shared=await sharedLoad(); if(shared)return [shared];} const supa=await supabaseLoadCopies(); if(supa)return supa; const shared=await sharedLoad(); return shared?[shared]:null; }
 async function cloudLoad() { const copies=await cloudLoadCopies(); return copies?mergeInventories(...copies):null; }
 async function supabaseSave(payload) { try { const body=JSON.stringify({data:payload}); const patchHeaders={...SB_H,Prefer:"return=representation"}; const p=await withTimeout(signal=>fetch(SB_URL+"/rest/v1/inventory?id=eq.mp_erp_data",{method:"PATCH",headers:patchHeaders,body,signal})); if(p.ok){const rows=await p.json().catch(()=>[]); if(Array.isArray(rows)&&rows.length>0)return true;} const r=await withTimeout(signal=>fetch(SB_URL+"/rest/v1/inventory",{method:"POST",headers:SB_H,body:JSON.stringify([{id:"mp_erp_data",data:payload}]),signal})); return r.ok; } catch(e){console.warn("Cloud:",e);return false;} }
-async function cloudSave(items) { const payload=[...items.filter(i=>!i._deleted),...deletedTombstones()]; if(preferSharedApi()){const sharedOk=await sharedSave(payload); if(sharedOk)return true;} const supaOk=await supabaseSave(payload); if(supaOk)return true; return await sharedSave(payload); }
+function isRealItem(i) { return i && !i._deleted && String(i.name||"").toLowerCase()!=="deleted item"; }
+async function cloudSave(items) { const payload=items.filter(isRealItem); if(preferSharedApi()){const sharedOk=await sharedSave(payload); if(sharedOk)return true;} const supaOk=await supabaseSave(payload); if(supaOk)return true; return await sharedSave(payload); }
 function sameItems(a,b) { try{return JSON.stringify(a)===JSON.stringify(b);}catch{return false;} }
 function localSave(items) { try{localStorage.setItem("mp_erp_77",JSON.stringify(items));}catch{} }
 function localLoad() { try{const d=localStorage.getItem("mp_erp_77");return d?JSON.parse(d):null;}catch{return null;} }
@@ -78,9 +78,28 @@ function money(v) { if(v==null||isNaN(v))return"—"; return(v<0?"-$":"$")+Math.
 function pct(v) { return(v==null||isNaN(v))?"—":v.toFixed(1)+"%"; }
 function today() { return new Date().toISOString().slice(0,10); }
 function genId(items) { const nums=items.map(i=>parseInt((i.id||"").replace("MP-",""),10)).filter(n=>!isNaN(n)); return"MP-"+String((nums.length?Math.max(...nums):0)+1).padStart(3,"0"); }
+function statusInfo(item) {
+  if(typeof item==="string")return ST[item]||ST.purchased;
+  if((parseFloat(item.qtyInStock)||0)<=0||item.status==="sold")return ST.sold;
+  if(item.status==="listed"&&((parseFloat(item.qtySold)||0)>0||(item.sales||[]).length>0))return{...ST.listed,l:`Listed · ${item.qtySold||0} sold`,icon:"📢 ✅"};
+  return ST[item.status]||ST.purchased;
+}
 function calcPL(item) {
   const cu=parseFloat(item.costUnit)||0,lp=parseFloat(item.listP)||0;
   const fee=lp*(PLATFORMS[item.channel]?.fee||0),eG=lp-fee-cu,eT=eG>0?eG*TAX:0,eN=eG-eT,eM=cu>0?(eN/cu)*100:0;
+  const report=item._ebaySoldReport;
+  if(report){
+    const soldQty=parseFloat(report.quantitySold)||parseFloat(item.qtySold)||0;
+    const itemSales=parseFloat(report.itemSales)||0;
+    const shippingPaid=parseFloat(report.shippingPaidByBuyer)||0;
+    const ebayNet=parseFloat(report.netSalesEbayReported)||0;
+    const reportRevenue=parseFloat(report.totalSalesIncludesTaxes)||(itemSales+shippingPaid);
+    const sellingCosts=Math.max(0,(itemSales+shippingPaid)-ebayNet);
+    const gross=ebayNet-(cu*soldQty);
+    const taxAmt=gross>0?gross*TAX:0;
+    const net=gross-taxAmt;
+    return{cu,lp,fee,eG,eT,eN,eM,rev:reportRevenue,pfee:sellingCosts,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0,report};
+  }
   let rev=0,pfee=0,gross=0,taxAmt=0,net=0;
   (item.sales||[]).forEach(s=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-cu;const t=g>0?g*TAX:0;rev+=r;pfee+=pf;gross+=g;taxAmt+=t;net+=(g-t);});
   return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
@@ -176,7 +195,7 @@ function Btn({click,children,color,sm,full,disabled}) {
   const s=C[color||"dark"]||C.dark;
   return <button onClick={click} disabled={disabled} style={{padding:sm?"5px 12px":"9px 18px",border:s.bd||"none",borderRadius:8,background:disabled?"#e5e7eb":s.bg,color:disabled?"#9ca3af":s.fg,fontSize:sm?11:13,fontWeight:600,cursor:disabled?"not-allowed":"pointer",fontFamily:"inherit",width:full?"100%":"auto",whiteSpace:"nowrap"}}>{children}</button>;
 }
-function STag({status}) { const s=ST[status]||ST.purchased; return <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:s.bg,color:s.c,whiteSpace:"nowrap"}}>{s.icon} {s.l}</span>; }
+function STag({status,item}) { const s=statusInfo(item||status); return <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:s.bg,color:s.c,whiteSpace:"nowrap"}}>{s.icon} {s.l}</span>; }
 function FRow({label,val,bold,color}) { return <div style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:"0.5px solid #f3f4f6",fontSize:13,fontWeight:bold?700:400}}><span style={{color:"#6b7280"}}>{label}</span><span style={{color:color||"#111"}}>{val}</span></div>; }
 function FG({label,children,note}) { return <div style={{marginBottom:12}}><label style={{display:"block",fontSize:10,fontWeight:700,color:"#6b7280",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:3}}>{label}</label>{children}{note&&<div style={{fontSize:10,color:"#9ca3af",marginTop:2}}>{note}</div>}</div>; }
 function PLBox({item}) {
@@ -185,10 +204,9 @@ function PLBox({item}) {
     <div style={{fontWeight:700,fontSize:10,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:8}}>{(item.sales||[]).length>0?"Actual P&L":"Projected P&L"}</div>
     <FRow label="Cost/Unit" val={money(c.cu)} color="#dc2626"/>
     <FRow label="List Price" val={money(c.lp)}/>
-    <FRow label={"Fee ("+PLATFORMS[item.channel]?.label+")"} val={"-"+money(c.fee)}/>
-    <FRow label="Est. Net/Unit (28.5%)" val={money(c.eN)} color={c.eN>=0?"#16a34a":"#dc2626"} bold/>
-    <FRow label="Est. Margin" val={pct(c.eM)} color={c.eM>=120?"#16a34a":c.eM>=50?"#d97706":"#dc2626"}/>
-    {(item.sales||[]).length>0&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`Revenue (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="Net Profit" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
+    {!c.report&&<><FRow label={"Fee ("+PLATFORMS[item.channel]?.label+")"} val={"-"+money(c.fee)}/><FRow label="Est. Net/Unit (28.5%)" val={money(c.eN)} color={c.eN>=0?"#16a34a":"#dc2626"} bold/><FRow label="Est. Margin" val={pct(c.eM)} color={c.eM>=120?"#16a34a":c.eM>=50?"#d97706":"#dc2626"}/></>}
+    {c.report&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`eBay Total Sales (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="eBay Selling Cost" val={"-"+money(c.pfee)} color="#dc2626"/><FRow label="eBay Net Sales" val={money(c.report.netSalesEbayReported)} color="#16a34a"/><FRow label="Product Cost Sold" val={"-"+money(c.cu*(parseFloat(c.report.quantitySold)||item.qtySold||0))} color="#dc2626"/><FRow label="Gross Profit" val={money(c.gross)} bold/><FRow label="Tax Reserve (28.5%)" val={"-"+money(c.taxAmt)} color="#dc2626"/><FRow label="Net Profit After Tax Reserve" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
+    {!c.report&&(item.sales||[]).length>0&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`Revenue (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="Net Profit" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
   </div>;
 }
 
@@ -253,7 +271,7 @@ function Drawer({item,onClose,onEdit,onSell,onDup,onDelete}) {
   return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.4)",zIndex:800,display:"flex",justifyContent:"flex-end"}} onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
     <div style={{background:"#fff",width:"100%",maxWidth:400,height:"100%",overflowY:"auto",padding:24,boxShadow:"-4px 0 24px rgba(0,0,0,0.12)"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
-        <div><div style={{fontFamily:"monospace",fontSize:22,fontWeight:900,color:"#1a1a2e"}}>{item.id}</div><STag status={item.status}/></div>
+        <div><div style={{fontFamily:"monospace",fontSize:22,fontWeight:900,color:"#1a1a2e"}}>{item.id}</div><STag item={item}/></div>
         <button onClick={onClose} style={{background:"transparent",border:"none",fontSize:22,cursor:"pointer",color:"#bbb"}}>✕</button>
       </div>
       <div style={{fontWeight:700,fontSize:14,marginBottom:14,lineHeight:1.3}}>{item.name}</div>
@@ -271,7 +289,7 @@ function Drawer({item,onClose,onEdit,onSell,onDup,onDelete}) {
       {item.listUrl&&<div style={{marginTop:8}}><a href={item.listUrl} target="_blank" rel="noreferrer" style={{color:"#2563eb",fontSize:12,fontWeight:600,textDecoration:"none"}}>🔗 View on eBay →</a></div>}
       <div style={{marginTop:14}}><PLBox item={item}/></div>
       {(item.sales||[]).length>0&&<div style={{marginTop:14}}><div style={{fontWeight:700,fontSize:12,marginBottom:8}}>Sales History</div>
-        {item.sales.map((s,i)=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-item.costUnit;const n=g-(g>0?g*TAX:0);
+        {item._ebaySoldReport?<div style={{display:"flex",justifyContent:"space-between",fontSize:12,padding:"6px 10px",background:"#fff",borderRadius:6,marginBottom:3}}><span style={{color:"#888"}}>eBay report · {item._ebaySoldReport.quantitySold} sold · total {money(item._ebaySoldReport.totalSalesIncludesTaxes)}</span><span style={{fontWeight:700,color:c.net>=0?"#16a34a":"#dc2626"}}>{money(c.net)} net after cost/tax reserve</span></div>:item.sales.map((s,i)=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-item.costUnit;const n=g-(g>0?g*TAX:0);
           return <div key={i} style={{display:"flex",justifyContent:"space-between",fontSize:12,padding:"6px 10px",background:i%2?"#fafafa":"#fff",borderRadius:6,marginBottom:3}}><span style={{color:"#888"}}>{s.date} · {money(s.price)}</span><span style={{fontWeight:700,color:n>=0?"#16a34a":"#dc2626"}}>{money(n)} net</span></div>;
         })}
       </div>}
@@ -414,10 +432,13 @@ export default function App() {
       try{
         const cloudCopies=await cloudLoadCopies();
         const cloud=cloudCopies?mergeInventories(...cloudCopies):null;
+        if(cloud&&cloud.length>=seed.length){
+          deletedSave({});
+          setItems(cloud);localSave(cloud);setCloudOk(true);setLoaded(true);return;
+        }
         const local=localLoad();
-        if((cloud&&cloud.length>=seed.length)||(local&&local.length>=seed.length)){
-          const merged=mergeInventories(seed,cloud,local);
-          setItems(merged);localSave(merged);setCloudOk(await cloudSave(merged));setLoaded(true);return;
+        if(local&&local.length>=seed.length){
+          setItems(local);localSave(local);setCloudOk(await cloudSave(local));setLoaded(true);return;
         }
         setItems(seed);localSave(seed);setCloudOk(await cloudSave(seed));
       }catch{setItems(seed);}
@@ -433,19 +454,10 @@ export default function App() {
       if(!cloud){setCloudOk(false);return;}
       setCloudOk(true);
       const current=itemsRef.current;
-      const merged=mergeInventories(cloud,current);
-      if(editingRef.current||sameItems(merged,current))return;
-      if(dataScore(current)>=dataScore(cloud)){
-        const ok=await cloudSave(merged);
-        setCloudOk(ok);
-        if(ok){setItems(merged);localSave(merged);toast$("Sent local updates to cloud: "+merged.length+" products");}
-        return;
-      }
-      if(dataScore(cloud)>dataScore(current)){
-        setItems(merged);
-        localSave(merged);
-        toast$("Updated from cloud: "+merged.length+" products");
-      }
+      if(editingRef.current||sameItems(cloud,current))return;
+      setItems(cloud);
+      localSave(cloud);
+      toast$("Updated from cloud: "+cloud.length+" products");
     };
     const timer=setInterval(sync,10000);
     return()=>clearInterval(timer);
@@ -460,7 +472,7 @@ export default function App() {
   function startNew(){setEditItem({id:nextId(items),name:"",sku:"",cat:"Industrial Automation",cond:"uw",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:today(),received:"",listed:"",rack:1,shelf:1,pos:1,notes:"",channel:"ebay",listP:"",listUrl:"",costTotal:"",costUnit:"",status:"purchased",sales:[]});setDetailId(null);}
   function dupItem(item){setEditItem({...item,id:nextId(items),sales:[],qtySold:0,status:"received",listed:"",_dup:true});setDetailId(null);}
   function exportData(){const blob=new Blob([JSON.stringify(items,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="mp-erp-"+today()+".json";a.click();URL.revokeObjectURL(url);toast$("Backup downloaded!");}
-  function importFile(e){const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=async ev=>{try{const data=JSON.parse(ev.target.result);if(!Array.isArray(data))throw new Error();const ok=await persist(data);toast$(ok?data.length+" items loaded in cloud!":data.length+" items loaded only on this device",ok);}catch{toast$("Invalid file",false);}};reader.readAsText(file);e.target.value="";}
+  function importFile(e){const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=async ev=>{try{const data=JSON.parse(ev.target.result);if(!Array.isArray(data))throw new Error();const active=data.filter(i=>i&&!i._deleted).length;const current=items.filter(i=>i&&!i._deleted).length;const msg=`Import file: ${file.name}\n\nItems in file: ${active}\nItems currently in ERP: ${current}\n\nContinue and replace the ERP data with this file?`;if(!confirm(msg)){toast$("Import canceled",false);return;}deletedSave({});const clean=data.filter(i=>i&&!i._deleted).map(i=>({...i,_syncAt:i._syncAt||new Date().toISOString()}));const ok=await persist(clean);toast$(ok?`${file.name}: ${clean.length} items imported to cloud!`:`${file.name}: ${clean.length} items imported only on this device`,ok);}catch{toast$("Invalid file",false);}};reader.readAsText(file);e.target.value="";}
 
   const detailItem=detailId?items.find(i=>i.id===detailId):null;
   const sellItem=sellId?items.find(i=>i.id===sellId):null;
@@ -468,7 +480,12 @@ export default function App() {
   const stockVal=items.reduce((a,i)=>a+calcPL(i).cu*(i.qtyInStock||0),0);
   const totalSold=items.reduce((a,i)=>a+(i.qtySold||0),0);
   const totalStock=items.reduce((a,i)=>a+(i.qtyInStock||0),0);
-  const filtered=items.filter(i=>{if(stFlt!=="all"&&i.status!==stFlt)return false;if(search){const q=search.toLowerCase();return i.name.toLowerCase().includes(q)||i.id.toLowerCase().includes(q)||(i.sku||"").toLowerCase().includes(q)||(i.invoice||"").toLowerCase().includes(q);}return true;});
+  const ebayActive=items.filter(i=>i.status==="listed"&&i.channel==="ebay");
+  const ebayActiveUnits=ebayActive.reduce((a,i)=>a+(i.qtyInStock||0),0);
+  const ebayActiveGross=ebayActive.reduce((a,i)=>a+(parseFloat(i.listP)||0)*(i.qtyInStock||0),0);
+  const ebayActiveCost=ebayActive.reduce((a,i)=>a+calcPL(i).cu*(i.qtyInStock||0),0);
+  const ebayActiveNetPotential=ebayActive.reduce((a,i)=>a+calcPL(i).eN*(i.qtyInStock||0),0);
+  const filtered=items.filter(i=>{if(stFlt==="hasSales"&&!((i.qtySold||0)>0||(i.sales||[]).length>0))return false;if(stFlt!=="all"&&stFlt!=="hasSales"&&i.status!==stFlt)return false;if(search){const q=search.toLowerCase();return i.name.toLowerCase().includes(q)||i.id.toLowerCase().includes(q)||(i.sku||"").toLowerCase().includes(q)||(i.invoice||"").toLowerCase().includes(q);}return true;});
   const TABS=[{id:"dashboard",icon:"📊",label:"Dashboard"},{id:"inventory",icon:"📦",label:"Inventory"},{id:"review",icon:"🧾",label:"Review"},{id:"map",icon:"🗺",label:"Warehouse"},{id:"analytics",icon:"📈",label:"Analytics"}];
 
   if(!loaded)return <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",flexDirection:"column",gap:16,color:"#888",fontFamily:"system-ui"}}><div style={{fontSize:48}}>☁</div><div style={{fontSize:18,fontWeight:700}}>Loading 77 products...</div></div>;
@@ -486,7 +503,7 @@ export default function App() {
             <div style={{fontSize:10,letterSpacing:"0.18em",color:"#6b7280",textTransform:"uppercase"}}>MP Business Strategy LLC · S-Corp · FL/SC</div>
             <div style={{fontSize:20,fontWeight:900}}>Inventory + Warehouse ERP</div>
             <div style={{display:"flex",alignItems:"center",gap:8,marginTop:2}}>
-              <span style={{fontSize:11,color:"#6b7280"}}>{items.length} products · {totalStock} in stock · {totalSold} sold</span>
+              <span style={{fontSize:11,color:"#6b7280"}}>{items.length} ERP products · {ebayActive.length} eBay active · {totalStock} ERP stock · {ebayActiveUnits} eBay units · {totalSold} sold</span>
               <span style={{fontSize:11,fontWeight:700,color:cloudOk?"#4ade80":"#fbbf24",background:"rgba(255,255,255,0.1)",padding:"2px 8px",borderRadius:20}}>{cloudOk?"☁ Sync ON":"⚠ Local only"} · {SYNC_VERSION}</span>
             </div>
           </div>
@@ -509,7 +526,7 @@ export default function App() {
     <div style={{maxWidth:980,margin:"0 auto",padding:"20px 16px 60px"}}>
       {tab==="dashboard"&&<div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(150px, 1fr))",gap:10,marginBottom:20}}>
-          {[{l:"Net Profit (28.5%)",v:money(totalNet),s:totalSold+" units sold",c:"#16a34a",bg:"#f0fdf4"},{l:"Capital in Stock",v:money(stockVal),s:totalStock+" units",c:"#d97706",bg:"#fffbeb"},{l:"Products",v:items.length,s:"registered",c:"#2563eb",bg:"#eff6ff"},{l:"Tax Reserve",v:money(items.reduce((a,i)=>a+calcPL(i).taxAmt,0)),s:"S-Corp FL/SC",c:"#dc2626",bg:"#fef2f2"},{l:"Est. Potential",v:money(items.reduce((a,i)=>a+calcPL(i).eN*(i.qtyInStock||0),0)),s:"all at list price",c:"#7c3aed",bg:"#f5f3ff"}].map((k,i)=>(
+          {[{l:"Net Profit (28.5%)",v:money(totalNet),s:totalSold+" units sold",c:"#16a34a",bg:"#f0fdf4"},{l:"ERP Capital in Stock",v:money(stockVal),s:totalStock+" ERP units",c:"#d97706",bg:"#fffbeb"},{l:"ERP Products",v:items.length,s:"all registered",c:"#2563eb",bg:"#eff6ff"},{l:"eBay Active Listings",v:ebayActive.length,s:ebayActiveUnits+" units on eBay",c:"#0891b2",bg:"#ecfeff"},{l:"eBay Gross Active",v:money(ebayActiveGross),s:"available qty x eBay price",c:"#7c3aed",bg:"#f5f3ff"},{l:"eBay Active Cost",v:money(ebayActiveCost),s:"known cost for active listings",c:"#b45309",bg:"#fff7ed"},{l:"Est. Net Potential",v:money(ebayActiveNetPotential),s:"after cost, eBay fee and tax reserve",c:"#16a34a",bg:"#f0fdf4"},{l:"Tax Reserve",v:money(items.reduce((a,i)=>a+calcPL(i).taxAmt,0)),s:"S-Corp FL/SC",c:"#dc2626",bg:"#fef2f2"}].map((k,i)=>(
             <div key={i} style={{background:k.bg,border:"1px solid "+k.c+"22",borderRadius:10,padding:"14px 16px"}}>
               <div style={{fontSize:10,color:"#6b7280",textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4}}>{k.l}</div>
               <div style={{fontSize:20,fontWeight:900,color:k.c,marginBottom:2}}>{k.v}</div>
@@ -519,7 +536,7 @@ export default function App() {
         </div>
         <div style={{background:"#fff",border:"1px solid #e5e7eb",borderRadius:12,overflow:"hidden"}}>
           <div style={{background:"#f8fafc",borderBottom:"1px solid #e5e7eb",padding:"12px 16px",fontWeight:700,fontSize:14,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span>All Products ({items.length})</span>
+            <span>ERP Products ({items.length})</span>
             <button onClick={()=>setTab("inventory")} style={{padding:"5px 12px",background:"#f3f4f6",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>View All</button>
           </div>
           <div style={{overflowX:"auto"}}>
@@ -533,7 +550,7 @@ export default function App() {
                   <td style={{padding:"9px 12px",textAlign:"center"}}><span style={{background:it.qtyInStock===0?"#dcfce7":it.qtyInStock<=2?"#fef3c7":"#dbeafe",color:it.qtyInStock===0?"#166534":it.qtyInStock<=2?"#92400e":"#1d4ed8",padding:"2px 10px",borderRadius:20,fontWeight:700}}>{it.qtyInStock}</span></td>
                   <td style={{padding:"9px 12px",textAlign:"center"}}><span style={{background:it.qtySold>0?"#dcfce7":"#f3f4f6",color:it.qtySold>0?"#166534":"#9ca3af",padding:"2px 10px",borderRadius:20,fontWeight:700}}>{it.qtySold}</span></td>
                   <td style={{padding:"9px 12px",fontWeight:700,color:c.eN>=0?"#16a34a":"#dc2626"}}>{money(c.eN)}</td>
-                  <td style={{padding:"9px 12px"}}><STag status={it.status}/></td>
+                  <td style={{padding:"9px 12px"}}><STag item={it}/></td>
                   <td style={{padding:"9px 12px"}} onClick={e=>e.stopPropagation()}><Btn click={()=>deleteItem(it)} color="gray" sm>Delete</Btn></td>
                 </tr>
               );})}
@@ -546,14 +563,14 @@ export default function App() {
       {tab==="inventory"&&<div>
         <div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap"}}>
           <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search name, ID, SKU, invoice..." style={{flex:1,minWidth:200,padding:"10px 14px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,outline:"none",fontFamily:"inherit",background:"#fff"}}/>
-          <Sel val={stFlt} set={setStFlt} opts={[["all","All Status"],...Object.entries(ST).map(([k,v])=>[k,v.icon+" "+v.l])]}/>
+          <Sel val={stFlt} set={setStFlt} opts={[["all","All Status"],["hasSales","✅ Has Sales"],...Object.entries(ST).map(([k,v])=>[k,v.icon+" "+v.l])]}/>
           <Btn click={startNew} color="dark">+ Add Item</Btn>
         </div>
         <div style={{fontSize:12,color:"#888",marginBottom:12}}>{filtered.length} items · {totalStock} in stock · {totalSold} sold</div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(280px, 1fr))",gap:10}}>
           {filtered.map(item=>{const c=calcPL(item);const days=item.received&&item.status!=="sold"?Math.ceil((new Date().getTime()-new Date(item.received).getTime())/86400000):null;
             return <div key={item.id} onClick={()=>setDetailId(item.id)} style={{background:"#fff",border:"1px solid #e5e7eb",borderRadius:10,padding:14,cursor:"pointer"}} onMouseEnter={e=>{e.currentTarget.style.boxShadow="0 2px 16px rgba(0,0,0,0.08)";e.currentTarget.style.borderColor="#bfdbfe";}} onMouseLeave={e=>{e.currentTarget.style.boxShadow="none";e.currentTarget.style.borderColor="#e5e7eb";}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}><span style={{fontFamily:"monospace",fontWeight:900,fontSize:14,color:"#1a1a2e"}}>{item.id}</span><STag status={item.status}/></div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}><span style={{fontFamily:"monospace",fontWeight:900,fontSize:14,color:"#1a1a2e"}}>{item.id}</span><STag item={item}/></div>
               <div style={{fontWeight:600,fontSize:13,lineHeight:1.3,marginBottom:8}}>{item.name}</div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10}}>
                 <span style={{fontSize:10,background:"#f3f4f6",color:"#374151",padding:"2px 8px",borderRadius:20,fontFamily:"monospace",fontWeight:700}}>📍 {loc(item)}</span>
