@@ -93,7 +93,7 @@ function calcPL(item) {
     const itemSales=parseFloat(report.itemSales)||0;
     const shippingPaid=parseFloat(report.shippingPaidByBuyer)||0;
     const ebayNet=parseFloat(report.netSalesEbayReported)||0;
-    const reportRevenue=parseFloat(report.totalSalesIncludesTaxes)||(itemSales+shippingPaid);
+    const reportRevenue=parseFloat(report.grossAmountEbayReported)||parseFloat(report.totalSalesIncludesTaxes)||(itemSales+shippingPaid);
     const sellingCosts=Math.max(0,(itemSales+shippingPaid)-ebayNet);
     const gross=ebayNet-(cu*soldQty);
     const taxAmt=gross>0?gross*TAX:0;
@@ -205,7 +205,7 @@ function PLBox({item}) {
     <FRow label="Cost/Unit" val={money(c.cu)} color="#dc2626"/>
     <FRow label="List Price" val={money(c.lp)}/>
     {!c.report&&<><FRow label={"Fee ("+PLATFORMS[item.channel]?.label+")"} val={"-"+money(c.fee)}/><FRow label="Est. Net/Unit (28.5%)" val={money(c.eN)} color={c.eN>=0?"#16a34a":"#dc2626"} bold/><FRow label="Est. Margin" val={pct(c.eM)} color={c.eM>=120?"#16a34a":c.eM>=50?"#d97706":"#dc2626"}/></>}
-    {c.report&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`eBay Total Sales (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="eBay Selling Cost" val={"-"+money(c.pfee)} color="#dc2626"/><FRow label="eBay Net Sales" val={money(c.report.netSalesEbayReported)} color="#16a34a"/><FRow label="Product Cost Sold" val={"-"+money(c.cu*(parseFloat(c.report.quantitySold)||item.qtySold||0))} color="#dc2626"/><FRow label="Gross Profit" val={money(c.gross)} bold/><FRow label="Tax Reserve (28.5%)" val={"-"+money(c.taxAmt)} color="#dc2626"/><FRow label="Net Profit After Tax Reserve" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
+    {c.report&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`eBay Gross Sold (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="eBay Selling Cost" val={"-"+money(c.pfee)} color="#dc2626"/><FRow label="eBay Net Sales" val={money(c.report.netSalesEbayReported)} color="#16a34a"/><FRow label="Product Cost Sold" val={"-"+money(c.cu*(parseFloat(c.report.quantitySold)||item.qtySold||0))} color="#dc2626"/><FRow label="Gross Profit" val={money(c.gross)} bold/><FRow label="Tax Reserve (28.5%)" val={"-"+money(c.taxAmt)} color="#dc2626"/><FRow label="Net Profit After Tax Reserve" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
     {!c.report&&(item.sales||[]).length>0&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`Revenue (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="Net Profit" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
   </div>;
 }
@@ -597,7 +597,7 @@ export default function App() {
 
       {tab==="analytics"&&<div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(150px, 1fr))",gap:10,marginBottom:20}}>
-          {[{l:"Total Invested",v:money(items.reduce((a,i)=>a+calcPL(i).totalCostIn,0)),c:"#dc2626"},{l:"Revenue (sold)",v:money(items.reduce((a,i)=>a+calcPL(i).rev,0)),c:"#16a34a"},{l:"Gross Profit",v:money(items.reduce((a,i)=>a+calcPL(i).gross,0)),c:"#d97706"},{l:"Tax Reserve",v:money(items.reduce((a,i)=>a+calcPL(i).taxAmt,0)),c:"#dc2626"},{l:"Net Profit",v:money(totalNet),c:"#16a34a"}].map((k,i)=>(
+          {[{l:"Total Invested",v:money(items.reduce((a,i)=>a+calcPL(i).totalCostIn,0)),c:"#dc2626"},{l:"eBay Gross Sold",v:money(items.reduce((a,i)=>a+calcPL(i).rev,0)),c:"#16a34a"},{l:"Gross Profit",v:money(items.reduce((a,i)=>a+calcPL(i).gross,0)),c:"#d97706"},{l:"Tax Reserve",v:money(items.reduce((a,i)=>a+calcPL(i).taxAmt,0)),c:"#dc2626"},{l:"Net Profit",v:money(totalNet),c:"#16a34a"}].map((k,i)=>(
             <div key={i} style={{background:"#fff",border:"1px solid #e5e7eb",borderRadius:10,padding:14}}><div style={{fontSize:10,color:"#6b7280",textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4}}>{k.l}</div><div style={{fontSize:20,fontWeight:900,color:k.c}}>{k.v}</div></div>
           ))}
         </div>
