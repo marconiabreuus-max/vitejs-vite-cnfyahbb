@@ -341,8 +341,13 @@ function CostReview({items,reviewData,onApply,onOpen}) {
   const [filter,setFilter]=useState("all");
   const [selected,setSelected]=useState({});
   const [costs,setCosts]=useState({});
+  const normalizeReview=(item,review)=>{
+    const base={id:item.id,confidence:"sem candidato",reason:"sem candidato",question:"Confirme o lote deste produto.",candidates:[]};
+    const r=Array.isArray(review)?review[0]:review;
+    return {...base,...(r||{}),candidates:Array.isArray(r?.candidates)?r.candidates:[]};
+  };
   const dataById=Object.fromEntries((reviewData||[]).map(r=>[r.id,r]));
-  const pending=items.filter(needsCostReview).map(item=>({item,review:item._reviewCandidates||dataById[item.id]||{id:item.id,confidence:"sem candidato",reason:"sem candidato",question:"Confirme o lote deste produto.",candidates:[]}}));
+  const pending=items.filter(needsCostReview).map(item=>({item,review:normalizeReview(item,item._reviewCandidates||dataById[item.id])}));
   const visible=pending.filter(x=>filter==="all"||x.review.confidence===filter);
   const applyChoice=(item,review)=>{
     const c=selected[item.id];
