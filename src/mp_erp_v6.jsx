@@ -104,7 +104,7 @@ function calcPL(item) {
   (item.sales||[]).forEach(s=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-cu;const t=g>0?g*TAX:0;rev+=r;pfee+=pf;gross+=g;taxAmt+=t;net+=(g-t);});
   return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
 }
-function needsCostReview(item) { return !item._deleted&&(item.name||"").toLowerCase()!=="teste"&&(item._needsCostReview||!(parseFloat(item.costTotal)||0)||!(parseFloat(item.costUnit)||0)); }
+function needsCostReview(item) { if(item._costReviewStatus==="reviewed_by_user"||item._costReviewedAt)return false; return !item._deleted&&(item.name||"").toLowerCase()!=="teste"&&(item._needsCostReview||!(parseFloat(item.costTotal)||0)||!(parseFloat(item.costUnit)||0)); }
 
 function buildSeed() {
   return [
@@ -337,7 +337,7 @@ function WMap({items,onSelect}) {
   </div>;
 }
 
-function CostReview({items,reviewData,onApply,onOpen}) {
+function CostReview({items,reviewData,onApply,onConfirmOk,onOpen}) {
   const [filter,setFilter]=useState("all");
   const [selected,setSelected]=useState({});
   const [costs,setCosts]=useState({});
@@ -384,7 +384,10 @@ function CostReview({items,reviewData,onApply,onOpen}) {
               <div style={{fontSize:11,color:"#6b7280",marginTop:5}}>Reason: {review.reason} · Confidence: {review.confidence}</div>
               <div style={{fontSize:11,color:"#6b7280",marginTop:2}}>Current: invoice {item.invoice||"—"} · lots {item.lots||"—"} · cost {money(parseFloat(item.costTotal)||0)}</div>
             </div>
-            <Btn click={()=>onOpen(item.id)} color="gray" sm>Open Item</Btn>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              <Btn click={()=>onConfirmOk(item,review)} color="green" sm>OK - manter custo atual</Btn>
+              <Btn click={()=>onOpen(item.id)} color="gray" sm>Open Item</Btn>
+            </div>
           </div>
           <div style={{marginTop:12,fontSize:12,fontWeight:800}}>Possible lots</div>
           {review.candidates.length===0&&<div style={{marginTop:8,background:"#fef2f2",color:"#991b1b",borderRadius:8,padding:10,fontSize:12}}>Nenhum candidato confiável. Abra o item e preencha invoice/lote/custo manualmente quando souber.</div>}
@@ -474,6 +477,7 @@ export default function App() {
   async function saveSale(upd){const stamped={...upd,_syncAt:new Date().toISOString()};const ok=await persist(items.map(i=>i.id===stamped.id?stamped:i));setSellId(null);toast$(ok?"Sale recorded in cloud!":"Sale saved only on this device",ok);}
   async function deleteItem(item){if(!confirm("Delete "+item.id+"? This removes it from all synced devices."))return;const d=deletedLoad();d[item.id]=new Date().toISOString();deletedSave(d);const ok=await persist(items.filter(i=>i.id!==item.id));setEditItem(null);setDetailId(null);setSellId(null);toast$(ok?"Deleted from sync: "+item.id:"Deleted only on this device: "+item.id,ok);}
   async function applyReviewCost(item,candidate,assignedCost,review){const qty=parseFloat(item.qty)||1;const note=`Cost review ${today()}: linked to ${candidate.invoice} lot ${candidate.lot}; assigned ${money(assignedCost)} from lot total ${money(candidate.total)}.`;const upd={...item,supplier:item.supplier||"Michigan Industrial Auctions",invoice:candidate.invoice,lots:candidate.lot,costTotal:parseFloat(assignedCost.toFixed(2)),costUnit:parseFloat((assignedCost/qty).toFixed(2)),notes:[item.notes,note].filter(Boolean).join("\\n"),_reviewQuestion:review.question,_needsCostReview:false,_costReviewStatus:"reviewed_by_user",_costReviewedAt:new Date().toISOString()};delete upd._reviewCandidates;await saveItem(upd);}
+  async function confirmReviewOk(item,review){const note=`Cost review ${today()}: user confirmed current cost is correct.`;const upd={...item,notes:[item.notes,note].filter(Boolean).join("\\n"),_reviewQuestion:review.question,_needsCostReview:false,_costReviewStatus:"reviewed_by_user",_costReviewedAt:new Date().toISOString()};delete upd._reviewCandidates;await saveItem(upd);}
   function startNew(){setEditItem({id:nextId(items),name:"",sku:"",cat:"Industrial Automation",cond:"uw",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:today(),received:"",listed:"",rack:1,shelf:1,pos:1,notes:"",channel:"ebay",listP:"",listUrl:"",costTotal:"",costUnit:"",status:"purchased",sales:[]});setDetailId(null);}
   function dupItem(item){setEditItem({...item,id:nextId(items),sales:[],qtySold:0,status:"received",listed:"",_dup:true});setDetailId(null);}
   function exportData(){const blob=new Blob([JSON.stringify(items,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="mp-erp-"+today()+".json";a.click();URL.revokeObjectURL(url);toast$("Backup downloaded!");}
@@ -598,7 +602,7 @@ export default function App() {
 
       {tab==="map"&&<WMap items={items} onSelect={id=>setDetailId(id)}/>}
 
-      {tab==="review"&&<CostReview items={items} reviewData={reviewData} onApply={applyReviewCost} onOpen={id=>setDetailId(id)}/>}
+      {tab==="review"&&<CostReview items={items} reviewData={reviewData} onApply={applyReviewCost} onConfirmOk={confirmReviewOk} onOpen={id=>setDetailId(id)}/>}
 
       {tab==="analytics"&&<div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(150px, 1fr))",gap:10,marginBottom:20}}>
