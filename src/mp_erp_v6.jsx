@@ -76,12 +76,13 @@ function loc(item) { if(!item.rack||!item.shelf)return"—"; return item.pos?`${
 function locFull(item) { if(!item.rack||!item.shelf)return"No location"; return`Rack ${item.rack} · ${SHELF_NAMES[item.shelf]||"Shelf "+item.shelf}${item.pos?" · Pos "+item.pos:""}`; }
 function money(v) { if(v==null||isNaN(v))return"—"; return(v<0?"-$":"$")+Math.abs(v).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function pct(v) { return(v==null||isNaN(v))?"—":v.toFixed(1)+"%"; }
+function qtyNum(v) { return Number(v)||0; }
 function today() { return new Date().toISOString().slice(0,10); }
 function genId(items) { const nums=items.map(i=>parseInt((i.id||"").replace("MP-",""),10)).filter(n=>!isNaN(n)); return"MP-"+String((nums.length?Math.max(...nums):0)+1).padStart(3,"0"); }
 function statusInfo(item) {
   if(typeof item==="string")return ST[item]||ST.purchased;
-  if((parseFloat(item.qtyInStock)||0)<=0||item.status==="sold")return ST.sold;
-  if(item.status==="listed"&&((parseFloat(item.qtySold)||0)>0||(item.sales||[]).length>0))return{...ST.listed,l:`Listed · ${item.qtySold||0} sold`,icon:"📢 ✅"};
+  if(qtyNum(item.qtyInStock)<=0||item.status==="sold")return ST.sold;
+  if(item.status==="listed"&&(qtyNum(item.qtySold)>0||(item.sales||[]).length>0))return{...ST.listed,l:`Listed · ${qtyNum(item.qtySold)} sold`,icon:"📢 ✅"};
   return ST[item.status]||ST.purchased;
 }
 function calcPL(item) {
@@ -95,14 +96,15 @@ function calcPL(item) {
     const ebayNet=parseFloat(report.netSalesEbayReported)||0;
     const reportRevenue=parseFloat(report.grossAmountEbayReported)||parseFloat(report.totalSalesIncludesTaxes)||(itemSales+shippingPaid);
     const sellingCosts=Math.max(0,(itemSales+shippingPaid)-ebayNet);
-    const gross=ebayNet-(cu*soldQty);
+    const cogs=parseFloat(report.cogsAtSale)||cu*soldQty;
+    const gross=ebayNet-cogs;
     const taxAmt=gross>0?gross*TAX:0;
     const net=gross-taxAmt;
-    return{cu,lp,fee,eG,eT,eN,eM,rev:reportRevenue,pfee:sellingCosts,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0,report};
+    return{cu,lp,fee,eG,eT,eN,eM,rev:reportRevenue,pfee:sellingCosts,cogs,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0,report};
   }
-  let rev=0,pfee=0,gross=0,taxAmt=0,net=0;
-  (item.sales||[]).forEach(s=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-cu;const t=g>0?g*TAX:0;rev+=r;pfee+=pf;gross+=g;taxAmt+=t;net+=(g-t);});
-  return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
+  let rev=0,pfee=0,cogs=0,gross=0,taxAmt=0,net=0;
+  (item.sales||[]).forEach(s=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const saleCogs=parseFloat(s.cogsAtSale)||cu;const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-saleCogs;const t=g>0?g*TAX:0;rev+=r;pfee+=pf;cogs+=saleCogs;gross+=g;taxAmt+=t;net+=(g-t);});
+  return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,cogs,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
 }
 function needsCostReview(item) { if(item._costReviewStatus==="reviewed_by_user"||item._costReviewedAt)return false; return !item._deleted&&(item.name||"").toLowerCase()!=="teste"&&(item._needsCostReview||!(parseFloat(item.costTotal)||0)||!(parseFloat(item.costUnit)||0)); }
 
@@ -205,20 +207,20 @@ function PLBox({item}) {
     <FRow label="Cost/Unit" val={money(c.cu)} color="#dc2626"/>
     <FRow label="List Price" val={money(c.lp)}/>
     {!c.report&&<><FRow label={"Fee ("+PLATFORMS[item.channel]?.label+")"} val={"-"+money(c.fee)}/><FRow label="Est. Net/Unit (28.5%)" val={money(c.eN)} color={c.eN>=0?"#16a34a":"#dc2626"} bold/><FRow label="Est. Margin" val={pct(c.eM)} color={c.eM>=120?"#16a34a":c.eM>=50?"#d97706":"#dc2626"}/></>}
-    {c.report&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`eBay Gross Sold (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="eBay Selling Cost" val={"-"+money(c.pfee)} color="#dc2626"/><FRow label="eBay Net Sales" val={money(c.report.netSalesEbayReported)} color="#16a34a"/><FRow label="Product Cost Sold" val={"-"+money(c.cu*(parseFloat(c.report.quantitySold)||item.qtySold||0))} color="#dc2626"/><FRow label="Gross Profit" val={money(c.gross)} bold/><FRow label="Tax Reserve (28.5%)" val={"-"+money(c.taxAmt)} color="#dc2626"/><FRow label="Net Profit After Tax Reserve" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
-    {!c.report&&(item.sales||[]).length>0&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`Revenue (${item.qtySold} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="Net Profit" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
+    {c.report&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`eBay Gross Sold (${qtyNum(item.qtySold)} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="eBay Selling Cost" val={"-"+money(c.pfee)} color="#dc2626"/><FRow label="eBay Net Sales" val={money(c.report.netSalesEbayReported)} color="#16a34a"/><FRow label="Product Cost Sold" val={"-"+money(c.cogs)} color="#dc2626"/><FRow label="Gross Profit" val={money(c.gross)} bold/><FRow label="Tax Reserve (28.5%)" val={"-"+money(c.taxAmt)} color="#dc2626"/><FRow label="Net Profit After Tax Reserve" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
+    {!c.report&&(item.sales||[]).length>0&&<><div style={{borderTop:"1px dashed #e2e8f0",margin:"6px 0"}}/><FRow label={`Revenue (${qtyNum(item.qtySold)} sold)`} val={money(c.rev)} color="#16a34a"/><FRow label="Net Profit" val={money(c.net)} bold color={c.net>=0?"#16a34a":"#dc2626"}/></>}
   </div>;
 }
 
 function SellModal({item,onClose,onSave}) {
   const [dt,setDt]=useState(today());const [ch,setCh]=useState(item.channel||"ebay");const [pr,setPr]=useState("");const [sc,setSc]=useState("");const [so,setSo]=useState("");const [pk,setPk]=useState("");
-  const rev=(parseFloat(pr)||0)+(parseFloat(sc)||0),pf=rev*(PLATFORMS[ch]?.fee||0),gross=rev-pf-(parseFloat(so)||0)-(parseFloat(pk)||0)-item.costUnit,tax=gross>0?gross*TAX:0,net=gross-tax;
-  function confirm(){if(!pr){alert("Enter sale price");return;}const sale={date:dt,channel:ch,price:parseFloat(pr),shipCharged:parseFloat(sc)||0,shipCost:parseFloat(so)||0,packCost:parseFloat(pk)||0};const left=Math.max(0,(item.qtyInStock||0)-1);onSave({...item,sales:[...(item.sales||[]),sale],qtySold:(item.qtySold||0)+1,qtyInStock:left,status:left===0?"sold":item.status,listed:item.listed||today()});onClose();}
+  const saleCogs=parseFloat(item.costUnit)||0,rev=(parseFloat(pr)||0)+(parseFloat(sc)||0),pf=rev*(PLATFORMS[ch]?.fee||0),gross=rev-pf-(parseFloat(so)||0)-(parseFloat(pk)||0)-saleCogs,tax=gross>0?gross*TAX:0,net=gross-tax;
+  function confirm(){if(!pr){alert("Enter sale price");return;}const sale={date:dt,channel:ch,price:parseFloat(pr),shipCharged:parseFloat(sc)||0,shipCost:parseFloat(so)||0,packCost:parseFloat(pk)||0,costUnitAtSale:saleCogs,cogsAtSale:saleCogs,costNormalizationBatchId:item._costNormalizationBatchId||"sale-snapshot"};const left=Math.max(0,qtyNum(item.qtyInStock)-1);onSave({...item,sales:[...(item.sales||[]),sale],qtySold:qtyNum(item.qtySold)+1,qtyInStock:left,status:left===0?"sold":item.status,listed:item.listed||today()});onClose();}
   return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:900,display:"flex",alignItems:"center",justifyContent:"center",padding:16}} onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
     <div style={{background:"#fff",borderRadius:14,width:"100%",maxWidth:480,padding:24,maxHeight:"90vh",overflowY:"auto"}}>
       <div style={{fontWeight:800,fontSize:18,marginBottom:4}}>Record Sale</div>
       <div style={{fontSize:13,color:"#888",marginBottom:12}}>{item.id} — {item.name}</div>
-      <div style={{background:"#f8fafc",borderRadius:8,padding:"8px 12px",marginBottom:14,fontSize:12,color:"#555"}}>Cost/unit: <strong>{money(item.costUnit)}</strong> · Location: <strong style={{fontFamily:"monospace"}}>{loc(item)}</strong> · After sale: <strong style={{color:item.qtyInStock-1<=0?"#dc2626":"#16a34a"}}>{Math.max(0,item.qtyInStock-1)} remain</strong></div>
+      <div style={{background:"#f8fafc",borderRadius:8,padding:"8px 12px",marginBottom:14,fontSize:12,color:"#555"}}>Cost/unit: <strong>{money(item.costUnit)}</strong> · Location: <strong style={{fontFamily:"monospace"}}>{loc(item)}</strong> · After sale: <strong style={{color:qtyNum(item.qtyInStock)-1<=0?"#dc2626":"#16a34a"}}>{Math.max(0,qtyNum(item.qtyInStock)-1)} remain</strong></div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
         <FG label="Sale Date"><Inp val={dt} set={setDt} type="date"/></FG>
         <FG label="Platform"><Sel val={ch} set={setCh} opts={Object.entries(PLATFORMS).map(([k,v])=>[k,v.label+" ("+(v.fee*100).toFixed(1)+"%)"]) }/></FG>
@@ -228,7 +230,7 @@ function SellModal({item,onClose,onSave}) {
         <FG label="Packaging Cost"><Inp val={pk} set={setPk} type="number" ph="0.00"/></FG>
       </div>
       <div style={{background:net>=0?"#f0fdf4":"#fef2f2",border:"1px solid "+(net>=0?"#86efac":"#fca5a5"),borderRadius:8,padding:"10px 14px",marginBottom:14}}>
-        <FRow label="Revenue" val={money(rev)} color="#16a34a"/><FRow label="Platform Fee" val={"-"+money(pf)} color="#dc2626"/><FRow label="Cost of Unit" val={"-"+money(item.costUnit)} color="#dc2626"/><FRow label="Gross Profit" val={money(gross)} bold/><FRow label="Tax (28.5%)" val={"-"+money(tax)} color="#dc2626"/>
+        <FRow label="Revenue" val={money(rev)} color="#16a34a"/><FRow label="Platform Fee" val={"-"+money(pf)} color="#dc2626"/><FRow label="Cost of Unit" val={"-"+money(saleCogs)} color="#dc2626"/><FRow label="Gross Profit" val={money(gross)} bold/><FRow label="Tax (28.5%)" val={"-"+money(tax)} color="#dc2626"/>
         <div style={{display:"flex",justifyContent:"space-between",padding:"8px",background:net>=0?"#dcfce7":"#fee2e2",borderRadius:6,marginTop:6,fontWeight:800,fontSize:15}}><span>NET PROFIT</span><span style={{color:net>=0?"#16a34a":"#dc2626"}}>{money(net)}</span></div>
       </div>
       <div style={{display:"flex",gap:10}}><Btn click={confirm} color="green" full>Confirm Sale</Btn><Btn click={onClose} color="gray">Cancel</Btn></div>
@@ -276,7 +278,7 @@ function Drawer({item,onClose,onEdit,onSell,onDup,onDelete}) {
       </div>
       <div style={{fontWeight:700,fontSize:14,marginBottom:14,lineHeight:1.3}}>{item.name}</div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
-        {[["Stock",item.qtyInStock,"#1d4ed8","#dbeafe"],["Sold",item.qtySold,"#16a34a","#dcfce7"],["Total",item.qty,"#374151","#f3f4f6"]].map(([l,n,co,bg])=>(
+        {[["Stock",qtyNum(item.qtyInStock),"#1d4ed8","#dbeafe"],["Sold",qtyNum(item.qtySold),"#16a34a","#dcfce7"],["Total",qtyNum(item.qty),"#374151","#f3f4f6"]].map(([l,n,co,bg])=>(
           <div key={l} style={{textAlign:"center",background:bg,borderRadius:8,padding:"8px 4px"}}><div style={{fontSize:10,color:"#6b7280"}}>{l}</div><div style={{fontSize:24,fontWeight:900,color:co}}>{n}</div></div>
         ))}
       </div>
@@ -289,12 +291,12 @@ function Drawer({item,onClose,onEdit,onSell,onDup,onDelete}) {
       {item.listUrl&&<div style={{marginTop:8}}><a href={item.listUrl} target="_blank" rel="noreferrer" style={{color:"#2563eb",fontSize:12,fontWeight:600,textDecoration:"none"}}>🔗 View on eBay →</a></div>}
       <div style={{marginTop:14}}><PLBox item={item}/></div>
       {(item.sales||[]).length>0&&<div style={{marginTop:14}}><div style={{fontWeight:700,fontSize:12,marginBottom:8}}>Sales History</div>
-        {item._ebaySoldReport?<div style={{display:"flex",justifyContent:"space-between",fontSize:12,padding:"6px 10px",background:"#fff",borderRadius:6,marginBottom:3}}><span style={{color:"#888"}}>eBay report · {item._ebaySoldReport.quantitySold} sold · total {money(item._ebaySoldReport.totalSalesIncludesTaxes)}</span><span style={{fontWeight:700,color:c.net>=0?"#16a34a":"#dc2626"}}>{money(c.net)} net after cost/tax reserve</span></div>:item.sales.map((s,i)=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-item.costUnit;const n=g-(g>0?g*TAX:0);
+        {item._ebaySoldReport?<div style={{display:"flex",justifyContent:"space-between",fontSize:12,padding:"6px 10px",background:"#fff",borderRadius:6,marginBottom:3}}><span style={{color:"#888"}}>eBay report · {item._ebaySoldReport.quantitySold} sold · total {money(item._ebaySoldReport.totalSalesIncludesTaxes)}</span><span style={{fontWeight:700,color:c.net>=0?"#16a34a":"#dc2626"}}>{money(c.net)} net after cost/tax reserve</span></div>:item.sales.map((s,i)=>{const r=(parseFloat(s.price)||0)+(parseFloat(s.shipCharged)||0);const pf=r*(PLATFORMS[s.channel||item.channel]?.fee||0);const saleCogs=parseFloat(s.cogsAtSale)||item.costUnit;const g=r-pf-(parseFloat(s.shipCost)||0)-(parseFloat(s.packCost)||0)-saleCogs;const n=g-(g>0?g*TAX:0);
           return <div key={i} style={{display:"flex",justifyContent:"space-between",fontSize:12,padding:"6px 10px",background:i%2?"#fafafa":"#fff",borderRadius:6,marginBottom:3}}><span style={{color:"#888"}}>{s.date} · {money(s.price)}</span><span style={{fontWeight:700,color:n>=0?"#16a34a":"#dc2626"}}>{money(n)} net</span></div>;
         })}
       </div>}
       <div style={{display:"flex",gap:8,marginTop:20,flexWrap:"wrap"}}>
-        {item.qtyInStock>0&&<Btn click={onSell} color="green">Record Sale</Btn>}
+        {qtyNum(item.qtyInStock)>0&&<Btn click={onSell} color="green">Record Sale</Btn>}
         <Btn click={onEdit} color="white">Edit</Btn>
         <Btn click={onDup} color="purple">Duplicate</Btn>
         <Btn click={onDelete} color="gray">Delete</Btn>
@@ -320,10 +322,10 @@ function WMap({items,onSelect}) {
               <div style={{width:30,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:isFloor?"#92400e":"#9ca3af",background:isFloor?"#fef3c7":"#f8fafc",borderRadius:4,flexShrink:0,border:"1px solid "+(isFloor?"#fcd34d":"#f3f4f6")}}>{isFloor?"F":shelf}</div>
               <div style={{flex:1,display:"flex",gap:4,flexWrap:"wrap"}}>
                 {shItems.length>0?shItems.map(item=>(
-                  <div key={item.id} onClick={()=>onSelect(item.id)} style={{minWidth:80,flex:1,borderRadius:6,padding:"4px 6px",cursor:"pointer",border:"1px solid",background:item.qtyInStock===0?"#f0fdf4":item.status==="listed"?"#fef3c7":"#eff6ff",borderColor:item.qtyInStock===0?"#86efac":item.status==="listed"?"#fcd34d":"#bfdbfe"}}>
+                  <div key={item.id} onClick={()=>onSelect(item.id)} style={{minWidth:80,flex:1,borderRadius:6,padding:"4px 6px",cursor:"pointer",border:"1px solid",background:qtyNum(item.qtyInStock)===0?"#f0fdf4":item.status==="listed"?"#fef3c7":"#eff6ff",borderColor:qtyNum(item.qtyInStock)===0?"#86efac":item.status==="listed"?"#fcd34d":"#bfdbfe"}}>
                     <div style={{fontSize:9,fontWeight:900,color:"#1a1a2e"}}>{item.id}</div>
                     <div style={{fontSize:10,color:"#374151",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:120}}>{item.name.split(" ").slice(0,3).join(" ")}</div>
-                    <div style={{display:"flex",justifyContent:"space-between",marginTop:2}}><span style={{fontSize:9,color:item.qtyInStock<=2?"#dc2626":"#6b7280",fontWeight:700}}>x{item.qtyInStock}</span><span style={{fontSize:9,color:item.qtySold>0?"#16a34a":"#9ca3af",fontWeight:700}}>{item.qtySold}✅</span></div>
+                    <div style={{display:"flex",justifyContent:"space-between",marginTop:2}}><span style={{fontSize:9,color:qtyNum(item.qtyInStock)<=2?"#dc2626":"#6b7280",fontWeight:700}}>x{qtyNum(item.qtyInStock)}</span><span style={{fontSize:9,color:qtyNum(item.qtySold)>0?"#16a34a":"#9ca3af",fontWeight:700}}>{qtyNum(item.qtySold)}✅</span></div>
                   </div>
                 )):(
                   <div style={{flex:1,background:"#fafafa",borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",minHeight:44,border:"1px dashed #e5e7eb"}}><span style={{fontSize:10,color:"#d1d5db"}}>{rack}-{shelf} free</span></div>
@@ -486,15 +488,17 @@ export default function App() {
   const detailItem=detailId?items.find(i=>i.id===detailId):null;
   const sellItem=sellId?items.find(i=>i.id===sellId):null;
   const totalNet=items.reduce((a,i)=>a+calcPL(i).net,0);
-  const stockVal=items.reduce((a,i)=>a+calcPL(i).cu*(i.qtyInStock||0),0);
-  const totalSold=items.reduce((a,i)=>a+(i.qtySold||0),0);
-  const totalStock=items.reduce((a,i)=>a+(i.qtyInStock||0),0);
+  const stockVal=items.reduce((a,i)=>a+calcPL(i).cu*qtyNum(i.qtyInStock),0);
+  const totalSold=items.reduce((a,i)=>a+qtyNum(i.qtySold),0);
+  const totalStock=items.reduce((a,i)=>a+qtyNum(i.qtyInStock),0);
+  const totalQty=items.reduce((a,i)=>a+qtyNum(i.qty),0);
   const ebayActive=items.filter(i=>i.status==="listed"&&i.channel==="ebay");
-  const ebayActiveUnits=ebayActive.reduce((a,i)=>a+(i.qtyInStock||0),0);
-  const ebayActiveGross=ebayActive.reduce((a,i)=>a+(parseFloat(i.listP)||0)*(i.qtyInStock||0),0);
-  const ebayActiveCost=ebayActive.reduce((a,i)=>a+calcPL(i).cu*(i.qtyInStock||0),0);
-  const ebayActiveNetPotential=ebayActive.reduce((a,i)=>a+calcPL(i).eN*(i.qtyInStock||0),0);
-  const filtered=items.filter(i=>{if(stFlt==="hasSales"&&!((i.qtySold||0)>0||(i.sales||[]).length>0))return false;if(stFlt!=="all"&&stFlt!=="hasSales"&&i.status!==stFlt)return false;if(search){const q=search.toLowerCase();return i.name.toLowerCase().includes(q)||i.id.toLowerCase().includes(q)||(i.sku||"").toLowerCase().includes(q)||(i.invoice||"").toLowerCase().includes(q);}return true;});
+  const ebayActiveUnits=ebayActive.reduce((a,i)=>a+qtyNum(i.qtyInStock),0);
+  const ebayUnitsTotal=items.filter(i=>i.channel==="ebay"||i.ebayItemId||i.listUrl).reduce((a,i)=>a+qtyNum(i.qtyInStock)+qtyNum(i.qtySold),0);
+  const ebayActiveGross=ebayActive.reduce((a,i)=>a+(parseFloat(i.listP)||0)*qtyNum(i.qtyInStock),0);
+  const ebayActiveCost=ebayActive.reduce((a,i)=>a+calcPL(i).cu*qtyNum(i.qtyInStock),0);
+  const ebayActiveNetPotential=ebayActive.reduce((a,i)=>a+calcPL(i).eN*qtyNum(i.qtyInStock),0);
+  const filtered=items.filter(i=>{if(stFlt==="hasSales"&&!(qtyNum(i.qtySold)>0||(i.sales||[]).length>0))return false;if(stFlt!=="all"&&stFlt!=="hasSales"&&i.status!==stFlt)return false;if(search){const q=search.toLowerCase();return i.name.toLowerCase().includes(q)||i.id.toLowerCase().includes(q)||(i.sku||"").toLowerCase().includes(q)||(i.invoice||"").toLowerCase().includes(q);}return true;});
   const TABS=[{id:"dashboard",icon:"📊",label:"Dashboard"},{id:"inventory",icon:"📦",label:"Inventory"},{id:"review",icon:"🧾",label:"Review"},{id:"map",icon:"🗺",label:"Warehouse"},{id:"analytics",icon:"📈",label:"Analytics"}];
 
   if(!loaded)return <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",flexDirection:"column",gap:16,color:"#888",fontFamily:"system-ui"}}><div style={{fontSize:48}}>☁</div><div style={{fontSize:18,fontWeight:700}}>Loading 77 products...</div></div>;
@@ -556,8 +560,8 @@ export default function App() {
                   <td style={{padding:"9px 12px",fontFamily:"monospace",fontWeight:700,color:"#1a1a2e"}}>{it.id}</td>
                   <td style={{padding:"9px 12px",fontWeight:600,maxWidth:200,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{it.name}</td>
                   <td style={{padding:"9px 12px"}}><span style={{fontFamily:"monospace",fontSize:12,background:"#f3f4f6",padding:"2px 8px",borderRadius:20,fontWeight:700}}>{loc(it)}</span></td>
-                  <td style={{padding:"9px 12px",textAlign:"center"}}><span style={{background:it.qtyInStock===0?"#dcfce7":it.qtyInStock<=2?"#fef3c7":"#dbeafe",color:it.qtyInStock===0?"#166534":it.qtyInStock<=2?"#92400e":"#1d4ed8",padding:"2px 10px",borderRadius:20,fontWeight:700}}>{it.qtyInStock}</span></td>
-                  <td style={{padding:"9px 12px",textAlign:"center"}}><span style={{background:it.qtySold>0?"#dcfce7":"#f3f4f6",color:it.qtySold>0?"#166534":"#9ca3af",padding:"2px 10px",borderRadius:20,fontWeight:700}}>{it.qtySold}</span></td>
+                  <td style={{padding:"9px 12px",textAlign:"center"}}><span style={{background:qtyNum(it.qtyInStock)===0?"#dcfce7":qtyNum(it.qtyInStock)<=2?"#fef3c7":"#dbeafe",color:qtyNum(it.qtyInStock)===0?"#166534":qtyNum(it.qtyInStock)<=2?"#92400e":"#1d4ed8",padding:"2px 10px",borderRadius:20,fontWeight:700}}>{qtyNum(it.qtyInStock)}</span></td>
+                  <td style={{padding:"9px 12px",textAlign:"center"}}><span style={{background:qtyNum(it.qtySold)>0?"#dcfce7":"#f3f4f6",color:qtyNum(it.qtySold)>0?"#166534":"#9ca3af",padding:"2px 10px",borderRadius:20,fontWeight:700}}>{qtyNum(it.qtySold)}</span></td>
                   <td style={{padding:"9px 12px",fontWeight:700,color:c.eN>=0?"#16a34a":"#dc2626"}}>{money(c.eN)}</td>
                   <td style={{padding:"9px 12px"}}><STag item={it}/></td>
                   <td style={{padding:"9px 12px"}} onClick={e=>e.stopPropagation()}><Btn click={()=>deleteItem(it)} color="gray" sm>Delete</Btn></td>
@@ -586,12 +590,12 @@ export default function App() {
                 {days!=null&&<span style={{fontSize:10,color:days>60?"#dc2626":days>30?"#d97706":"#16a34a"}}>{days}d in stock</span>}
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:10}}>
-                {[{l:"Stock",v:item.qtyInStock,c:"#2563eb",bg:"#dbeafe"},{l:"Sold",v:item.qtySold,c:"#16a34a",bg:"#dcfce7"},{l:"Est.Net",v:money(c.eN),c:c.eN>=0?"#16a34a":"#dc2626",bg:"#f8fafc"}].map((x,i)=>(
+                {[{l:"Stock",v:qtyNum(item.qtyInStock),c:"#2563eb",bg:"#dbeafe"},{l:"Sold",v:qtyNum(item.qtySold),c:"#16a34a",bg:"#dcfce7"},{l:"Est.Net",v:money(c.eN),c:c.eN>=0?"#16a34a":"#dc2626",bg:"#f8fafc"}].map((x,i)=>(
                   <div key={i} style={{background:x.bg,borderRadius:6,padding:"5px 8px",textAlign:"center"}}><div style={{fontSize:9,color:"#6b7280",textTransform:"uppercase"}}>{x.l}</div><div style={{fontWeight:800,fontSize:13,color:x.c}}>{x.v}</div></div>
                 ))}
               </div>
               <div style={{display:"flex",gap:6}} onClick={e=>e.stopPropagation()}>
-                {item.qtyInStock>0&&<Btn click={()=>setSellId(item.id)} color="green" sm full>Record Sale</Btn>}
+                {qtyNum(item.qtyInStock)>0&&<Btn click={()=>setSellId(item.id)} color="green" sm full>Record Sale</Btn>}
                 <Btn click={()=>dupItem(item)} color="purple" sm>Dup</Btn>
                 <Btn click={()=>deleteItem(item)} color="gray" sm>Delete</Btn>
               </div>
@@ -616,7 +620,7 @@ export default function App() {
             <div style={{padding:"0 16px"}}>
               {[...items].sort((a,b)=>calcPL(b).eN-calcPL(a).eN).slice(0,8).map((it,i)=>{const c=calcPL(it);return(
                 <div key={it.id} onClick={()=>setDetailId(it.id)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 0",borderBottom:"0.5px solid #f3f4f6",cursor:"pointer"}}>
-                  <div><span style={{fontWeight:900,color:"#f59e0b",marginRight:6}}>#{i+1}</span><span style={{fontWeight:600}}>{it.id}</span><div style={{fontSize:11,color:"#888"}}>{it.name.split(" ").slice(0,4).join(" ")} · x{it.qtyInStock}</div></div>
+                  <div><span style={{fontWeight:900,color:"#f59e0b",marginRight:6}}>#{i+1}</span><span style={{fontWeight:600}}>{it.id}</span><div style={{fontSize:11,color:"#888"}}>{it.name.split(" ").slice(0,4).join(" ")} · x{qtyNum(it.qtyInStock)}</div></div>
                   <div style={{textAlign:"right"}}><div style={{fontWeight:800,color:c.eN>=0?"#16a34a":"#dc2626"}}>{money(c.eN)}</div><div style={{fontSize:11,color:c.eM>=120?"#16a34a":"#d97706"}}>{pct(c.eM)}</div></div>
                 </div>
               );})}
@@ -625,10 +629,10 @@ export default function App() {
           <div style={{background:"#fff",border:"1px solid #e5e7eb",borderRadius:12,overflow:"hidden"}}>
             <div style={{background:"#f8fafc",borderBottom:"1px solid #e5e7eb",padding:"12px 16px",fontWeight:700,fontSize:14}}>⏱ Longest in Stock</div>
             <div style={{padding:"0 16px"}}>
-              {[...items.filter(i=>i.received&&i.qtyInStock>0)].map(i=>({...i,days:Math.ceil((new Date().getTime()-new Date(i.received).getTime())/86400000)})).sort((a,b)=>b.days-a.days).slice(0,8).map(it=>(
+              {[...items.filter(i=>i.received&&qtyNum(i.qtyInStock)>0)].map(i=>({...i,days:Math.ceil((new Date().getTime()-new Date(i.received).getTime())/86400000)})).sort((a,b)=>b.days-a.days).slice(0,8).map(it=>(
                 <div key={it.id} onClick={()=>setDetailId(it.id)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 0",borderBottom:"0.5px solid #f3f4f6",cursor:"pointer"}}>
                   <div><span style={{fontWeight:600}}>{it.id}</span><div style={{fontSize:11,color:"#888"}}>{it.name.split(" ").slice(0,4).join(" ")}</div></div>
-                  <div style={{textAlign:"right"}}><div style={{fontWeight:800,color:it.days>60?"#dc2626":it.days>30?"#d97706":"#16a34a"}}>{it.days}d</div><div style={{fontSize:11,color:"#888"}}>x{it.qtyInStock} left</div></div>
+                  <div style={{textAlign:"right"}}><div style={{fontWeight:800,color:it.days>60?"#dc2626":it.days>30?"#d97706":"#16a34a"}}>{it.days}d</div><div style={{fontSize:11,color:"#888"}}>x{qtyNum(it.qtyInStock)} left</div></div>
                 </div>
               ))}
               <div style={{background:"#fffbeb",borderRadius:8,padding:"8px 12px",margin:"10px 0",fontSize:12,color:"#78350f"}}>Items over 60 days: consider reducing price 10-15%.</div>
