@@ -1,10 +1,11 @@
 // @ts-nocheck
 /* eslint-disable */
 import { useState, useEffect, useRef } from "react";
+import { createClient } from "@supabase/supabase-js";
 
 const SB_URL = "https://fpjapzovpxwdvrsgosxe.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwamFwem92cHh3ZHZyc2dvc3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3MTA0NjQsImV4cCI6MjA5NDI4NjQ2NH0.xiO-OBQbh9gn8ZZbQn4jyAA3JBUyAySqNi2Y4IRhedk";
-const SB_H = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates" };
+const supabase = createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false } });
 const SYNC_VERSION = "sync-v6-cloud-authority";
 const TAX = 0.285;
 const RACKS = 7;
@@ -59,19 +60,30 @@ function mergeInventories(...copies) {
   });
   return out.sort((a,b)=>(parseInt((a.id||"").replace("MP-",""),10)||0)-(parseInt((b.id||"").replace("MP-",""),10)||0));
 }
-function localApiUrl() { return `${location.protocol}//${location.hostname}:5174/api/inventory`; }
-function preferSharedApi() { return location.hostname==="localhost"||location.hostname==="127.0.0.1"||location.hostname.startsWith("192.168."); }
-async function sharedLoad() { try { const r=await withTimeout(signal=>fetch(localApiUrl(),{signal}),2500); if(!r.ok)return null; const body=await r.json(); return Array.isArray(body.data)?body.data:null; } catch{return null;} }
-async function sharedSave(items) { try { const r=await withTimeout(signal=>fetch(localApiUrl(),{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({data:items}),signal}),2500); return r.ok; } catch{return false;} }
-async function supabaseLoadCopies() { try { const r=await withTimeout(signal=>fetch(SB_URL+"/rest/v1/inventory?id=eq.mp_erp_data&select=data",{headers:SB_H,signal})); if(!r.ok)return null; const rows=await r.json(); const copies=(rows||[]).map(x=>x.data).filter(x=>Array.isArray(x)&&x.length>0); return copies.length?copies:null; } catch{return null;} }
-async function cloudLoadCopies() { if(preferSharedApi()){const shared=await sharedLoad(); if(shared)return [shared];} const supa=await supabaseLoadCopies(); if(supa)return supa; const shared=await sharedLoad(); return shared?[shared]:null; }
+async function cloudLoadCopies() {
+  try {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData.user) return null;
+    const { data, error } = await supabase.from("inventory").select("data").eq("id", "mp_erp_data");
+    if (error) return null;
+    const copies=(data||[]).map(x=>x.data).filter(x=>Array.isArray(x)&&x.length>0);
+    return copies.length?copies:null;
+  } catch { return null; }
+}
 async function cloudLoad() { const copies=await cloudLoadCopies(); return copies?mergeInventories(...copies):null; }
-async function supabaseSave(payload) { try { const body=JSON.stringify({data:payload}); const patchHeaders={...SB_H,Prefer:"return=representation"}; const p=await withTimeout(signal=>fetch(SB_URL+"/rest/v1/inventory?id=eq.mp_erp_data",{method:"PATCH",headers:patchHeaders,body,signal})); if(p.ok){const rows=await p.json().catch(()=>[]); if(Array.isArray(rows)&&rows.length>0)return true;} const r=await withTimeout(signal=>fetch(SB_URL+"/rest/v1/inventory",{method:"POST",headers:SB_H,body:JSON.stringify([{id:"mp_erp_data",data:payload}]),signal})); return r.ok; } catch(e){console.warn("Cloud:",e);return false;} }
+async function supabaseSave(payload) {
+  try {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData.user) return false;
+    const { error } = await supabase.from("inventory").update({data:payload}).eq("id", "mp_erp_data");
+    return !error;
+  } catch { return false; }
+}
 function isRealItem(i) { return i && !i._deleted && String(i.name||"").toLowerCase()!=="deleted item"; }
-async function cloudSave(items) { const payload=items.filter(isRealItem); if(preferSharedApi()){const sharedOk=await sharedSave(payload); if(sharedOk)return true;} const supaOk=await supabaseSave(payload); if(supaOk)return true; return await sharedSave(payload); }
+async function cloudSave(items) { return supabaseSave(items.filter(isRealItem)); }
 function sameItems(a,b) { try{return JSON.stringify(a)===JSON.stringify(b);}catch{return false;} }
-function localSave(items) { try{localStorage.setItem("mp_erp_77",JSON.stringify(items));}catch{} }
-function localLoad() { try{const d=localStorage.getItem("mp_erp_77");return d?JSON.parse(d):null;}catch{return null;} }
+function localSave() {}
+function localLoad() { return null; }
 function loc(item) { if(!item.rack||!item.shelf)return"—"; return item.pos?`${item.rack}-${item.shelf}-${item.pos}`:`${item.rack}-${item.shelf}`; }
 function locFull(item) { if(!item.rack||!item.shelf)return"No location"; return`Rack ${item.rack} · ${SHELF_NAMES[item.shelf]||"Shelf "+item.shelf}${item.pos?" · Pos "+item.pos:""}`; }
 function money(v) { if(v==null||isNaN(v))return"—"; return(v<0?"-$":"$")+Math.abs(v).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -107,88 +119,6 @@ function calcPL(item) {
   return{cu,lp,fee,eG,eT,eN,eM,rev,pfee,cogs,gross,taxAmt,net,totalCostIn:parseFloat(item.costTotal)||0};
 }
 function needsCostReview(item) { if(item._costReviewStatus==="reviewed_by_user"||item._costReviewedAt)return false; return !item._deleted&&(item.name||"").toLowerCase()!=="teste"&&(item._needsCostReview||!(parseFloat(item.costTotal)||0)||!(parseFloat(item.costUnit)||0)); }
-
-function buildSeed() {
-  return [
-    {id:"MP-001",name:"SIEMENS 6FC5303-1AF10-8AA0 Operator Panel CNC Industrial Control HMI",sku:"",cat:"HMI / Panels",cond:"no",qty:4,qtyInStock:4,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"2,22,38,89",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-07",rack:1,shelf:2,pos:4,notes:"",channel:"ebay",listP:699.0,listUrl:"https://www.ebay.com/itm/318266136225",costTotal:783.28,costUnit:195.82,status:"listed",sales:[],ebayItemId:"318266136225"},
-    {id:"MP-002",name:"Panduit VS-AVT-C08-L10 VeriSafe Absense of Voltage Tester Industrial-each",sku:"",cat:"Safety Components",cond:"no",qty:15,qtyInStock:15,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"7,51,69,96,153,173,222",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-07",rack:1,shelf:1,pos:3,notes:"",channel:"ebay",listP:89.9,listUrl:"https://www.ebay.com/itm/318267048201",costTotal:210.6,costUnit:14.04,status:"listed",sales:[],ebayItemId:"318267048201"},
-    {id:"MP-003",name:"SOLA SCP 102D24X-C02 Dual Output Power Supply 24V 3.8A Industrial PSU",sku:"",cat:"Power Supplies",cond:"no",qty:4,qtyInStock:3,qtySold:1,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"8,27,71,156,184",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-07",rack:1,shelf:3,pos:3,notes:"",channel:"ebay",listP:129.9,listUrl:"https://www.ebay.com/itm/318267056735",costTotal:210.6,costUnit:52.65,status:"listed",sales:[{"date": "2026-05-11", "channel": "ebay", "price": 129.9, "shipCharged": 0, "shipCost": 0, "packCost": 0}],ebayItemId:"318267056735"},
-    {id:"MP-004",name:"Marathon EPBCP84 Power Distribution Block, 760A, 1000V, AC/DC, CU9, 4AWG",sku:"",cat:"Power Supplies",cond:"no",qty:24,qtyInStock:24,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"9,28,44,72,122,142,164,185",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-07",rack:1,shelf:2,pos:4,notes:"",channel:"ebay",listP:319.0,listUrl:"https://www.ebay.com/itm/318267125657",costTotal:1033.68,costUnit:43.07,status:"listed",sales:[],ebayItemId:"318267125657"},
-    {id:"MP-005",name:"Siemens 1FK7034-2AK74-1SH0 SIMOTICS S Servo Motor NEW",sku:"",cat:"Servo Motors",cond:"ns",qty:6,qtyInStock:6,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"10,110,160,210,288",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-07",rack:1,shelf:1,pos:1,notes:"",channel:"ebay",listP:1499.0,listUrl:"https://www.ebay.com/itm/318267253764",costTotal:2519.28,costUnit:419.88,status:"listed",sales:[],ebayItemId:"318267253764"},
-    {id:"MP-006",name:"SICK DUSTHUNTER SP30 DHSP30-T2VATNNNNNXXS NEW",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"12,53,54,61,81,128,148",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-07",rack:1,shelf:1,pos:3,notes:"",channel:"ebay",listP:2490.0,listUrl:"https://www.ebay.com/itm/318267332147",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318267332147"},
-    {id:"MP-007",name:"Siemens 3VA5260-6ED31-0AA0 Circuit Breaker 60A 800V New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"11,29,45,73,99,123,186,219,239,345",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-11",rack:1,shelf:2,pos:4,notes:"",channel:"ebay",listP:899.0,listUrl:"https://www.ebay.com/itm/318286660770",costTotal:251.68,costUnit:251.68,status:"listed",sales:[],ebayItemId:"318286660770"},
-    {id:"MP-008",name:"Siemens 3VA5260-6ED31-0AA0 Circuit Breaker 60A 800V New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:9,qtyInStock:9,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"11,29,45,73,99,123,186,219,239,345",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-11",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:919.0,listUrl:"https://www.ebay.com/itm/318286670296",costTotal:2265.12,costUnit:251.68,status:"listed",sales:[],ebayItemId:"318286670296"},
-    {id:"MP-009",name:"HIRSCHMANN Octopus 28 Port Ethernet Switch OS20-002800T5T5T5-TBBY999GMSE3S",sku:"",cat:"Network Equipment",cond:"no",qty:4,qtyInStock:4,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"31,46,74,124",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-11",rack:1,shelf:3,pos:4,notes:"",channel:"ebay",listP:599.0,listUrl:"https://www.ebay.com/itm/318286746219",costTotal:712.67,costUnit:178.17,status:"listed",sales:[],ebayItemId:"318286746219"},
-    {id:"MP-010",name:"Siemens 6AV2124-0MC01-0AX0 6AV2 124-0MC01-0AX0 SIMATIC TP 1200 New Open box",sku:"",cat:"HMI / Panels",cond:"no",qty:4,qtyInStock:3,qtySold:1,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"41,93,117,138",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-11",rack:1,shelf:2,pos:1,notes:"",channel:"ebay",listP:749.0,listUrl:"https://www.ebay.com/itm/318286933441",costTotal:1348.24,costUnit:337.06,status:"listed",sales:[{"date": "2026-05-11", "channel": "ebay", "price": 749.0, "shipCharged": 0, "shipCost": 0, "packCost": 0}],ebayItemId:"318286933441"},
-    {id:"MP-011",name:"Siemens 6SL3120-2TE15-0AD0 SINAMICS S120 Double Motor Module New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:16,qtyInStock:16,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"48,65,114,126,145,179,188,236",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-11",rack:1,shelf:5,pos:4,notes:"",channel:"ebay",listP:499.0,listUrl:"https://www.ebay.com/itm/318286954082",costTotal:2536.0,costUnit:158.5,status:"listed",sales:[],ebayItemId:"318286954082"},
-    {id:"MP-012",name:"ANYBUS AB7658-F Profinet IO Slave CANopen Slave Industrial Module",sku:"",cat:"Network Equipment",cond:"no",qty:4,qtyInStock:4,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"52,79",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-11",rack:1,shelf:3,pos:3,notes:"",channel:"ebay",listP:499.0,listUrl:"https://www.ebay.com/itm/318287022018",costTotal:365.96,costUnit:91.49,status:"listed",sales:[],ebayItemId:"318287022018"},
-    {id:"MP-013",name:"Siemens 6SL3120-1TE23-0AD0 SINAMICS Single Motor Module New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:6,qtyInStock:6,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"326,339,351,366,382,391",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-11",rack:1,shelf:5,pos:3,notes:"",channel:"ebay",listP:899.0,listUrl:"https://www.ebay.com/itm/318287120769",costTotal:2369.1,costUnit:394.85,status:"listed",sales:[],ebayItemId:"318287120769"},
-    {id:"MP-014",name:"STS Brandschutzsysteme LMK1 Fire Protection Control Unit New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-12",rack:1,shelf:3,pos:3,notes:"",channel:"ebay",listP:289.0,listUrl:"https://www.ebay.com/itm/318291629048",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318291629048"},
-    {id:"MP-015",name:"Camfil CPU201E Electric Control ECS Air Pollution Control Panel New O Box",sku:"",cat:"Industrial Automation",cond:"no",qty:6,qtyInStock:6,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-12",rack:1,shelf:3,pos:3,notes:"",channel:"ebay",listP:289.0,listUrl:"https://www.ebay.com/itm/318291789581",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318291789581"},
-    {id:"MP-016",name:"Siemens 6SL3040-1NC00-0AA0 NX10.3 SINAMICS Control Unit New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:3,qtyInStock:3,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"198,277,378",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-12",rack:1,shelf:5,pos:4,notes:"",channel:"ebay",listP:819.0,listUrl:"https://www.ebay.com/itm/318292198942",costTotal:1072.17,costUnit:357.39,status:"listed",sales:[],ebayItemId:"318292198942"},
-    {id:"MP-017",name:"Banner PVA225P6EQ PVA225P6RQ Safety Light Curtain Emitter Receiver",sku:"",cat:"Safety Components",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-12",rack:1,shelf:1,pos:3,notes:"",channel:"ebay",listP:499.0,listUrl:"https://www.ebay.com/itm/318292210458",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318292210458"},
-    {id:"MP-018",name:"Siemens 6SL3100-1DE22-0AA1 SINAMICS Control Supply Module New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"292",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-12",rack:1,shelf:5,pos:3,notes:"",channel:"ebay",listP:619.0,listUrl:"https://www.ebay.com/itm/318292352607",costTotal:166.93,costUnit:166.93,status:"listed",sales:[],ebayItemId:"318292352607"},
-    {id:"MP-019",name:"Siemens 6SL3040-1NB00-0AA0 SINAMICS Control Unit New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:4,qtyInStock:4,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"136,221,259",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-12",rack:1,shelf:5,pos:3,notes:"",channel:"ebay",listP:899.0,listUrl:"https://www.ebay.com/itm/318292846782",costTotal:1198.48,costUnit:299.62,status:"listed",sales:[],ebayItemId:"318292846782"},
-    {id:"MP-020",name:"Siemens 6SL3120-1TE21-8AD0 SINAMICS Single Motor Module New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"372,388",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-12",rack:1,shelf:5,pos:3,notes:"",channel:"ebay",listP:819.0,listUrl:"https://www.ebay.com/itm/318292987311",costTotal:776.88,costUnit:388.44,status:"listed",sales:[],ebayItemId:"318292987311"},
-    {id:"MP-021",name:"Siemens 1FK7086-4CF71-1SH0 SIMOTICS S Servo Motor New Open Box",sku:"",cat:"Servo Motors",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"150,170",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-12",rack:1,shelf:5,pos:1,notes:"",channel:"ebay",listP:3290.0,listUrl:"https://www.ebay.com/itm/318293129759",costTotal:616.34,costUnit:308.17,status:"listed",sales:[],ebayItemId:"318293129759"},
-    {id:"MP-022",name:"Siemens 3VA5210-6ED31-0AA0 Circuit Breaker 100A 800V New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:3,qtyInStock:3,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"143,165,204",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-12",rack:1,shelf:3,pos:4,notes:"",channel:"ebay",listP:959.0,listUrl:"https://www.ebay.com/itm/318293197591",costTotal:642.03,costUnit:214.01,status:"listed",sales:[],ebayItemId:"318293197591"},
-    {id:"MP-023",name:"Siemens 1FT7044-1AF71-1CH1 SIMOTICS S Servo Motor New Open Box",sku:"",cat:"Servo Motors",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"140",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-12",rack:1,shelf:5,pos:1,notes:"",channel:"ebay",listP:2690.0,listUrl:"https://www.ebay.com/itm/318293246709",costTotal:455.84,costUnit:455.84,status:"listed",sales:[],ebayItemId:"318293246709"},
-    {id:"MP-024",name:"Siemens 1FK7064-4CH71-1SH0 SIMOTICS S Servo Motor Seller Refurbished",sku:"",cat:"Servo Motors",cond:"rf",qty:2,qtyInStock:2,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"120,200",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-13",rack:1,shelf:5,pos:1,notes:"",channel:"ebay",listP:1490.0,listUrl:"https://www.ebay.com/itm/318299195912",costTotal:513.62,costUnit:256.81,status:"listed",sales:[],ebayItemId:"318299195912"},
-    {id:"MP-025",name:"Siemens 3VA5195-6ED31-0AA0 95A Circuit Breaker + 3VA9137-0EK11",sku:"",cat:"Circuit Breakers",cond:"no",qty:16,qtyInStock:16,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"82,116,129,161,199,261,272,284,297,311,325,338",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-13",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:259.0,listUrl:"https://www.ebay.com/itm/318299283270",costTotal:719.04,costUnit:44.94,status:"listed",sales:[],ebayItemId:"318299283270"},
-    {id:"MP-026",name:"Siemens 3RV2742-5BD10 Motor Starter Protector Circuit Breaker NewOpenBox",sku:"",cat:"Circuit Breakers",cond:"no",qty:11,qtyInStock:11,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"125,144,167,187,223,241,299,365",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-13",rack:1,shelf:2,pos:1,notes:"",channel:"ebay",listP:95.9,listUrl:"https://www.ebay.com/itm/318299376845",costTotal:317.79,costUnit:28.89,status:"listed",sales:[],ebayItemId:"318299376845"},
-    {id:"MP-027",name:"SIEMENS 3RV2742-5ED10, SIRUS CIRCUIT BREAKER New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:13,qtyInStock:13,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"125,144,167,187,223,241,299,365",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-13",rack:1,shelf:4,pos:4,notes:"",channel:"ebay",listP:45.9,listUrl:"https://www.ebay.com/itm/318299523139",costTotal:375.57,costUnit:28.89,status:"listed",sales:[],ebayItemId:"318299523139"},
-    {id:"MP-028",name:"Siemens 6EP3333-7LB00-0AX0 SITOP Power Supply Module New Open Box - Each",sku:"",cat:"Power Supplies",cond:"no",qty:6,qtyInStock:6,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"8,27,71,156,184",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-14",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:87.9,listUrl:"https://www.ebay.com/itm/318302328333",costTotal:315.9,costUnit:52.65,status:"listed",sales:[],ebayItemId:"318302328333"},
-    {id:"MP-029",name:"Emerson SolaHD SCP 102D24X-C02 Industrial Power Supply New Without Box",sku:"",cat:"Power Supplies",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"8,27,71,156,184",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-14",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:389.0,listUrl:"https://www.ebay.com/itm/318302375785",costTotal:52.65,costUnit:52.65,status:"listed",sales:[],ebayItemId:"318302375785"},
-    {id:"MP-030",name:"Siemens 6EP1433-2BA20 SITOP Power Supply Module New Open Box",sku:"",cat:"Power Supplies",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:55.9,listUrl:"https://www.ebay.com/itm/318302387144",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302387144"},
-    {id:"MP-031",name:"Siemens 6EP1334-3BA10 SITOP Power Supply Module New Open Box",sku:"",cat:"Power Supplies",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:59.9,listUrl:"https://www.ebay.com/itm/318302391323",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302391323"},
-    {id:"MP-032",name:"MurrElektronik 85690 3-Phase Power Supply 24-28V 5A DC New Open Box",sku:"",cat:"Power Supplies",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:299.0,listUrl:"https://www.ebay.com/itm/318302545217",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302545217"},
-    {id:"MP-033",name:"SICK WL9L-3P2432 Photoelectric Sensor New Open Box - Each -",sku:"",cat:"Electronics",cond:"no",qty:10,qtyInStock:10,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"12,53,54,61,81,128,148",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-14",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:74.9,listUrl:"https://www.ebay.com/itm/318302553230",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302553230"},
-    {id:"MP-034",name:"Siemens 3RV2711-1DD10 Motor Starter Protector Circuit Breaker New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:25.9,listUrl:"https://www.ebay.com/itm/318302814404",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302814404"},
-    {id:"MP-035",name:"Siemens 3RV2917-4A Auxiliary Switch Block New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:16.9,listUrl:"https://www.ebay.com/itm/318302837329",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302837329"},
-    {id:"MP-036",name:"Siemens 6EP1961-2BA61 SITOP Select Power Module New Open Box",sku:"",cat:"Power Supplies",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:169.0,listUrl:"https://www.ebay.com/itm/318302855009",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302855009"},
-    {id:"MP-037",name:"Siemens 6FC5348-0AA30-3AA0 SINUMERIK Dual Fan Module New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:299.0,listUrl:"https://www.ebay.com/itm/318302860088",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302860088"},
-    {id:"MP-038",name:"Siemens 6ES7512-1SK01-0AB0 SIMATIC DP CPU 1512SP F-1 PN New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"151",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-14",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:599.0,listUrl:"https://www.ebay.com/itm/318302966692",costTotal:295.33,costUnit:295.33,status:"listed",sales:[],ebayItemId:"318302966692"},
-    {id:"MP-039",name:"Siemens 6ES7954-8LF03-0AA0 SIMATIC S7 24MB Memory Card New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-14",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:129.9,listUrl:"https://www.ebay.com/itm/318302998385",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318302998385"},
-    {id:"MP-040",name:"Siemens 3RV2711-1DD10 Motor Starter Protector Circuit Breaker New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:25.9,listUrl:"https://www.ebay.com/itm/318307956403",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307956403"},
-    {id:"MP-041",name:"Siemens sentron Sicherungshalter 3NW753-30HG ( 3NW7 5330HG ) New open box.",sku:"",cat:"Industrial Automation",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:15.9,listUrl:"https://www.ebay.com/itm/318307957009",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307957009"},
-    {id:"MP-042",name:"Siemens 3NW1040-0HG 4A Time Delay Fuse Class CC Current Limiting NEW O BOX",sku:"",cat:"Industrial Automation",cond:"no",qty:6,qtyInStock:6,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:6.9,listUrl:"https://www.ebay.com/itm/318307957431",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307957431"},
-    {id:"MP-043",name:"Siemens 3SK1211-1BB40 SIRIUS Safety Relay Output Expansion 4NO 1NC 24VDC",sku:"",cat:"Safety Components",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:9.5,listUrl:"https://www.ebay.com/itm/318307957874",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307957874"},
-    {id:"MP-044",name:"Siemens 3RT2016-1HB42 SIRIUS Contactor w 3RT2916-1BB00 New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:4,qtyInStock:4,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:38.9,listUrl:"https://www.ebay.com/itm/318307958418",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307958418"},
-    {id:"MP-045",name:"Siemens 3RT2015-1BB41 SIRIUS Power Contactor New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:15.9,listUrl:"https://www.ebay.com/itm/318307958825",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307958825"},
-    {id:"MP-046",name:"Siemens 3RV2711-1JD10 SIRIUS Motor Starter Protector New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:25.9,listUrl:"https://www.ebay.com/itm/318307959527",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307959527"},
-    {id:"MP-047",name:"Siemens 3RV2011-0AA10 SIRIUS Motor Starter Protector New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:55.9,listUrl:"https://www.ebay.com/itm/318307959986",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307959986"},
-    {id:"MP-048",name:"Siemens 3RV2917-1E SIRIUS 3-Phase Busbar Right Infeed New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-15",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:39.9,listUrl:"https://www.ebay.com/itm/318307960438",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318307960438"},
-    {id:"MP-049",name:"IFM Efector PN7094 Electronic Pressure Switches /Sensor With Display",sku:"",cat:"Electronics",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:129.0,listUrl:"https://www.ebay.com/itm/318323642528",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323642528"},
-    {id:"MP-050",name:"Schneider Electric M9U21101 Multi9 C60H-DC 1A Circuit Breaker New Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:32.9,listUrl:"https://www.ebay.com/itm/318323649761",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323649761"},
-    {id:"MP-051",name:"Keyence FT-50AWP Infrared Temperature Sensor 24VDC 1.6W OPEN BOX",sku:"",cat:"Electronics",cond:"no",qty:5,qtyInStock:5,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:44.9,listUrl:"https://www.ebay.com/itm/318323652515",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323652515"},
-    {id:"MP-052",name:"Schneider Electric M9F42106 Multi 9 Miniature Circuit Breaker 1P 6A 277V",sku:"",cat:"Circuit Breakers",cond:"no",qty:3,qtyInStock:3,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:9.9,listUrl:"https://www.ebay.com/itm/318323688333",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323688333"},
-    {id:"MP-053",name:"Brad Connectivity Molex 1300180466 Mini-Change 3-Way Junction Tee OPEN BOX",sku:"",cat:"Industrial Automation",cond:"no",qty:4,qtyInStock:4,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:12.9,listUrl:"https://www.ebay.com/itm/318323691469",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323691469"},
-    {id:"MP-054",name:"Rittal SK3110 Temperature Control Thermostat New Open Box",sku:"",cat:"Electronics",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:12.9,listUrl:"https://www.ebay.com/itm/318323693539",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323693539"},
-    {id:"MP-055",name:"Siemens 6SL3162-2MA00-0AC0 SINAMICS Power Plug New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:24.9,listUrl:"https://www.ebay.com/itm/318323695325",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323695325"},
-    {id:"MP-056",name:"Weidm\u00fcller 8442960000 MCZ R 24VDC 5UAU Relay Module New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:3,qtyInStock:3,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-18",rack:1,shelf:2,pos:2,notes:"",channel:"ebay",listP:14.9,listUrl:"https://www.ebay.com/itm/318323696783",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318323696783"},
-    {id:"MP-057",name:"Allen Bradley 1000-194RG2 w 194R-PB 800F-N3G Selector Switch Assembly OpenBox124",sku:"",cat:"Industrial Automation",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-19",rack:1,shelf:1,pos:1,notes:"",channel:"ebay",listP:49.9,listUrl:"https://www.ebay.com/itm/318327300845",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318327300845"},
-    {id:"MP-058",name:"Conta-Clip RK 95 Terminal Block DIN Rail Feed Through New Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:4,qtyInStock:4,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-19",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:22.9,listUrl:"https://www.ebay.com/itm/318327301271",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318327301271"},
-    {id:"MP-059",name:"Datalogic Powerscan Handheld Scanner PD9531-K2 Standard 5VDC RS-232",sku:"",cat:"Electronics",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-19",rack:1,shelf:1,pos:3,notes:"",channel:"ebay",listP:83.9,listUrl:"https://www.ebay.com/itm/318327301832",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318327301832"},
-    {id:"MP-060",name:"Datalogic FBC9080-N100 Fieldbus Converter PROFINET Gateway New Open Box",sku:"",cat:"Network Equipment",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-19",rack:1,shelf:1,pos:3,notes:"",channel:"ebay",listP:179.0,listUrl:"https://www.ebay.com/itm/318327302266",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318327302266"},
-    {id:"MP-061",name:"Datalogic FBC9080-N100 Fieldbus Converter PROFINET Gateway New Open Box",sku:"",cat:"Network Equipment",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-19",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:189.0,listUrl:"https://www.ebay.com/itm/318327302744",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318327302744"},
-    {id:"MP-062",name:"DEHNguard DG MU 3PY 908314 w DGPLU385 908014 Surge Protector Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-19",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:119.0,listUrl:"https://www.ebay.com/itm/318327303103",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318327303103"},
-    {id:"MP-063",name:"DEHNguard DG MOD 320  952 013 DG S 320 320V40  125 AMP NEW NO BOX",sku:"",cat:"Industrial Automation",cond:"no",qty:3,qtyInStock:3,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-19",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:65.9,listUrl:"https://www.ebay.com/itm/318327303607",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318327303607"},
-    {id:"MP-064",name:"IXYS VUO190-16NO7 1600V 195A Three-Phase Rectifier Power Module Open Box 1.3.2b",sku:"",cat:"Industrial Automation",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-20",rack:1,shelf:1,pos:1,notes:"",channel:"ebay",listP:79.9,listUrl:"https://www.ebay.com/itm/318332795555",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318332795555"},
-    {id:"MP-065",name:"Siemens 6AV2125-2AE23-0AX0 SIMATIC HMI Connection Box w/ M12 Cables",sku:"",cat:"HMI / Panels",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-20",rack:1,shelf:1,pos:3,notes:"",channel:"ebay",listP:219.0,listUrl:"https://www.ebay.com/itm/318332796472",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318332796472"},
-    {id:"MP-066",name:"Murrelektronik MICO+ 4.4 9000-41084-0100400 D-71570 Protection Module",sku:"",cat:"Power Supplies",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-20",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:179.0,listUrl:"https://www.ebay.com/itm/318332796880",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318332796880"},
-    {id:"MP-067",name:"KEYENCE FD-XA5E Clamp-On Micro Flow Sensor Controller Open Box",sku:"",cat:"Electronics",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-20",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:499.0,listUrl:"https://www.ebay.com/itm/318332797294",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318332797294"},
-    {id:"MP-068",name:"Siemens 5SJ4110-7HG40 SENTRON 4-Pole 10A Circuit Breaker Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:122,qtyInStock:122,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"57,83,106,201,302",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-20",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:7.9,listUrl:"https://www.ebay.com/itm/318333770950",costTotal:362.34,costUnit:2.97,status:"listed",sales:[],ebayItemId:"318333770950"},
-    {id:"MP-069",name:"NIENTECH USB-NANO 485 USB to RS-485 Industrial Converter Open Box",sku:"",cat:"Industrial Automation",cond:"no",qty:2,qtyInStock:2,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-21",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:34.9,listUrl:"https://www.ebay.com/itm/318337713404",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318337713404"},
-    {id:"MP-070",name:"Siemens 5SY4210-7 SENTRON 2-Pole 10A Circuit Breaker Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"57,83,106,201,302",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-21",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:17.9,listUrl:"https://www.ebay.com/itm/318337714192",costTotal:2.97,costUnit:2.97,status:"listed",sales:[],ebayItemId:"318337714192"},
-    {id:"MP-071",name:"Siemens 5SJ4150-7HG40 SENTRON 4-Pole 50A Circuit Breaker Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:7,qtyInStock:7,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"57,83,106,201,302",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-21",rack:1,shelf:3,pos:4,notes:"",channel:"ebay",listP:15.9,listUrl:"https://www.ebay.com/itm/318337714878",costTotal:20.79,costUnit:2.97,status:"listed",sales:[],ebayItemId:"318337714878"},
-    {id:"MP-072",name:"Siemens 5SJ4130-7HG40 SENTRON 4-Pole 30A Circuit Breaker Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:10,qtyInStock:10,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"57,83,106,201,302",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-21",rack:1,shelf:3,pos:4,notes:"",channel:"ebay",listP:7.9,listUrl:"https://www.ebay.com/itm/318338337526",costTotal:29.7,costUnit:2.97,status:"listed",sales:[],ebayItemId:"318338337526"},
-    {id:"MP-073",name:"Siemens 5SJ4106-7HG40 SENTRON 4-Pole 6A Circuit Breaker Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:14,qtyInStock:14,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"57,83,106,201,302",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-21",rack:1,shelf:3,pos:1,notes:"",channel:"ebay",listP:14.9,listUrl:"https://www.ebay.com/itm/318338340554",costTotal:41.58,costUnit:2.97,status:"listed",sales:[],ebayItemId:"318338340554"},
-    {id:"MP-074",name:"Siemens 5SJ4102-7HG40 SENTRON 1-Pole 2A Circuit Breaker Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:5,qtyInStock:5,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"57,83,106,201,302",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-21",rack:1,shelf:3,pos:4,notes:"",channel:"ebay",listP:8.9,listUrl:"https://www.ebay.com/itm/318338341439",costTotal:14.85,costUnit:2.97,status:"listed",sales:[],ebayItemId:"318338341439"},
-    {id:"MP-075",name:"Siemens 5SJ4104-7HG40 SENTRON 4-Pole 4A Circuit Breaker Open Box",sku:"",cat:"Circuit Breakers",cond:"no",qty:25,qtyInStock:25,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"57,83,106,201,302",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-21",rack:1,shelf:2,pos:1,notes:"",channel:"ebay",listP:5.9,listUrl:"https://www.ebay.com/itm/318338342412",costTotal:74.25,costUnit:2.97,status:"listed",sales:[],ebayItemId:"318338342412"},
-    {id:"MP-076",name:"Turck FEN20-16DXP Compact IP20 Ethernet I/O Module New Open Box",sku:"",cat:"Network Equipment",cond:"no",qty:1,qtyInStock:1,qtySold:0,supplier:"",invoice:"",lots:"",bought:"",received:"",listed:"2026-05-22",rack:1,shelf:3,pos:2,notes:"",channel:"ebay",listP:129.9,listUrl:"https://www.ebay.com/itm/318344633637",costTotal:0,costUnit:0,status:"listed",sales:[],ebayItemId:"318344633637"},
-    {id:"MP-077",name:"Pilz PNOZ X2.8P 24VACDC 3N/O 1N/C 777301 Safety Relay New Open Box",sku:"",cat:"Safety Components",cond:"no",qty:30,qtyInStock:30,qtySold:0,supplier:"Michigan Industrial Auctions",invoice:"1410243-312676-1",lots:"26,42,68,118,162,182,202,217,237,273",bought:"2026-04-22",received:"2026-04-29",listed:"2026-05-22",rack:1,shelf:2,pos:1,notes:"",channel:"ebay",listP:73.9,listUrl:"https://www.ebay.com/itm/318344696209",costTotal:558.6,costUnit:18.62,status:"listed",sales:[],ebayItemId:"318344696209"},
-  ];
-}
 
 function Inp({val,set,type,ph,ro}) { return <input readOnly={ro} type={type||"text"} value={val??""} placeholder={ph||""} onChange={e=>set&&set(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,outline:"none",background:ro?"#f8f8f8":"#fff",color:"#111827",WebkitTextFillColor:"#111827",caretColor:"#111827",boxSizing:"border-box",fontFamily:"inherit"}}/>; }
 function Sel({val,set,opts}) { return <select value={val} onChange={e=>set(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #e5e7eb",borderRadius:8,fontSize:13,background:"#fff",color:"#111827",WebkitTextFillColor:"#111827",caretColor:"#111827",outline:"none",fontFamily:"inherit"}}>{opts.map(([v,l])=><option key={v} value={v}>{l}</option>)}</select>; }
@@ -417,7 +347,7 @@ function CostReview({items,reviewData,onApply,onConfirmOk,onOpen}) {
   </div>;
 }
 
-export default function App() {
+function ERPApp({userEmail,onLogout}) {
   const [items,setItems]=useState([]);
   const [tab,setTab]=useState("dashboard");
   const [detailId,setDetailId]=useState(null);
@@ -434,24 +364,16 @@ export default function App() {
 
   useEffect(()=>{itemsRef.current=items;},[items]);
   useEffect(()=>{editingRef.current=!!editItem||!!sellId;},[editItem,sellId]);
-  useEffect(()=>{fetch("/review-candidates.json").then(r=>r.ok?r.json():[]).then(setReviewData).catch(()=>setReviewData([]));},[]);
+  useEffect(()=>{setReviewData(items.filter(i=>i._reviewCandidates).map(i=>i._reviewCandidates));},[items]);
 
   useEffect(()=>{
     (async()=>{
-      const seed=buildSeed();
-      try{
+      try {
         const cloudCopies=await cloudLoadCopies();
         const cloud=cloudCopies?mergeInventories(...cloudCopies):null;
-        if(cloud&&cloud.length>=seed.length){
-          deletedSave({});
-          setItems(cloud);localSave(cloud);setCloudOk(true);setLoaded(true);return;
-        }
-        const local=localLoad();
-        if(local&&local.length>=seed.length){
-          setItems(local);localSave(local);setCloudOk(await cloudSave(local));setLoaded(true);return;
-        }
-        setItems(seed);localSave(seed);setCloudOk(await cloudSave(seed));
-      }catch{setItems(seed);}
+        if(cloud){deletedSave({});setItems(cloud);setCloudOk(true);}
+        else {setItems([]);setCloudOk(false);}
+      } catch {setItems([]);setCloudOk(false);}
       setLoaded(true);
     })();
   },[]);
@@ -524,6 +446,7 @@ export default function App() {
             <button onClick={startNew} style={{padding:"8px 14px",background:"#f59e0b",border:"none",borderRadius:8,color:"#000",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>+ Add</button>
             <button onClick={exportData} style={{padding:"8px 14px",background:"#2563eb",border:"none",borderRadius:8,color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>Export</button>
             <label style={{padding:"8px 14px",background:"#16a34a",borderRadius:8,color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit",display:"inline-block"}}>Import<input type="file" accept=".json" onChange={importFile} style={{display:"none"}}/></label>
+            <button onClick={onLogout} title={userEmail} style={{padding:"8px 14px",background:"#374151",border:"1px solid #4b5563",borderRadius:8,color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>Logout</button>
             <div style={{textAlign:"right"}}>
               <div style={{fontSize:10,color:"#6b7280",textTransform:"uppercase"}}>Net Profit (28.5%)</div>
               <div style={{fontSize:22,fontWeight:900,color:"#4ade80"}}>{money(totalNet)}</div>
@@ -642,4 +565,61 @@ export default function App() {
       </div>}
     </div>
   </div>;
+}
+
+
+function LoginScreen() {
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  const [busy,setBusy]=useState(false);
+  const [error,setError]=useState("");
+  async function submit(e){
+    e.preventDefault();setBusy(true);setError("");
+    const {error:signInError}=await supabase.auth.signInWithPassword({email:email.trim(),password});
+    if(signInError)setError("E-mail ou senha incorretos.");
+    setBusy(false);
+  }
+  return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:20,background:"#1a1a2e",fontFamily:"system-ui,-apple-system,sans-serif"}}>
+    <form onSubmit={submit} style={{width:"100%",maxWidth:390,background:"#fff",borderRadius:12,padding:28,boxShadow:"0 20px 60px rgba(0,0,0,.35)"}}>
+      <div style={{fontSize:11,letterSpacing:".16em",color:"#6b7280",textTransform:"uppercase",marginBottom:8}}>Maxor Industrial</div>
+      <h1 style={{fontSize:25,margin:"0 0 6px",color:"#111827"}}>Acesso ao ERP</h1>
+      <p style={{fontSize:13,color:"#6b7280",margin:"0 0 22px"}}>Entre com seu e-mail e senha autorizados.</p>
+      <label style={{display:"block",fontSize:12,fontWeight:700,color:"#374151",marginBottom:6}}>E-mail</label>
+      <input autoComplete="username" type="email" required value={email} onChange={e=>setEmail(e.target.value)} style={{width:"100%",boxSizing:"border-box",padding:"11px 12px",border:"1px solid #d1d5db",borderRadius:8,fontSize:15,color:"#111827",marginBottom:14}}/>
+      <label style={{display:"block",fontSize:12,fontWeight:700,color:"#374151",marginBottom:6}}>Senha</label>
+      <input autoComplete="current-password" type="password" required value={password} onChange={e=>setPassword(e.target.value)} style={{width:"100%",boxSizing:"border-box",padding:"11px 12px",border:"1px solid #d1d5db",borderRadius:8,fontSize:15,color:"#111827",marginBottom:10}}/>
+      {error&&<div role="alert" style={{fontSize:12,color:"#b91c1c",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:7,padding:"9px 10px",marginBottom:12}}>{error}</div>}
+      <button type="submit" disabled={busy} style={{width:"100%",padding:"11px 14px",border:0,borderRadius:8,background:busy?"#9ca3af":"#2563eb",color:"#fff",fontSize:15,fontWeight:800,cursor:busy?"wait":"pointer"}}>{busy?"Entrando...":"Entrar"}</button>
+    </form>
+  </div>;
+}
+
+export default function App(){
+  const [session,setSession]=useState(null);
+  const [checking,setChecking]=useState(true);
+  useEffect(()=>{
+    let active=true;
+    (async()=>{
+      const {data:{session:stored}}=await supabase.auth.getSession();
+      if(!stored){if(active){setSession(null);setChecking(false);}return;}
+      const {data,error}=await supabase.auth.getUser();
+      if(active){setSession(!error&&data.user?stored:null);setChecking(false);}
+    })();
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,next)=>{if(active){setSession(next);setChecking(false);}});
+    return()=>{active=false;subscription.unsubscribe();};
+  },[]);
+  useEffect(()=>{
+    if(checking)return;
+    const target=session?"/":"/login";
+    if(location.pathname!==target)history.replaceState({},"",target);
+  },[checking,session]);
+  async function logout(){
+    await supabase.auth.signOut({scope:"global"});
+    localStorage.removeItem("mp_erp_77");
+    localStorage.removeItem("mp_erp_deleted");
+    setSession(null);
+  }
+  if(checking)return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#1a1a2e",color:"#fff",fontFamily:"system-ui"}}>Verificando acesso...</div>;
+  if(!session)return <LoginScreen/>;
+  return <ERPApp userEmail={session.user?.email||""} onLogout={logout}/>;
 }
